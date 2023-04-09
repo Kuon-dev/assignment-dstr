@@ -51,7 +51,7 @@ Get-ChildItem -Path ./ -Recurse -Include *.cpp | ForEach-Object {clang-format -i
 
 - Compile & run file
 ```powershell
-g++ main -o "main"
+g++ .\main.cpp -o "main"
 "./main.exe"
 ```
 
