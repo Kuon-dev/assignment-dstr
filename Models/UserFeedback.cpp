@@ -76,6 +76,28 @@ class feedbackList
 		return 0;
 	}
 
+	// add existing feedback from the database to the linked list
+	int retrieveFeedback(string feedbackId, string userId, string content, time_t time){
+		feedbackNode* newFeedback = new feedbackNode;
+		newFeedback->FeedbackId = feedbackId;
+		newFeedback->UserId = userId;
+		newFeedback->FeedbackContent = content;
+		newFeedback->Timestamp = time;
+
+		newFeedback->PreviousAddress = tail;
+		newFeedback->NextAddress = nullptr;
+		if (head == nullptr)
+		{
+			head = tail = newFeedback;
+		}
+		else
+		{
+			tail->NextAddress = newFeedback;
+			tail = newFeedback;
+		}
+		return 0;
+	}
+
 	void updateFeedback(string feedbackId, string newContent)
 	{
 		feedbackNode* current = head;
@@ -168,13 +190,21 @@ class feedbackList
 		feedbackNode* current = head;
 		while (current != nullptr)
 		{
-			displayFeedback(current);
+			tm timestamp_tm;
+			localtime_s(&timestamp_tm, &current->Timestamp);
+
+			cout << left
+					<< setw(15) << current->FeedbackId
+					<< setw(15) << current->UserId
+					<< setw(50) << current->FeedbackContent
+					<< setw(30) << put_time(&timestamp_tm, "%c %Z") << endl;
+
+
 			current = current->NextAddress;
 		}
 	}
 
 	feedbackNode* getHead() { return head; }
-
 
 	void sortFeedbackByUserId()
 	{

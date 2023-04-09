@@ -9,6 +9,7 @@ using namespace std;
 class FeedbackController
 {
 	public:
+	// initialize new feedback
 	int createFeedback()
 	{
 		string userId, feedbackContent;
@@ -81,12 +82,13 @@ class FeedbackController
 		}
 	}
 
-	feedbackNode* retrieveFeedback(string feedbackId)
+	feedbackNode* getFeedbackById(string feedbackId)
 	{
 		ifstream file("FeedbackDatabase.csv");
 		string line;
 		while (getline(file, line))
 		{
+			cout << feedbackId << endl;
 			istringstream iss(line);
 			string id, userId, content, timestamp;
 			getline(iss, id, ',');
@@ -95,19 +97,64 @@ class FeedbackController
 			getline(iss, timestamp, ',');
 			if (id == feedbackId)
 			{
-				feedbackNode* feedback = new feedbackNode;
-				feedback->FeedbackId = id;
-				feedback->UserId = userId;
-				feedback->FeedbackContent = content;
-				feedback->Timestamp = stoi(timestamp);
-				file.close();
-				return feedback;
+				try {
+					feedbackNode* feedback = new feedbackNode;
+					feedback->FeedbackId = id;
+					feedback->UserId = userId;
+					feedback->FeedbackContent = content;
+					feedback->Timestamp = stoi(timestamp);
+					file.close();
+					return feedback;
+				}
+				catch (std::bad_alloc& e) {
+					cerr << "Error allocating memory: " << e.what() << endl;
+					return nullptr;
+				}
 			}
 		}
 		file.close();
 		cout << "Feedback with ID " << feedbackId << " not found." << endl;
 		return nullptr;
 	};
+
+	void readFeedbackById(string feedbackId)
+	{
+		feedbackList newFeedbackList;
+		feedbackNode newFeedback;
+
+		feedbackNode* feedback = getFeedbackById(feedbackId);
+		if (feedback != nullptr){
+			newFeedbackList.retrieveFeedback(newFeedback.UserId, newFeedback.FeedbackId, newFeedback.FeedbackContent, newFeedback.Timestamp);
+			newFeedbackList.displayFeedback(feedback);
+		}
+	};
+
+
+	int readAllFeedbacks(){
+		feedbackList feedback;
+		ifstream file("FeedbackDatabase.csv");
+		if (file) {
+			cout << left << setw(15) << "Feedback ID" << setw(15) << "User ID" << setw(50) << "Feedback Content" << setw(30) << "Timestamp" << endl;
+			string line;
+			while (getline(file, line)) {
+				stringstream ss(line);
+				string feedbackId, userId, feedbackContent, timestamp;
+				getline(ss, feedbackId, ',');
+				getline(ss, userId, ',');
+				getline(ss, feedbackContent, ',');
+				getline(ss, timestamp, ',');
+
+				feedback.retrieveFeedback(feedbackId, userId, feedbackContent, stoi(timestamp));
+			}
+			file.close();
+		}
+		else {
+			cerr << "Error opening file." << endl;
+			return 0;
+		}
+		feedback.displayAllFeedback();
+		return 1;
+	}
 
 	void deleteFeedback(string feedbackId)
 	{
