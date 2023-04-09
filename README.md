@@ -39,3 +39,20 @@ $ scoop install gcc
 - Install `C++ Extension Pack` in the extension
 - Press `Ctrl` + `Shift` + `E` to open the file explorer
 - Right click a `.cpp` file you want to run, then press `run code`
+
+---
+
+# Daily Development
+- Prettier run command
+
+```powershell
+Get-ChildItem -Path ./ -Recurse -Include *.cpp | ForEach-Object {clang-format -i $_.FullName}
+```
+
+- Compile & run file
+```powershell
+g++ main -o "main"
+"./main.exe"
+```
+
+
