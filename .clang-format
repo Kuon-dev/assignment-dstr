@@ -13,12 +13,13 @@ BasedOnStyle: LLVM
 AccessModifierOffset: -4
 AlignAfterOpenBracket: AlwaysBreak
 AlignEscapedNewlinesLeft: true
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
 AlwaysBreakAfterReturnType: None
 AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: false
 BinPackParameters: false
 BreakBeforeBinaryOperators: All
-BreakBeforeBraces: Allman
+BreakBeforeBraces: Attach
 ColumnLimit: 120
 ContinuationIndentWidth: 2
 FixNamespaceComments: false
