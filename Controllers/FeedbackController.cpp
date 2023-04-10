@@ -24,7 +24,7 @@ class FeedbackController {
 
 		feedbackNode* feedback = newFeedback.getHead();
 
-		ofstream outfile("FeedbackDatabase.csv", ios::app);
+		ofstream outfile("Database/FeedbackDatabase.csv", ios::app);
 		if (outfile) {
 			outfile << feedback->FeedbackId << "," << feedback->UserId << "," << feedback->FeedbackContent << ","
 							<< feedback->Timestamp << endl;
@@ -40,7 +40,7 @@ class FeedbackController {
 
 	void updateFeedback(string feedbackId, string newContent) {
 		ofstream tempFile("temp.csv");
-		ifstream file("FeedbackDatabase.csv");
+		ifstream file("Database/FeedbackDatabase.csv");
 		string line;
 		bool found = false;
 		while (getline(file, line)) {
@@ -60,8 +60,8 @@ class FeedbackController {
 		file.close();
 		tempFile.close();
 		if (found) {
-			remove("FeedbackDatabase.csv");
-			rename("temp.csv", "FeedbackDatabase.csv");
+			remove("Database/FeedbackDatabase.csv");
+			rename("temp.csv", "Database/FeedbackDatabase.csv");
 			cout << "Feedback with ID " << feedbackId << " updated." << endl;
 		} else {
 			remove("temp.csv");
@@ -70,7 +70,7 @@ class FeedbackController {
 	}
 
 	feedbackNode* getFeedbackById(string feedbackId) {
-		ifstream file("FeedbackDatabase.csv");
+		ifstream file("Database/FeedbackDatabase.csv");
 		string line;
 		while (getline(file, line)) {
 			cout << feedbackId << endl;
@@ -115,7 +115,7 @@ class FeedbackController {
 
 	int readAllFeedbacks() {
 		feedbackList feedback;
-		ifstream file("FeedbackDatabase.csv");
+		ifstream file("Database/FeedbackDatabase.csv");
 		if (file) {
 			cout << left << setw(15) << "Feedback ID" << setw(15) << "User ID" << setw(50) << "Feedback Content" << setw(30)
 					 << "Timestamp" << endl;
@@ -185,6 +185,6 @@ class FeedbackController {
 	}
 
 	private:
-	string databaseFileName = "FeedbackDatabase.csv";
+	string databaseFileName = ".Database.FeedbackDatabase.csv";
 	string tempFileName = "temp.csv";
 };
