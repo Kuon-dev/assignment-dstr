@@ -64,7 +64,7 @@ class feedbackList {
 	}
 
 	// add existing feedback from the database to the linked list
-	int retrieveFeedback(string feedbackId, string userId, string content, time_t time) {
+	int setFeedbackNode(string feedbackId, string userId, string content, time_t time) {
 		feedbackNode* newFeedback = new feedbackNode;
 		newFeedback->FeedbackId = feedbackId;
 		newFeedback->UserId = userId;

@@ -106,7 +106,7 @@ class FeedbackController {
 
 		feedbackNode* feedback = getFeedbackById(feedbackId);
 		if (feedback != nullptr) {
-			newFeedbackList.retrieveFeedback(
+			newFeedbackList.setFeedbackNode(
 				newFeedback.UserId, newFeedback.FeedbackId, newFeedback.FeedbackContent, newFeedback.Timestamp);
 			newFeedbackList.displayFeedback(feedback);
 		}
@@ -128,7 +128,7 @@ class FeedbackController {
 				getline(ss, feedbackContent, ',');
 				getline(ss, timestamp, ',');
 
-				feedback.retrieveFeedback(feedbackId, userId, feedbackContent, stoi(timestamp));
+				feedback.setFeedbackNode(feedbackId, userId, feedbackContent, stoi(timestamp));
 			}
 			file.close();
 		} else {
@@ -185,6 +185,6 @@ class FeedbackController {
 	}
 
 	private:
-	string databaseFileName = ".Database.FeedbackDatabase.csv";
+	string databaseFileName = "./Database/FeedbackDatabase.csv";
 	string tempFileName = "temp.csv";
 };
