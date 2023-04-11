@@ -1,4 +1,5 @@
 
+#include "../Modules/Conversions.cpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -33,6 +34,13 @@ struct universityNode {
 	universityNode* prev = nullptr;
 	universityNode* next = nullptr;
 };
+
+//
+// ==================================
+// |
+// | Code below is a doubly Linked List
+// |
+// |
 
 class universityList {
 	universityNode* head = nullptr;
@@ -93,6 +101,7 @@ class universityList {
 		}
 		tail = newNode;
 	}
+
 	void addUniversityNode(universityNode* newNode) {
 		newNode->prev = tail;
 		newNode->next = nullptr;
@@ -125,16 +134,16 @@ class universityList {
 
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
-		cout << setw(6) << "Rank" << setw(40) << "Name" << setw(15) << "Location" << setw(12) << "AR Score" << setw(12)
-				 << "AR Rank" << setw(12) << "ER Score" << setw(12) << "ER Rank" << endl;
+		cout << setw(6) << "Rank" << setw(60) << "Name" << setw(20) << "Location" << setw(12) << "AR Score" << setw(12)
+				 << "AR Rank" << setw(12) << "ER Score" << setw(12) << "IrsScore" << endl;
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 
 		int count = 0;
 		while (current != nullptr && count < 20) {
-			cout << setw(6) << current->Rank << setw(40) << current->Name << setw(15) << current->Location << setw(12)
+			cout << setw(6) << current->Rank << setw(60) << current->Name << setw(20) << current->Location << setw(12)
 					 << current->ArScore << setw(12) << current->ArRank << setw(12) << current->ErScore << setw(12)
-					 << current->ErRank << endl;
+					 << current->IsrScore << endl;
 			current = current->next;
 			count++;
 		}
@@ -142,6 +151,9 @@ class universityList {
 				 << endl;
 	}
 
+	void quicksort() {
+		if (head != nullptr && head != tail) quickSortHelper(head, tail);
+	}
 
 	void updateUniversityByRank(int rank) {
 		universityNode* current = head;
@@ -209,5 +221,64 @@ class universityList {
 		current->ScoreScaled = ScoreScaled;
 
 		cout << "University with rank " << rank << " has been updated." << endl;
+	}
+
+	private:
+	// helper functions
+	void quickSortHelper(universityNode* left, universityNode* right) {
+		if (right != nullptr && left != right && left != right->next) {
+			universityNode* pivot = partition(left, right);
+			quickSortHelper(left, pivot->prev);
+			quickSortHelper(pivot->next, right);
+		}
+	}
+
+	universityNode* partition(universityNode* left, universityNode* right) {
+		double pivot = stringToDouble(right->ScoreScaled);
+		universityNode* i = left->prev;
+		for (universityNode* j = left; j != right; j = j->next) {
+			double currentScore = stringToDouble(j->ScoreScaled);
+			if (currentScore <= pivot) {
+				i = (i == nullptr) ? left : i->next;
+				swapNodes(i, j);
+			}
+		}
+		i = (i == nullptr) ? left : i->next;
+		swapNodes(i, right);
+		return i;
+	}
+
+	void swapNodes(universityNode* node1, universityNode* node2) {
+		if (node1 != node2) {
+			// swap prev pointers
+			universityNode* temp = node1->prev;
+			node1->prev = node2->prev;
+			node2->prev = temp;
+			if (node1->prev == nullptr) {
+				head = node1;
+			} else {
+				node1->prev->next = node1;
+			}
+			if (node2->prev == nullptr) {
+				head = node2;
+			} else {
+				node2->prev->next = node2;
+			}
+
+			// swap next pointers
+			temp = node1->next;
+			node1->next = node2->next;
+			node2->next = temp;
+			if (node1->next == nullptr) {
+				tail = node1;
+			} else {
+				node1->next->prev = node1;
+			}
+			if (node2->next == nullptr) {
+				tail = node2;
+			} else {
+				node2->next->prev = node2;
+			}
+		}
 	}
 };

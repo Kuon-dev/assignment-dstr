@@ -22,6 +22,7 @@ void displayMenu() {
 			// Call function to display all universities
 			break;
 		case 2:
+			uniController.dispalyFirst20UniSorted();
 			// Call function to display university by rank
 			break;
 		case 3:

@@ -29,16 +29,34 @@ class UniversityContoller {
 			int rank = stoi(token);
 
 			getline(iss, token, ',');
-			Name = token;
+			//(token[0] == '\"') ? Name = token.substr(1, token.size() - 2) : Name = token;
+			if (token[0] == '\"') {
+				// Handle cases where the location contains a comma
+				while (token[token.size() - 1] != '\"') {
+					std::string temp;
+					std::getline(iss, temp, ',');
+					token += "," + temp;
+				}
+				Name = token.substr(1, token.size() - 2);
+			} else Name = token;
 
 			getline(iss, token, ',');
 			LocationCode = token;
 
 			getline(iss, token, ',');
-			Location = token;
+			if (token[0] == '\"') {
+				// Handle cases where the location contains a comma
+				while (token[token.size() - 1] != '\"') {
+					std::string temp;
+					std::getline(iss, temp, ',');
+					token += "," + temp;
+				}
+				Location = token.substr(1, token.size() - 2);
+			} else Location = token;
+
 
 			getline(iss, token, ',');
-			ArScore = (token);
+			ArScore = token;
 
 			getline(iss, token, ',');
 			ArRank = (token);
@@ -119,6 +137,12 @@ class UniversityContoller {
 
 	void displayFist20Uni() {
 		universityList newList = readUniversityDatabase();
+		newList.displayFirst20Nodes();
+	}
+
+	void dispalyFirst20UniSorted() {
+		universityList newList = readUniversityDatabase();
+		newList.quicksort();
 		newList.displayFirst20Nodes();
 	}
 };
