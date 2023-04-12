@@ -1,5 +1,5 @@
 
-#include "../Models/University.cpp"
+#include "../Modules/Sorters.cpp"
 
 class UniversityContoller {
 	public:
@@ -144,7 +144,8 @@ class UniversityContoller {
 
 	void dispalyFirst20UniSorted() {
 		universityList newList = readUniversityDatabase();
-		newList.sortArScore();
+		universitySorter sorter;
+		sorter.quickSortUniversity(newList.getHead(), newList.getTail(), "ArScore");
 		newList.displayFirst20Nodes();
 	}
 };

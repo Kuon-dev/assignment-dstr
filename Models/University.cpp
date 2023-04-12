@@ -37,19 +37,29 @@ struct universityNode {
 	universityNode* next = nullptr;
 };
 
-//
-// ==================================
-// |
-// | Code below is a doubly Linked List
-// |
-// |
-
 class universityList {
 	universityNode* head = nullptr;
 	universityNode* tail = nullptr;
 
 	public:
-	// Add a new node to the end of the list
+	// ---------------------------------
+	//
+	//  Getter setters
+	//
+	//
+	// ---------------------------------
+
+	universityNode* getHead() { return this->head; }
+
+	universityNode* getTail() { return this->tail; }
+
+	// ---------------------------------
+	//
+	//  General functions
+	//
+	//
+	// ---------------------------------
+
 	void createUniversity(
 		int rank,
 		string name,
@@ -221,55 +231,8 @@ class universityList {
 		cout << "University with rank " << rank << " has been updated." << endl;
 	}
 
-	void sortArScore() { quickSort(this->head, this->tail); }
+
+	// void sortArScore() { quickSort(this->head, this->tail, "ArScore"); }
 
 	private:
-	// helper functions
-	void swapNodes(universityNode* node1, universityNode* node2) {
-		swap(node1->Name, node2->Name);
-		swap(node1->LocationCode, node2->LocationCode);
-		swap(node1->Location, node2->Location);
-		swap(node1->ArScore, node2->ArScore);
-		swap(node1->ArRank, node2->ArRank);
-		swap(node1->ErScore, node2->ErScore);
-		swap(node1->ErRank, node2->ErRank);
-		swap(node1->FsrScore, node2->FsrScore);
-		swap(node1->FsrRank, node2->FsrRank);
-		swap(node1->CpfScore, node2->CpfScore);
-		swap(node1->CpfRank, node2->CpfRank);
-		swap(node1->IfrScore, node2->IfrScore);
-		swap(node1->IfrRank, node2->IfrRank);
-		swap(node1->IsrScore, node2->IsrScore);
-		swap(node1->IsrRank, node2->IsrRank);
-		swap(node1->IrnScore, node2->IrnScore);
-		swap(node1->IrnRank, node2->IrnRank);
-		swap(node1->GerScore, node2->GerScore);
-		swap(node1->GerRank, node2->GerRank);
-		swap(node1->ScoreScaled, node2->ScoreScaled);
-	}
-
-	// Partition function for quicksort
-	universityNode* partition(universityNode* head, universityNode* tail) {
-		double pivot = stringToDouble(tail->ArScore);
-		universityNode* i = head->prev;
-
-		for (universityNode* j = head; j != tail; j = j->next) {
-			if (stringToDouble(j->ArScore) <= pivot) {
-				i = (i == nullptr) ? head : i->next;
-				swapNodes(i, j);
-			}
-		}
-		i = (i == nullptr) ? head : i->next;
-		swapNodes(i, tail);
-		return i;
-	}
-
-	// Recursive function for quicksort
-	void quickSort(universityNode* head, universityNode* tail) {
-		if (tail != nullptr && head != tail && head != tail->next) {
-			universityNode* p = partition(head, tail);
-			quickSort(head, p->prev);
-			quickSort(p->next, tail);
-		}
-	}
 };
