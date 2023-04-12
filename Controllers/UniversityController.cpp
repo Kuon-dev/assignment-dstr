@@ -1,3 +1,4 @@
+
 #include "../Models/University.cpp"
 
 class UniversityContoller {
@@ -20,7 +21,8 @@ class UniversityContoller {
 			stringstream iss(line);
 			universityNode* node = new universityNode();
 
-			string Rank, Name, LocationCode, Location, ArScore, ArRank, ErScore, ErRank, FsrScore, FsrRank, CpfScore, CpfRank,
+			string ArScore;
+			string Rank, Name, LocationCode, Location, ArRank, ErScore, ErRank, FsrScore, FsrRank, CpfScore, CpfRank,
 				IfrScore, IfrRank, IsrScore, IsrRank, IrnScore, IrnRank, GerScore, GerRank, ScoreScaled;
 
 			string token;
@@ -56,7 +58,7 @@ class UniversityContoller {
 
 
 			getline(iss, token, ',');
-			ArScore = token;
+			ArScore = (token);
 
 			getline(iss, token, ',');
 			ArRank = (token);
@@ -142,7 +144,7 @@ class UniversityContoller {
 
 	void dispalyFirst20UniSorted() {
 		universityList newList = readUniversityDatabase();
-		newList.quicksort();
+		newList.sortArScore();
 		newList.displayFirst20Nodes();
 	}
 };
