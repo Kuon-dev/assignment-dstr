@@ -1,9 +1,13 @@
 #include "../Models/University.cpp"
 
-// ---------------------------------
-// This section contains list of helper functions
-//
-// ---------------------------------
+/*
+---------------------------------
+| Helper function section
+---------------------------------
+| This section contains list of helper functions
+|
+*/
+
 
 // for uni
 string getColumn(universityNode* node, string column) {
@@ -52,14 +56,93 @@ string getColumn(universityNode* node, string column) {
 	}
 }
 
-
-// ---------------------------------
-// quick sort algorithm for uni
-//
-// ---------------------------------
+/*
+---------------------------------
+|  sort algorithm for uni
+--------------------------------
+| This class will contain quick and merge sort
+| algorithms for universities dataset
+|
+| Helper functions will be placed under private section of the code
+|
+*/
 
 class universitySorter {
 	public:
+	void quickSortUniversity(universityNode* head, universityNode* tail, string column) {
+		if (tail != nullptr && head != tail && head != tail->next) {
+			universityNode* p = partition(head, tail, column);
+			quickSortUniversity(head, p->prev, column);
+			quickSortUniversity(p->next, tail, column);
+		}
+	}
+
+	void mergeSortUniversity(universityNode* head, string column) { mergeSortByColumnRecursive(head, column); }
+
+	private:
+	universityNode* getMiddleNode(universityNode* head) {
+		if (head == nullptr) {
+			return nullptr;
+		}
+
+		universityNode* slow = head;
+		universityNode* fast = head->next;
+		while (fast != nullptr) {
+			fast = fast->next;
+			if (fast != nullptr) {
+				slow = slow->next;
+				fast = fast->next;
+			}
+		}
+
+		return slow;
+	}
+
+	universityNode* mergeByColumn(universityNode* left, universityNode* right, string column) {
+		universityNode temp;
+		universityNode* tail = &temp;
+
+		while (left != nullptr && right != nullptr) {
+			if (getColumn(left, column) >= getColumn(right, column)) {
+				tail->next = left;
+				left = left->next;
+			} else {
+				tail->next = right;
+				right = right->next;
+			}
+			tail = tail->next;
+		}
+
+		if (left != nullptr) {
+			tail->next = left;
+		} else {
+			tail->next = right;
+		}
+
+		return temp.next;
+	}
+
+	universityNode* mergeSortByColumnRecursive(universityNode* head, string column) {
+		if (head == nullptr || head->next == nullptr) {
+			return head; // Base case: list is empty or has only one node
+		}
+
+		// Split the list into two halves
+		universityNode* middle = getMiddleNode(head);
+		universityNode* nextToMiddle = middle->next;
+		middle->next = nullptr;
+
+		// Recursively sort the two halves
+		universityNode* left = mergeSortByColumnRecursive(head, column);
+		universityNode* right = mergeSortByColumnRecursive(nextToMiddle, column);
+
+		// Merge the two sorted halves
+		return mergeByColumn(left, right, column);
+	}
+
+
+	// quick sort section
+
 	void swapNodes(universityNode* node1, universityNode* node2) {
 		swap(node1->Name, node2->Name);
 		swap(node1->LocationCode, node2->LocationCode);
@@ -98,20 +181,4 @@ class universitySorter {
 		swapNodes(i, tail);
 		return i;
 	}
-
-	// Recursive function for quicksort
-	void quickSortUniversity(universityNode* head, universityNode* tail, string column) {
-		if (tail != nullptr && head != tail && head != tail->next) {
-			universityNode* p = partition(head, tail, column);
-			quickSortUniversity(head, p->prev, column);
-			quickSortUniversity(p->next, tail, column);
-		}
-	}
 };
-
-// ---------------------------------
-// This file contains the list of sorters
-//
-//
-// ---------------------------------
-//
