@@ -42,23 +42,9 @@ class universityList {
 	universityNode* tail = nullptr;
 
 	public:
-	// ---------------------------------
-	//
-	//  Getter setters
-	//
-	//
-	// ---------------------------------
-
 	universityNode* getHead() { return this->head; }
 
 	universityNode* getTail() { return this->tail; }
-
-	// ---------------------------------
-	//
-	//  General functions
-	//
-	//
-	// ---------------------------------
 
 	void createUniversity(
 		int rank,
@@ -125,7 +111,6 @@ class universityList {
 		}
 	};
 
-	// Get a node by rank
 	universityNode* getUniversityByRank(int rank) {
 		universityNode* current = head;
 		while (current != nullptr) {

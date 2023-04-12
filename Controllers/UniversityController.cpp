@@ -1,5 +1,4 @@
-
-#include "../Modules/Sorters.cpp"
+#include "../Modules/Algorithms.cpp"
 
 class UniversityContoller {
 	public:
