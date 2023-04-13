@@ -147,4 +147,30 @@ class UniversityContoller {
 		sorter.quickSortUniversity(newList.getHead(), newList.getTail(), "ArScore");
 		newList.displayFirst20Nodes();
 	}
+
+	void searchUniversityColumn(string column, string input) {
+		cout << "Fetcing database..." << endl;
+		universityList currentList = readUniversityDatabase();
+		universityList queryList;
+		universitySearcher searcher;
+		cout << "Searching database..." << endl;
+
+
+		universityNode * searched = searcher.binarySearch(currentList.getHead(), column, stoi(input));
+		queryList.addUniversityNode(searched);
+		queryList.displayFirst20Nodes();
+		// loop
+
+		/*
+		universityNode* current = currentList.getHead();
+		while (current != nullptr) {
+			universityNode* searched = searcher.binarySearch(currentList, column, input);
+			cout << current->Name << endl;
+			queryList.addUniversityNode(searched);
+			current = current->next;
+		}
+		queryList.displayFirst20Nodes();
+		*/
+		return;
+	}
 };

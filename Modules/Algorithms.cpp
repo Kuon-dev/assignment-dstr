@@ -13,6 +13,8 @@
 string getColumn(universityNode* node, string column) {
 	if (column == "Name") {
 		return node->Name;
+	} else if (column == "Rank") {
+		return to_string(node->Rank);
 	} else if (column == "LocationCode") {
 		return node->LocationCode;
 	} else if (column == "Location") {
@@ -181,4 +183,40 @@ class universitySorter {
 		swapNodes(i, tail);
 		return i;
 	}
+};
+
+/*
+---------------------------------
+| Searchers
+---------------------------------
+| This section contains binary search algorithm for
+| university node
+|
+*/
+
+
+class universitySearcher {
+	public:
+	universityNode* binarySearch(universityNode* head, string column, int name) {
+		int low = 1, high = 0;
+		for (universityNode* p = head; p != nullptr; p = p->next) {
+			high++;
+		}
+		while (low <= high) {
+			int mid = (low + high) / 2;
+			universityNode* p = head;
+			for (int i = 1; i < mid; i++) {
+				p = p->next;
+			}
+			if (stoi(getColumn(p, column)) == name) {
+				return p;
+			} else if (stoi(getColumn(p, column)) < name) {
+				low = mid + 1;
+			} else {
+				high = mid - 1;
+			}
+		}
+
+		return nullptr;
+	};
 };
