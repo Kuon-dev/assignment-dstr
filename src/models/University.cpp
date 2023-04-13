@@ -111,7 +111,7 @@ class universityList {
 		}
 	};
 
-	universityNode* getUniversityByRank(int rank) {
+	universityNode* getUniversityNodeByRank(int rank) {
 		universityNode* current = head;
 		while (current != nullptr) {
 			if (current->Rank == rank) {
@@ -121,6 +121,38 @@ class universityList {
 		}
 		return nullptr;
 	};
+
+
+	void displaySpecificNodeByColumn(universityNode* node) {
+		universityNode* current = node;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << "| Selected University Details" << endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << "| Name: " << current->Name << endl;
+		cout << "| Rank: " << current->Rank << endl;
+		cout << "| Location: " << current->Location << endl;
+		cout << "| ArScore: " << current->ArScore << endl;
+		cout << "| ArRank: " << current->ArRank << endl;
+		cout << "| ErScore: " << current->ErScore << endl;
+		cout << "| ErRank: " << current->ErRank << endl;
+		cout << "| FsrScore: " << current->FsrScore << endl;
+		cout << "| FsrRank: " << current->FsrRank << endl;
+		cout << "| CpfScore: " << current->CpfScore << endl;
+		cout << "| CpfRank: " << current->CpfRank << endl;
+		cout << "| IfrScore: " << current->IfrScore << endl;
+		cout << "| IfrRank: " << current->IfrRank << endl;
+		cout << "| IsrScore: " << current->IsrScore << endl;
+		cout << "| IsrRank: " << current->IsrRank << endl;
+		cout << "| IrnScore: " << current->IrnScore << endl;
+		cout << "| IrnRank: " << current->IrnRank << endl;
+		cout << "| GerScore: " << current->GerScore << endl;
+		cout << "| GerRank: " << current->GerRank << endl;
+		cout << "| ScoreScaled: " << current->ScoreScaled << endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+	}
 
 	void displayFirst20Nodes() {
 		universityNode* current = head;

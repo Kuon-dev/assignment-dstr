@@ -5,6 +5,8 @@ These are the tools needed to install this project
 - Scoop (Package Manager)
 - Git
 - GCC Compiler
+- Cmake
+- Make
 
 ---
 
@@ -50,9 +52,11 @@ Get-ChildItem -Path ./ -Recurse -Include *.cpp | ForEach-Object {clang-format -i
 ```
 
 - Compile & run file
-```powershell
-g++ .\main.cpp -o "main"
-"./main.exe"
+```bash
+cmake -S . -B build/ -G "Unix Makefiles"
+cd ./build/
+make
+./main.exe
 ```
 
 

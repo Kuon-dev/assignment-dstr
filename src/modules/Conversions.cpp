@@ -15,3 +15,11 @@ double stringToDouble(string s) {
 		return 0.0;
 	}
 }
+
+string toLower(string s) {
+	for (int i = 0; i < s.length(); i++) {
+		s[i] = std::tolower(s[i]);
+	}
+	std::cout << s << std::endl; // Output: hello world
+	return s;
+}

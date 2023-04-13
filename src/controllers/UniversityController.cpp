@@ -4,7 +4,7 @@ class UniversityContoller {
 	public:
 	universityList readUniversityDatabase() {
 		universityList* list = new universityList();
-		ifstream file("Database/Universities.csv");
+		ifstream file("./Universities.csv");
 		if (!file.is_open()) {
 			cout << "\033[31m"
 					 << "Error: could not open file "
@@ -146,5 +146,31 @@ class UniversityContoller {
 		universitySorter sorter;
 		sorter.quickSortUniversity(newList.getHead(), newList.getTail(), "ArScore");
 		newList.displayFirst20Nodes();
+	}
+
+	void searchUniversityColumn(string column, string input) {
+		cout << "Fetcing database..." << endl;
+		universityList currentList = readUniversityDatabase();
+		universityList queryList;
+		universitySearcher searcher;
+		cout << "Searching database..." << endl;
+
+
+		universityNode * searched = searcher.binarySearch(currentList.getHead(), column, stoi(input));
+		queryList.addUniversityNode(searched);
+		queryList.displayFirst20Nodes();
+		// loop
+
+		/*
+		universityNode* current = currentList.getHead();
+		while (current != nullptr) {
+			universityNode* searched = searcher.binarySearch(currentList, column, input);
+			cout << current->Name << endl;
+			queryList.addUniversityNode(searched);
+			current = current->next;
+		}
+		queryList.displayFirst20Nodes();
+		*/
+		return;
 	}
 };
