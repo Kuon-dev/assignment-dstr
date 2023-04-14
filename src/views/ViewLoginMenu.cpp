@@ -6,10 +6,7 @@ using namespace std;
 
 bool authenticateUser(string username, string password) {
 	// hard-coded credentials for now
-	if (username == "admin" && password == "password") {
-		return true;
-	}
-	return false;
+	return (username == "admin" && password == "password");
 }
 
 void displayLoginMenu() {
