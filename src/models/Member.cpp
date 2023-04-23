@@ -15,14 +15,23 @@ struct userNode {
 	string UserEmail;
 	int UserContact;
 	string UserLastLogin;
-} * head, *tail;
+} *head, *tail;
 
 class userList {
-	userNode *head = nullptr;
-	userNode *tail = nullptr;
+	userNode* head = nullptr;
+	userNode* tail = nullptr;
 
 	public:
-	void createUserNode(string userId, string userName, string userPassword, string name, int age, string gender, string email, int contact, string lastLogin) {
+	void createUserNode(
+		string userId,
+		string userName,
+		string userPassword,
+		string name,
+		int age,
+		string gender,
+		string email,
+		int contact,
+		string lastLogin) {
 		userNode* newUserNode = new userNode;
 		newUserNode->UserId = userId;
 		newUserNode->userUserName = userName;
@@ -44,7 +53,7 @@ class userList {
 		};
 	}
 
-	void addUserNode(userNode * newUserNode) {
+	void addUserNode(userNode* newUserNode) {
 		if (head == nullptr) {
 			head = tail = newUserNode;
 		} else {
@@ -54,7 +63,7 @@ class userList {
 		};
 	}
 
-	void readSpecificUserNode(string userId){
+	void readSpecificUserNode(string userId) {
 		userNode* currentNode = head;
 		while (currentNode != nullptr && currentNode->UserId != userId) {
 			currentNode = currentNode->NextAddress;
@@ -74,17 +83,18 @@ class userList {
 		}
 	}
 
-	void readAllUserNode(){
-		userNode * current = head;
+	void readAllUserNode() {
+		userNode* current = head;
 		cout << "-----------------------------------------" << endl;
-		while (current != nullptr){
+		while (current != nullptr) {
 			current = current->NextAddress;
 		}
 		cout << "-----------------------------------------" << endl;
 	}
 
 
-	void updateUserNode(string userId, string userName, string name, int age, string gender, string email, int contact, string lastLogin) {
+	void updateUserNode(
+		string userId, string userName, string name, int age, string gender, string email, int contact, string lastLogin) {
 		userNode* currentNode = head;
 		while (currentNode != nullptr && currentNode->UserId != userId) {
 			currentNode = currentNode->NextAddress;
@@ -104,7 +114,7 @@ class userList {
 	}
 
 	void deleteUserNode(string userId) {
-	   userNode *temp = head;
+		userNode* temp = head;
 		bool isDeleted = false;
 
 		// If the list is empty, nothing to delete
@@ -118,14 +128,12 @@ class userList {
 			head = head->NextAddress;
 			if (head == nullptr) {
 				tail = nullptr;
-			}
-			else {
+			} else {
 				head->PrevAddress = nullptr;
 			}
 			delete temp;
 			isDeleted = true;
-		}
-		else {
+		} else {
 			while (temp != nullptr) {
 				if (temp->UserId == userId) {
 					// If the node to delete is the tail node
@@ -148,14 +156,11 @@ class userList {
 
 		if (isDeleted) {
 			cout << "User " << userId << " deleted successfully." << endl;
-		}
-		else {
+		} else {
 			cout << "User " << userId << " not found. Deletion failed." << endl;
 		}
 	}
 
 
 	private:
-
 };
-

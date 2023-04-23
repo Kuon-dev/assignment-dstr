@@ -156,7 +156,7 @@ class UniversityContoller {
 		cout << "Searching database..." << endl;
 
 
-		universityNode * searched = searcher.binarySearch(currentList.getHead(), column, stoi(input));
+		universityNode* searched = searcher.binarySearch(currentList.getHead(), column, stoi(input));
 		queryList.addUniversityNode(searched);
 		queryList.displayFirst20Nodes();
 		// loop
