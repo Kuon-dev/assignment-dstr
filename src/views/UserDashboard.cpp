@@ -1,4 +1,5 @@
 #include "../models/Member.cpp"
+#include "../controllers/FavouritesController.cpp"
 
 #include <iostream>
 #include <string>
@@ -68,8 +69,11 @@ class UserMenu {
 
 	void profileMenu() {
 		// TODO: display profile
+		// 
 		// TODO: edit profile
 		// TODO: view favourite uni
+		FavouritesController favCont;
+		favCont.displayFavUni();
 	}
 
 	private:

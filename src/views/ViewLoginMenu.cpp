@@ -1,12 +1,18 @@
 #include <conio.h>
 #include <iostream>
 #include <string>
+#include "UserDashboard.cpp"
+#include "../models/Member.cpp"
 
 using namespace std;
 
 bool authenticateUser(string username, string password) {
 	// hard-coded credentials for now
 	return (username == "admin" && password == "password");
+	userNode * newUser;
+	newUser->UserId = 1;
+	UserMenu* menu = new UserMenu(newUser);
+	menu->profileMenu()
 }
 
 void displayLoginMenu() {

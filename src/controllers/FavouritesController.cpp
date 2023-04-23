@@ -7,6 +7,7 @@
 using namespace std;
 
 class FavouritesController {
+	public:
 	void displayFavUni() {
 		favUniNode* current = favUniHead;
 		while (current != NULL) {
