@@ -2,17 +2,13 @@
 #include <iostream>
 #include <string>
 #include "UserDashboard.cpp"
-#include "../models/Member.cpp"
 
 using namespace std;
 
 bool authenticateUser(string username, string password) {
 	// hard-coded credentials for now
 	return (username == "admin" && password == "password");
-	userNode * newUser;
-	newUser->UserId = 1;
-	UserMenu* menu = new UserMenu(newUser);
-	menu->profileMenu()
+
 }
 
 void displayLoginMenu() {
@@ -52,6 +48,8 @@ void displayLoginMenu() {
 			// call loginSuccess function when credentials are correct
 			cout << endl << endl << "Logged in successfully!" << endl;
 			// loginSuccess();
+			UserMenu menu;
+			menu.profileMenu();
 			return;
 		} else {
 			cout << endl << endl << "Incorrect username or password. Please try again." << endl;

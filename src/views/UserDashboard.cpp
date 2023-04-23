@@ -1,13 +1,13 @@
-#include "../models/Member.cpp"
-#include "../controllers/FavouritesController.cpp"
-
+#include <conio.h>
 #include <iostream>
 #include <string>
+#include "../controllers/FavouritesController.cpp"
+
 
 using namespace std;
 
 class UserMenu {
-	UserMenu() { userNode* currentUser; }
+	//UserMenu() { userNode* current; }
 
 	public:
 	void userDashboard() {
@@ -72,8 +72,15 @@ class UserMenu {
 		// 
 		// TODO: edit profile
 		// TODO: view favourite uni
+
+		string userid;
+
+		cout << "User ID: ";
+		getline(cin, userid);
+
 		FavouritesController favCont;
-		favCont.displayFavUni();
+		favUniNode* test = favCont.readFavDatabase(userid);
+		favCont.displayFavUni(test);
 	}
 
 	private:

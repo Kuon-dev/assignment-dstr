@@ -1,4 +1,6 @@
 #include "../Models/Favourites.cpp"
+#include "../Models/Member.cpp"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -8,8 +10,26 @@ using namespace std;
 
 class FavouritesController {
 	public:
-	void displayFavUni() {
-		favUniNode* current = favUniHead;
+	favUniNode* readFavDatabase(string UserId) {
+		
+		// read from csv
+
+		favUniList fav;
+		fav.favUniData();
+		
+		// append to userFavList if user id is equal
+		fav.filterFavUniData(UserId);
+		favUniNode* userFavList = fav.getFilteredHead();
+ 
+		// retrun fav list
+		return userFavList;
+		
+	}
+
+	
+
+	void displayFavUni(favUniNode* head) {
+		favUniNode* current = head;
 		while (current != NULL) {
 			cout << "Favourite University ID: " << current->FavUniId << endl;
 			cout << "Account ID: " << current->UserId << endl;
