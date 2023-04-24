@@ -28,17 +28,20 @@ class FavouritesController {
 		
 		// append to userFavList if user id is equal
 		favouritesobj.filterFavUniData(UserId);
+
 		favUniNode* userFavList = favouritesobj.getFilteredHead();
  
 		// retrun fav list
 		return userFavList;
 		
 	}
-	void getFULinkListFromDB() { favouritesobj.favUniData();}
-	
+	void getFULinkListFromDB() { favouritesobj.favUniData(); }
 
 	void displayFavUni(favUniNode* head) {
 		favUniNode* current = head;
+
+		//favouritesobj.overwriteFavUniData();
+
 		while (current != NULL) {
 			cout << "Favourite University ID: " << current->FavUniId << endl;
 			cout << "Account ID: " << current->UserId << endl;
@@ -68,14 +71,14 @@ class FavouritesController {
 	}
 
 
-	void displayFavUniName(favUniNode* head) {
-		favUniNode* current = head;
-		while (current != NULL) {
-			cout << "University Name: " << current->UniName << endl;
-			cout << endl;
-			current = current->NextAddress;
-		}
-	}
+	//void displayFavUniName(favUniNode* head) {
+	//	favUniNode* current = head;
+	//	while (current != NULL) {
+	//		cout << "University Name: " << current->UniName << endl;
+	//		cout << endl;
+	//		current = current->NextAddress;
+	//	}
+	//}
 
 	void count() // function to count number of nodes
 	{
@@ -94,48 +97,94 @@ class FavouritesController {
 		};
 	}
 
-	void deleteBasedOnFavUni() {
-		string favUniListID = "";
-		while (favUniListID == "") {
-			cout << "Please enter the ID for record in Favourite University List to be deleted: " << endl;
-			getline(cin, favUniListID);
+	favUniNode* searchFavUniWithID(string favlistid, favUniNode* filteredhead) {
+
+		favUniNode* current = filteredhead;
+		while (current != NULL) {
+
+			if (favlistid == current->FavUniId) {
+				return current;
+
+			}
+			
+			current = current->NextAddress;
+		}
+		cout << "No record found." << endl;
+		return NULL;
+	}
+
+	void deleteBasedOnFavUni(string favlistid) {
+
+		
+
+		favUniNode* searchNode = searchFavUniWithID(favlistid, favouritesobj.getFilteredHead());
+
+		favUniNode* unfilteredHead = favouritesobj.getHead();
+
+
+		
+		if (unfilteredHead == NULL) {
 			cout << endl;
+			cout << endl;
+			cout << "The List of Favorite University is empty." << endl;
+			cout << "No records will be deleted." << endl;
+			cout << endl;
+			return;
 		}
 
+		if (searchNode == NULL) {
+			
+			return;
+		}
+
+		if (searchNode->FavUniId == unfilteredHead->FavUniId) // delete from the front list
 		{
-			if (favUniHead == NULL) {
-				cout << endl;
-				cout << endl;
-				cout << "The List of Favorite University is empty." << endl;
-				cout << "No records will be deleted." << endl;
-				cout << endl;
-				return;
-			}
-			if (favUniHead->FavUniId == favUniListID) // delete from the front list
-			{
-				favUniNode* currentFavUni = favUniHead;
-				favUniHead = favUniHead->NextAddress;
-				cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
-				cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
-				delete currentFavUni;
+			favUniNode* currentFavUni = unfilteredHead;
+			favouritesobj.setHead(unfilteredHead->NextAddress);
+			if (favouritesobj.getHead() != NULL) {
+				favouritesobj.getHead()->PrevAddress = NULL;
 			} else {
-				favUniNode* PrevAddress = favUniHead;
-				favUniNode* currentFavUni = favUniHead->NextAddress;
-
-				while (currentFavUni != NULL) {
-					if (currentFavUni->FavUniId == favUniListID) {
-						PrevAddress->NextAddress = currentFavUni->NextAddress;
-						cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
-						cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
-						delete currentFavUni;
-						return;
-					}
-					PrevAddress = currentFavUni;
-					currentFavUni = currentFavUni->NextAddress;
-				}
-				cout << "Record of Favorite University in List with ID of " << favUniListID << " is not found." << endl;
+				favouritesobj.setTail(NULL);
 			}
+			cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
+			cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
+			delete currentFavUni;
+			favouritesobj.overwriteFavUniData(getHead());
+			
+		} else if (searchNode->FavUniId == favouritesobj.getTail()->FavUniId) {
+			favUniNode* currentFavUni = favouritesobj.getTail();
+			favouritesobj.setTail(favouritesobj.getTail()->PrevAddress);
+			if (favouritesobj.getTail() != NULL) {
+				favouritesobj.getTail()->NextAddress == NULL;
+			} else {
+				favouritesobj.setHead(NULL);
+			}
+			cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
+			cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
+			delete currentFavUni;
+			favouritesobj.overwriteFavUniData(getHead());
+		} else {
+			favUniNode* PrevAddress = unfilteredHead;
+			favUniNode* currentFavUni = unfilteredHead->NextAddress;
+
+			while (currentFavUni != NULL) {
+				if (currentFavUni->FavUniId == searchNode->FavUniId) {
+					PrevAddress->NextAddress = currentFavUni->NextAddress;
+					cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
+					cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
+					delete currentFavUni;
+					favUniNode* test = readFavDatabase(unfilteredHead->UserId);
+					favouritesobj.overwriteFavUniData(getHead());
+					return;
+				}
+				PrevAddress = currentFavUni;
+				currentFavUni = currentFavUni->NextAddress;
+			}
+			cout << "Record of Favorite University record in List with ID of " << searchNode->FavUniId << " is not found." << endl;
 		}
+
+		
+
 	}
 
 	void createUserFavUni(string input) {
@@ -156,16 +205,12 @@ class FavouritesController {
 
 		favUniHead= currentFavUni = favUniTail = NULL;
 
-		
-
-		favouritesobj.favUniData();
-
 		favouritesobj.InsertFavUni(to_string(stoi(favouritesobj.getTail()->FavUniId) + 1), ID, Name, to_string(searched->Rank), searched->Name);
-
+		favouritesobj.overwriteFavUniData(getHead());
 	}
 
 	favUniNode* getHead() {
 		return favouritesobj.getHead(); }
 	
-
+	favUniNode* getFilteredHead() { return favouritesobj.getFilteredHead(); }
 };
