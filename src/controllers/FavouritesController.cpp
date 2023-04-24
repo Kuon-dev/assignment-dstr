@@ -1,31 +1,40 @@
 #include "../Models/Favourites.cpp"
 #include "../Models/Member.cpp"
+#include "../Controllers/UniversityController.cpp"
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 
+
+
 using namespace std;
 
 class FavouritesController {
+
+	private:
+	favUniList favouritesobj;
 	public:
+	
+	
+
 	favUniNode* readFavDatabase(string UserId) {
 		
 		// read from csv
 
-		favUniList fav;
-		fav.favUniData();
+		
+		
 		
 		// append to userFavList if user id is equal
-		fav.filterFavUniData(UserId);
-		favUniNode* userFavList = fav.getFilteredHead();
+		favouritesobj.filterFavUniData(UserId);
+		favUniNode* userFavList = favouritesobj.getFilteredHead();
  
 		// retrun fav list
 		return userFavList;
 		
 	}
-
+	void getFULinkListFromDB() { favouritesobj.favUniData();}
 	
 
 	void displayFavUni(favUniNode* head) {
@@ -59,8 +68,8 @@ class FavouritesController {
 	}
 
 
-	void displayFavUniName() {
-		favUniNode* current = favUniHead;
+	void displayFavUniName(favUniNode* head) {
+		favUniNode* current = head;
 		while (current != NULL) {
 			cout << "University Name: " << current->UniName << endl;
 			cout << endl;
@@ -128,4 +137,35 @@ class FavouritesController {
 			}
 		}
 	}
+
+	void createUserFavUni(string input) {
+
+		UniversityContoller uniObject;
+
+		universityList uniCurrentList = uniObject.readUniversityDatabase();
+
+		universitySearcher searcher;
+
+		universityNode* searched = searcher.binarySearch(uniCurrentList.getHead(), "Rank", stoi(input));
+
+		string ID, Name;
+		cout << "enter user id as temporary name for fav uni" << endl;
+		cin >> ID;
+		cout << "enter user name as temporary name for fav uni" << endl;
+		cin >> Name;
+
+		favUniHead= currentFavUni = favUniTail = NULL;
+
+		
+
+		favouritesobj.favUniData();
+
+		favouritesobj.InsertFavUni(to_string(stoi(favouritesobj.getTail()->FavUniId) + 1), ID, Name, to_string(searched->Rank), searched->Name);
+
+	}
+
+	favUniNode* getHead() {
+		return favouritesobj.getHead(); }
+	
+
 };

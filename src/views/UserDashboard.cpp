@@ -73,14 +73,21 @@ class UserMenu {
 		// TODO: edit profile
 		// TODO: view favourite uni
 
-		string userid;
+		string uniid;
 
-		cout << "User ID: ";
-		getline(cin, userid);
+		cout << "University ID: ";
+		getline(cin, uniid);
+
+		
 
 		FavouritesController favCont;
-		favUniNode* test = favCont.readFavDatabase(userid);
-		favCont.displayFavUni(test);
+
+		
+		favUniNode* test = favCont.readFavDatabase("987");
+		favCont.createUserFavUni(uniid);
+		
+		favCont.displayFavUni(favCont.getHead());
+		
 	}
 
 	private:

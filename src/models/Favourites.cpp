@@ -5,6 +5,7 @@
 
 #include <iomanip>
 #include <typeinfo>
+
 using namespace std;
 
 struct favUniNode {
@@ -32,6 +33,9 @@ class favUniList {
 		favUniList(): favUniHead(nullptr), favUniTail(nullptr) {}
 
 	favUniNode* getHead() { return favUniHead; }
+
+	favUniNode* getTail() { return favUniTail; }
+
 	favUniNode* getFilteredHead() { return filterUserFavUniHead; }
 
 	favUniList(string favoriteUni) {
@@ -119,6 +123,42 @@ class favUniList {
 		}
 	}
 
-	private:
+	void saveFavUniData(string favUniId, string newContent) {
+
+		ofstream tempFile("temp.csv");
+		ifstream file("C:\\Users\\Acer\\source\\repos\\assignment-dstr\\Database\\FavUni.csv");
+		string line;
+		bool found = false;
+		while (getline(file, line)) {
+			istringstream iss(line);
+			string FavUniId, UserId, UserName, UniId, UniName;
+			//newnodeFavUni = new favUniNode;
+
+			getline(file, FavUniId, ',');
+			getline(file, UserId, ',');
+			getline(file, UserName, ',');
+			getline(file, UniId, ',');
+			getline(file, UniName);
+			if (FavUniId == favUniId) {
+				found = true;
+				tempFile << FavUniId << "," << UserId << "," << newContent << endl;
+			} else {
+				tempFile << line << endl;
+			}
+		}
+		file.close();
+		tempFile.close();
+		if (found) {
+			remove("C:\\Users\\Acer\\source\\repos\\assignment-dstr\\Database\\FavUni.csv");
+			rename("temp.csv", "C:\\Users\\Acer\\source\\repos\\assignment-dstr\\Database\\FavUni.csv");
+			cout << "Favourite Univerity is updated." << endl;
+		} else {
+			remove("temp.csv");
+			cout << "Favourite Univerity is not updated." << endl;
+		}
+
+	}
+
+	
 
 };
