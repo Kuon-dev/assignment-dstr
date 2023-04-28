@@ -1,9 +1,10 @@
-#include "../Controllers/UniversityController.cpp"
 #include "../Modules/InputHandler.cpp"
 #include "./ViewLoginMenu.cpp"
 
 void displaySearchUniversityMenu() {
 	UniversityContoller uniController;
+	FavouritesController fav;
+	fav.getFULinkListFromDB();
 	while (true) {
 		string input;
 		cout << "----------------------------------------------------------------------------------------------------------"

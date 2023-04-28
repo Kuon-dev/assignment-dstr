@@ -15,7 +15,7 @@ struct userNode {
 	string UserEmail;
 	int UserContact;
 	string UserLastLogin;
-} *head, *tail;
+};
 
 class userList {
 	userNode* head = nullptr;

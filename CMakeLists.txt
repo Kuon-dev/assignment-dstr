@@ -36,15 +36,15 @@ target_link_libraries(main models views modules)
 # Link the views component to the libraries
 #target_link_libraries(views admin user)
 
-target_sources(controllers PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/controllers/FavUniController.cpp")
+target_sources(controllers PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/controllers/FavouritesController.cpp")
 target_sources(controllers PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/controllers/FeedbackController.cpp")
 target_sources(controllers PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/controllers/MemberController.cpp")
 target_sources(controllers PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/controllers/UniversityController.cpp")
 
-target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/FavUni.cpp")
+target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/Favourites.cpp")
 target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/University.cpp")
-target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/UserFeedback.cpp")
-target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/UserMember.cpp")
+target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/Feedback.cpp")
+target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/Member.cpp")
 
 # Add the ViewMainMenu.cpp file to the views library
 target_sources(views PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/views/ViewFeedback.cpp")
