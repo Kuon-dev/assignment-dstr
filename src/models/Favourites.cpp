@@ -10,8 +10,8 @@ using namespace std;
 struct favUniNode {
 	string FavUniId;
 	string UserId;
-	string UserName;
 	string UniId;
+	string UserName;
 	string UniName;
 
 	favUniNode* NextAddress;
