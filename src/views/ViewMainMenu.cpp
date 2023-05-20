@@ -1,4 +1,3 @@
-#include "../Modules/InputHandler.cpp"
 #include "./ViewLoginMenu.cpp"
 
 void displaySearchUniversityMenu() {
@@ -60,7 +59,8 @@ void displayMenu() {
 		cout << "| 1. View all universities" << endl;
 		cout << "| 2. View university by rank" << endl;
 		cout << "| 3. Log in" << endl;
-		cout << "| 4. Exit" << endl;
+		cout << "| 4. Register" << endl;
+		cout << "| 5. Exit" << endl;
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 
@@ -77,8 +77,12 @@ void displayMenu() {
 			displayLoginMenu();
 			break;
 		case 4:
+			cout << "Register user" << endl;
+			return;
+		case 5:
 			cout << "Exiting the system. Goodbye!" << endl;
 			return;
+
 		default:
 			cout << "Invalid choice. Please enter a valid choice." << endl;
 		}

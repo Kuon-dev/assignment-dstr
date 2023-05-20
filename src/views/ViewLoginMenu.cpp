@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "UserDashboard.cpp"
+#include "../Modules/InputHandler.cpp"
 
 using namespace std;
 
@@ -17,9 +18,12 @@ void displayLoginMenu() {
 
 	while (true) {
 		system("cls");
-		cout << "LOGIN MENU" << endl;
+		cout << "===========" << endl;
+		cout << "| LOGIN MENU" << endl;
+		cout << "| Press 0 to exit"<< endl;
 		cout << "===========" << endl;
 		cout << "Username: ";
+		username = "";
 		getline(cin, username);
 
 		// allow user to go back to main menu

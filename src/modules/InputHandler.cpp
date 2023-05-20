@@ -27,6 +27,24 @@ int handleUserInput() {
 	}
 }
 
+string handleStringInput(string title){
+	string userInput;
+	while (true) {
+		cout << title;
+		cin >> userInput;
+
+		if (userInput == "q") {
+			exitProgram();
+		}
+
+		if (userInput.length() > 60){
+			cout << "Error: input exceeds 60 characters" << endl;
+			return "";
+		}
+		return userInput;
+	}
+}
+
 string handleUserSearch() {
 	string userInput;
 	cin >> userInput;

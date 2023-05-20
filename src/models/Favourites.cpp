@@ -93,10 +93,10 @@ class favUniList {
 	void InsertFilterFavUni(favUniNode* curr) {
 		//favUniNode* newnode = createNewFavUni(FavUniId, userID, userName, uniID, uniName);
 		favUniNode* keyNode = createNewFavUni(curr->FavUniId, curr->UserId, curr->UserName, curr->UniId, curr->UniName);
-			
-		
+
+
 		if (filterUserFavUniHead == NULL) {
-			
+
 			keyNode->PrevAddress == NULL;
 			keyNode->NextAddress == NULL;
 			filterUserFavUniHead = filterUserFavUniTail = keyNode;
@@ -134,14 +134,14 @@ class favUniList {
 
 	void overwriteFavUniData(favUniNode* saveFavUni) {
 		favUniNode* current = saveFavUni;
-		
+
 		ofstream tempFile("temp.csv");
 		ifstream file("C:\\Users\\Acer\\source\\repos\\assignment-dstr\\Database\\FavUni.csv");
 		string line;
 		//bool found = false;
 		tempFile << "FavUniID" << "," << "UserID" << "," << "UserName" << "," << "UniID" << "," << "UniName" << endl;
 		while (current!=NULL) {
-			
+
 			istringstream iss(line);
 			//string FavUniId, UserID, UserName, UniID, UniName;
 			////newnodeFavUni = new favUniNode;
@@ -151,7 +151,7 @@ class favUniList {
 			//getline(file, UserName, ',');
 			//getline(file, UniID, ',');
 			//getline(file, UniName);
-			
+
 			tempFile << current->FavUniId << "," << current->UserId << "," << current->UserName << "," << current->UniId
 							 << "," << current->UniName << endl;
 			current=current->NextAddress;
@@ -170,6 +170,6 @@ class favUniList {
 
 	}
 
-	
+
 
 };
