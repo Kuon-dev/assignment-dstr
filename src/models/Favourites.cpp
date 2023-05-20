@@ -29,8 +29,7 @@ class favUniList {
 	string favoriteUni;
 
 	public:
-
-		favUniList(): favUniHead(nullptr), favUniTail(nullptr) {}
+	favUniList(): favUniHead(nullptr), favUniTail(nullptr) {}
 
 	favUniNode* getHead() { return favUniHead; }
 	void setHead(favUniNode* head) { favUniHead = head; }
@@ -39,12 +38,9 @@ class favUniList {
 	void setTail(favUniNode* tail) { favUniTail = tail; }
 	favUniNode* getFilteredHead() { return filterUserFavUniHead; }
 
-	favUniList(string favoriteUni) {
-		this->favoriteUni = favoriteUni;
-	}
+	favUniList(string favoriteUni) { this->favoriteUni = favoriteUni; }
 
 	void favUniData() {
-
 		string FavUniId, UserId, UserName, UniId, UniName, fline;
 
 		ifstream file("C:\\Users\\Acer\\source\\repos\\assignment-dstr\\Database\\FavUni.csv");
@@ -91,12 +87,11 @@ class favUniList {
 	}
 
 	void InsertFilterFavUni(favUniNode* curr) {
-		//favUniNode* newnode = createNewFavUni(FavUniId, userID, userName, uniID, uniName);
+		// favUniNode* newnode = createNewFavUni(FavUniId, userID, userName, uniID, uniName);
 		favUniNode* keyNode = createNewFavUni(curr->FavUniId, curr->UserId, curr->UserName, curr->UniId, curr->UniName);
 
 
 		if (filterUserFavUniHead == NULL) {
-
 			keyNode->PrevAddress == NULL;
 			keyNode->NextAddress == NULL;
 			filterUserFavUniHead = filterUserFavUniTail = keyNode;
@@ -105,7 +100,6 @@ class favUniList {
 			filterUserFavUniTail->NextAddress = keyNode;
 			filterUserFavUniTail = keyNode;
 		}
-
 	}
 
 	favUniNode* createNewFavUni(string FavUniId, string userID, string userName, string uniID, string uniName) {
@@ -138,38 +132,40 @@ class favUniList {
 		ofstream tempFile("temp.csv");
 		ifstream file("C:\\Users\\Acer\\source\\repos\\assignment-dstr\\Database\\FavUni.csv");
 		string line;
-		//bool found = false;
-		tempFile << "FavUniID" << "," << "UserID" << "," << "UserName" << "," << "UniID" << "," << "UniName" << endl;
-		while (current!=NULL) {
-
+		// bool found = false;
+		tempFile << "FavUniID"
+						 << ","
+						 << "UserID"
+						 << ","
+						 << "UserName"
+						 << ","
+						 << "UniID"
+						 << ","
+						 << "UniName" << endl;
+		while (current != NULL) {
 			istringstream iss(line);
-			//string FavUniId, UserID, UserName, UniID, UniName;
+			// string FavUniId, UserID, UserName, UniID, UniName;
 			////newnodeFavUni = new favUniNode;
-			//cout << "test2" << endl;
-			//getline(file, FavUniId, ',');
-			//getline(file, UserID, ',');
-			//getline(file, UserName, ',');
-			//getline(file, UniID, ',');
-			//getline(file, UniName);
+			// cout << "test2" << endl;
+			// getline(file, FavUniId, ',');
+			// getline(file, UserID, ',');
+			// getline(file, UserName, ',');
+			// getline(file, UniID, ',');
+			// getline(file, UniName);
 
 			tempFile << current->FavUniId << "," << current->UserId << "," << current->UserName << "," << current->UniId
 							 << "," << current->UniName << endl;
-			current=current->NextAddress;
-
+			current = current->NextAddress;
 		}
 		file.close();
 		tempFile.close();
-		//if (found) {
-			remove("C:\\Users\\Acer\\source\\repos\\assignment-dstr\\Database\\FavUni.csv");
-			rename("temp.csv", "C:\\Users\\Acer\\source\\repos\\assignment-dstr\\Database\\FavUni.csv");
-			cout << "Favourite Univerity is updated." << endl;
+		// if (found) {
+		remove("C:\\Users\\Acer\\source\\repos\\assignment-dstr\\Database\\FavUni.csv");
+		rename("temp.csv", "C:\\Users\\Acer\\source\\repos\\assignment-dstr\\Database\\FavUni.csv");
+		cout << "Favourite Univerity is updated." << endl;
 		/*} else {
 			remove("temp.csv");
 			cout << "Favourite Univerity is not updated." << endl;
 		}*/
-
 	}
-
-
-
 };

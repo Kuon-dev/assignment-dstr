@@ -27,7 +27,7 @@ int handleUserInput() {
 	}
 }
 
-string handleStringInput(string title){
+string handleStringInput(string title) {
 	string userInput;
 	while (true) {
 		cout << title;
@@ -37,7 +37,7 @@ string handleStringInput(string title){
 			exitProgram();
 		}
 
-		if (userInput.length() > 60){
+		if (userInput.length() > 60) {
 			cout << "Error: input exceeds 60 characters" << endl;
 			return "";
 		}

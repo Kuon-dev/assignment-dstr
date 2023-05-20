@@ -252,4 +252,3 @@ class universityList {
 
 	private:
 };
-

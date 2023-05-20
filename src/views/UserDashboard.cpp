@@ -1,13 +1,13 @@
+#include "../controllers/FavouritesController.cpp"
 #include <conio.h>
 #include <iostream>
 #include <string>
-#include "../controllers/FavouritesController.cpp"
 
 
 using namespace std;
 
 class UserMenu {
-	//UserMenu() { userNode* current; }
+	// UserMenu() { userNode* current; }
 
 	public:
 	void userDashboard() {
@@ -69,7 +69,7 @@ class UserMenu {
 
 	void profileMenu() {
 		// TODO: display profile
-		// 
+		//
 		// TODO: edit profile
 		// TODO: view favourite uni
 
@@ -86,23 +86,16 @@ class UserMenu {
 
 		FavouritesController favCont;
 		favCont.getFULinkListFromDB();
-		//favCont.createUserFavUni(uniid);
+		// favCont.createUserFavUni(uniid);
 		favUniNode* test = favCont.readFavDatabase("987");
 		favCont.deleteBasedOnFavUni(favid);
 		favCont.displayFavUni(favCont.getHead());
 
-		//system("cls");
-
-		
-		
-		//test = favCont.readFavDatabase("987");
-		//favCont.displayFavUni(favCont.getHead());
+		// system("cls");
 
 
-
-
-
-		
+		// test = favCont.readFavDatabase("987");
+		// favCont.displayFavUni(favCont.getHead());
 	}
 
 	private:
