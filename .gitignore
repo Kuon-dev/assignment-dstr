@@ -57,6 +57,7 @@ emscripten_build/
 /.vs
 /.cproject
 /.project
+/.cache
 
 # OS specific local files
 .DS_Store

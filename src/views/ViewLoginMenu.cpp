@@ -1,14 +1,13 @@
+#include "UserDashboard.cpp"
 #include <conio.h>
 #include <iostream>
 #include <string>
-#include "UserDashboard.cpp"
 
 using namespace std;
 
 bool authenticateUser(string username, string password) {
 	// hard-coded credentials for now
 	return (username == "admin" && password == "password");
-
 }
 
 void displayLoginMenu() {
@@ -17,9 +16,12 @@ void displayLoginMenu() {
 
 	while (true) {
 		system("cls");
-		cout << "LOGIN MENU" << endl;
+		cout << "===========" << endl;
+		cout << "| LOGIN MENU" << endl;
+		cout << "| Press 0 to exit" << endl;
 		cout << "===========" << endl;
 		cout << "Username: ";
+		username = "";
 		getline(cin, username);
 
 		// allow user to go back to main menu

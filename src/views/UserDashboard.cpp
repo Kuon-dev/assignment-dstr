@@ -1,13 +1,13 @@
+#include "../controllers/FavouritesController.cpp"
 #include <conio.h>
 #include <iostream>
 #include <string>
-#include "../controllers/FavouritesController.cpp"
 
 
 using namespace std;
 
 class UserMenu {
-	//UserMenu() { userNode* current; }
+	// UserMenu() { userNode* current; }
 
 	public:
 	void userDashboard() {
@@ -69,17 +69,16 @@ class UserMenu {
 
 	void profileMenu() {
 		// TODO: display profile
-		// 
+		//
 		// TODO: edit profile
 		// TODO: view favourite uni
-
-		//variables to be assigned later
+		// variables to be assigned later
 		string uniid, userid, favid;
 
-		//create object favCont of FavouritesController class
+		// create object favCont of FavouritesController class
 		FavouritesController favCont;
 
-		//get complete data from favuni data set
+		// get complete data from favuni data set
 		favCont.getFULinkListFromDB();
 
 		cout << "User ID: ";
@@ -104,7 +103,6 @@ class UserMenu {
 			int choice;
 			cin >> choice;
 
-			
 
 			favUniNode* test = favCont.readFavDatabase(userid);
 			switch (choice) {
@@ -119,40 +117,28 @@ class UserMenu {
 			case 3:
 				cout << "You have selected 'View Favourite Universities'" << endl;
 				// TODO: Implement 'View Favourite Universities' functionality
-				
-				
 
-				//display uni list based on user id
+
+				// display uni list based on user id
 				favCont.displayFavUni(test);
-					
+
 
 				break;
 			case 4:
 				cout << "You have selected 'Add Favourite Universities'" << endl;
 				// TODO: Implement 'Add Favourite Universities' functionality
-
-
 				cout << "University ID: ";
 				getline(cin, uniid);
-
 				favCont.createUserFavUni(uniid);
-				
-
 				break;
 			case 5:
 				cout << "You have selected 'Delete Favourite Universities'" << endl;
 				// TODO: Implement 'Delete Favourite Universities' functionality
-
-				//favCont.displayFavUni(test);
-
-
+				// favCont.displayFavUni(test);
 				cout << "Fav Uni List ID: ";
-				cin>>favid;
-
-				
+				cin >> favid;
 				favCont.deleteBasedOnFavUni(favid);
-				//favCont.displayFavUni(favCont.getHead());
-
+				// favCont.displayFavUni(favCont.getHead());
 				break;
 			case 6:
 				cout << "You have selected 'Logout'" << endl;
@@ -164,8 +150,8 @@ class UserMenu {
 			}
 		}
 
-		//code which display report for top 10 fav university 
-		//favCont.displayTopTenUniData();
+		// code which display report for top 10 fav university
+		// favCont.displayTopTenUniData();
 
 		/*cout << "University ID: ";
 		getline(cin, uniid);*/
@@ -177,26 +163,19 @@ class UserMenu {
 		getline(cin, favid);*/
 
 		// display all fav uni list
-		//favCont.displayFavUni(favCont.getHead());
+		// favCont.displayFavUni(favCont.getHead());
 
 
-		//favCont.createUserFavUni(uniid);
-		//favUniNode* test = favCont.readFavDatabase("987");
-		//favCont.deleteBasedOnFavUni(favid);
-		//favCont.displayFavUni(favCont.getHead());
+		// favCont.createUserFavUni(uniid);
+		// favUniNode* test = favCont.readFavDatabase("987");
+		// favCont.deleteBasedOnFavUni(favid);
+		// favCont.displayFavUni(favCont.getHead());
 
-		////system("cls");
-
-		//
-		//
-		//test = favCont.readFavDatabase("987");
-		//favCont.displayFavUni(favCont.getHead());
+		// system("cls");
 
 
-
-
-
-		
+		// test = favCont.readFavDatabase("987");
+		// favCont.displayFavUni(favCont.getHead());
 	}
 
 	private:
