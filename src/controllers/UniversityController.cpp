@@ -1,6 +1,8 @@
 #include "../Modules/Algorithms.cpp"
 #include "../modules/InputHandler.cpp"
+#include <chrono>
 
+using namespace std::chrono;
 class UniversityContoller {
 	public:
 	universityList readUniversityDatabase() {
@@ -152,10 +154,20 @@ class UniversityContoller {
 		cout << "Fetcing database..." << endl;
 		universityList currentList = readUniversityDatabase();
 		universityList queryList;
+		universitySorter sorter;
 		universitySearcher searcher;
-		cout << "Searching database..." << endl;
+		auto startTime = high_resolution_clock::now();
+
+		cout << "Using Quick sort" << endl;
+		sorter.quickSortUniversity(currentList.getHead(), currentList.getTail(), "ArScore");
+
+		auto endTime = high_resolution_clock::now();
+		auto duration = duration_cast<milliseconds>(endTime - startTime);
+
+		cout << "Time taken to sort: " << duration.count() << " milliseconds" << endl;
 
 		universityNode* searched = searcher.binarySearch(currentList.getHead(), column, (input));
+
 		queryList.addUniversityNode(searched);
 		queryList.displayFirst20Nodes();
 		// loop
@@ -173,15 +185,13 @@ class UniversityContoller {
 		return;
 	}
 
-	void searchUniversityColumn(string column, string input) {
+	void searchUniversityStringColumn(string column, string input) {
 		cout << "Fetcing database..." << endl;
 		universityList currentList = readUniversityDatabase();
-		universityList queryList;
 		universitySearcher searcher;
 		cout << "Searching database..." << endl;
 
-		universityNode* searched = searcher.linearSearch(currentList.getHead(), column, (input));
-		queryList.addUniversityNode(searched);
-		queryList.displayFirst20Nodes();
+		universityList filteredList = searcher.linearSearch(currentList.getHead(), column, (input));
+		filteredList.displayFirst20Nodes();
 	}
 };

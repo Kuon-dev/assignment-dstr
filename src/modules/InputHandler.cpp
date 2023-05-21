@@ -39,7 +39,7 @@ string handleStringInput(string title) {
 
 		if (userInput.length() > 60) {
 			cout << "Error: input exceeds 60 characters" << endl;
-			return "";
+			return NULL;
 		}
 		return userInput;
 	}

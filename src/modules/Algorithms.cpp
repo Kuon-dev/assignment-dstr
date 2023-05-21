@@ -168,11 +168,11 @@ class universitySorter {
 
 	// Partition function for quicksort
 	universityNode* partition(universityNode* head, universityNode* tail, string column) {
-		double pivot = stringToDouble(getColumn(tail, "ArScore"));
+		double pivot = stringToDouble(getColumn(tail, column));
 		universityNode* i = head->prev;
 
 		for (universityNode* j = head; j != tail; j = j->next) {
-			if (stringToDouble(getColumn(j, "ArScore")) <= pivot) {
+			if (stringToDouble(getColumn(j, column)) <= pivot) {
 				i = (i == nullptr) ? head : i->next;
 				swapNodes(i, j);
 			}
@@ -217,32 +217,50 @@ class universitySearcher {
 		return nullptr;
 	};
 
-	universityNode* linearSearch(universityNode* head, string column, string query) {
+
+	universityList linearSearch(universityNode* head, string column, string query) {
+		universityList newList;
 		universityNode* current = head;
+		universityNode* currentNext = nullptr;
+		universityNode* matched = nullptr;
 
 		while (current != nullptr) {
-			if (fuzzyMatch(getColumn(current, column), query)) return current;
-			current = current->next;
+			currentNext = current->next;  // Assign next node before moving current
+
+			if (fuzzyMatch(current->Name, query)) {
+				newList.addUniversityNode(current);
+
+				if (matched == nullptr) {
+					matched = current;
+					matched->prev = nullptr;
+					matched->next = nullptr;
+				} else {
+					matched->next = current;
+					current->prev = matched;
+					matched = current;
+				}
+			}
+			current = currentNext;
 		}
-		return nullptr;
+		return newList;
 	}
 
 	private:
-	bool fuzzyMatch(const string& str, const string& query) {
-		int strLen = str.length();
-		int queryLen = query.length();
-		int i = 0;
-		int j = 0;
+    bool fuzzyMatch(const string& str, const string& query) {
+        int strLen = str.length();
+        int queryLen = query.length();
+        int i = 0;
+        int j = 0;
 
-		while (i < strLen && j < queryLen) {
-			if (tolower(str[i]) == tolower(query[j])) {
-				i++;
-				j++;
-			} else {
-				i++;
-			}
-		}
+        while (i < strLen && j < queryLen) {
+            if (tolower(str[i]) == tolower(query[j])) {
+                i++;
+                j++;
+            } else {
+                j = 0; // Reset query index
+                i = i - j + 1; // Move back to the next character in str
+            }
+        }
 
-		return (j == queryLen);
-	}
-};
+        return (j == queryLen);
+    }};
