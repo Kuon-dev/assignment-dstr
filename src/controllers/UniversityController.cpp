@@ -56,7 +56,6 @@ class UniversityContoller {
 				Location = token.substr(1, token.size() - 2);
 			} else Location = token;
 
-
 			getline(iss, token, ',');
 			ArScore = (token);
 
@@ -172,5 +171,17 @@ class UniversityContoller {
 		queryList.displayFirst20Nodes();
 		*/
 		return;
+	}
+
+	void searchUniversityColumn(string column, string input) {
+		cout << "Fetcing database..." << endl;
+		universityList currentList = readUniversityDatabase();
+		universityList queryList;
+		universitySearcher searcher;
+		cout << "Searching database..." << endl;
+
+		universityNode* searched = searcher.linearSearch(currentList.getHead(), column, (input));
+		queryList.addUniversityNode(searched);
+		queryList.displayFirst20Nodes();
 	}
 };

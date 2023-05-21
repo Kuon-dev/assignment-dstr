@@ -5,9 +5,7 @@
 
 using namespace std;
 
-bool authenticateUser(string username, string password) {
-	return (username == "admin" && password == "password");
-}
+bool authenticateUser(string username, string password) { return (username == "admin" && password == "password"); }
 
 void displayLoginMenu() {
 	string username, password;
@@ -18,7 +16,7 @@ void displayLoginMenu() {
 		cout << "-------------------------" << endl;
 		cout << "| LOGIN MENU" << endl;
 		cout << "| Press 0 to exit" << endl;
-		cout << "------------------------"<< endl;
+		cout << "------------------------" << endl;
 		cout << "Username: ";
 		username = "";
 		cin >> username;

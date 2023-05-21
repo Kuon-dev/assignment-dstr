@@ -7,7 +7,6 @@
 #include <sstream>
 #include <string>
 
-
 using namespace std;
 
 class FavouritesController {
@@ -18,12 +17,10 @@ class FavouritesController {
 	favUniNode* readFavDatabase(string UserId) {
 		// read from csv
 
-
 		// append to userFavList if user id is equal
 		favouritesobj.filterFavUniData(UserId);
 
 		favUniNode* userFavList = favouritesobj.getFilteredHead();
-
 
 		// retrun fav list
 		return userFavList;
@@ -85,7 +82,6 @@ class FavouritesController {
 			favUniTail = newnodeFavUni;
 		}
 	}
-
 
 	// void displayFavUniName(favUniNode* head) {
 	//	favUniNode* current = head;

@@ -8,7 +8,6 @@
 |
 */
 
-
 // for uni
 string getColumn(universityNode* node, string column) {
 	if (column == "Name") {
@@ -142,7 +141,6 @@ class universitySorter {
 		return mergeByColumn(left, right, column);
 	}
 
-
 	// quick sort section
 
 	void swapNodes(universityNode* node1, universityNode* node2) {
@@ -194,7 +192,6 @@ class universitySorter {
 |
 */
 
-
 class universitySearcher {
 	public:
 	universityNode* binarySearch(universityNode* head, string column, int name) {
@@ -219,4 +216,33 @@ class universitySearcher {
 
 		return nullptr;
 	};
+
+	universityNode* linearSearch(universityNode* head, string column, string query) {
+		universityNode* current = head;
+
+		while (current != nullptr) {
+			if (fuzzyMatch(getColumn(current, column), query)) return current;
+			current = current->next;
+		}
+		return nullptr;
+	}
+
+	private:
+	bool fuzzyMatch(const string& str, const string& query) {
+		int strLen = str.length();
+		int queryLen = query.length();
+		int i = 0;
+		int j = 0;
+
+		while (i < strLen && j < queryLen) {
+			if (tolower(str[i]) == tolower(query[j])) {
+				i++;
+				j++;
+			} else {
+				i++;
+			}
+		}
+
+		return (j == queryLen);
+	}
 };

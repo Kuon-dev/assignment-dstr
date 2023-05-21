@@ -45,6 +45,7 @@ class universityList {
 
 	universityNode* getTail() { return this->tail; }
 
+	// create a new node to the linekd list
 	void createUniversity(
 		int rank,
 		string name,
@@ -99,6 +100,7 @@ class universityList {
 		tail = newNode;
 	}
 
+	// add a node to the linked list
 	void addUniversityNode(universityNode* newNode) {
 		newNode->prev = tail;
 		newNode->next = nullptr;
@@ -120,7 +122,6 @@ class universityList {
 		}
 		return nullptr;
 	};
-
 
 	void displaySpecificNodeByColumn(universityNode* node) {
 		universityNode* current = node;
@@ -248,6 +249,20 @@ class universityList {
 		cout << "University with rank " << rank << " has been updated." << endl;
 	}
 
+	// remove a node from a linked list
+	void removeUniversityNode(universityNode* node) {
+		if (node == nullptr) return;
+
+		if (node == head) head = node->next;
+
+		if (node == tail) tail = node->prev;
+
+		if (node->prev != nullptr) node->prev->next = node->next;
+
+		if (node->next != nullptr) node->next->prev = node->prev;
+
+		delete node;
+	}
 
 	// void sortArScore() { quickSort(this->head, this->tail, "ArScore"); }
 

@@ -3,7 +3,6 @@
 
 using namespace std;
 
-
 double stringToDouble(string s) {
 	if (s.empty()) return 0.0;
 

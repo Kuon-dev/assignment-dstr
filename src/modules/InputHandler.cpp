@@ -69,7 +69,6 @@ int handleIntInput(string title) {
 	}
 }
 
-
 string handleUserSearch() {
 	string userInput;
 	cin >> userInput;

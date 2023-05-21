@@ -25,12 +25,10 @@ struct TopTenUniNode {
 	string UniName;
 	int Count = 1;
 
-
 	TopTenUniNode* NextAddress;
 	TopTenUniNode* PrevAddress;
 
 } *TopTenUniHead, *TopTenUniTail, *currentTopTenUni, *newnodeTopTenUni, *SortedTopTenUniHead, *SortedTopTenUniTail;
-
 
 class favUniList {
 	favUniNode* favUniHead = NULL;
@@ -73,12 +71,24 @@ class favUniList {
 			InsertFavUni(FavUniId, UserId, UserName, UniId, UniName);
 		}
 	}
+	void InsertTopTenUni(favUniNode* curr) {
+		TopTenUniNode* keyNode = createNewTopTenUni(curr->UniId, curr->UniName);
 
+		if (TopTenUniHead == NULL) {
+			keyNode->PrevAddress = NULL;
+			keyNode->NextAddress = NULL;
+			TopTenUniHead = TopTenUniTail = keyNode;
+		} else {
+			keyNode->PrevAddress = TopTenUniTail;
+			TopTenUniTail->NextAddress = keyNode;
+			TopTenUniTail = keyNode;
+			TopTenUniTail->NextAddress = NULL;
+		}
+	}
 
 	void getTopTenUniData() {
 		favUniNode* current = favUniHead;
 		deleteTopTenUni();
-
 
 		while (current != NULL) {
 			filterTopTenUni(current);

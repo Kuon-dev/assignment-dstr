@@ -3,11 +3,9 @@
 #include <iostream>
 #include <string>
 
-
 using namespace std;
 
 class UserMenu {
-
 	public:
 	// UserMenu() { userNode* currentUser; }
 	void userDashboard() {
@@ -94,7 +92,6 @@ class UserMenu {
 			cout << "Enter your choice (1-5): ";
 			int choice;
 			cin >> choice;
-
 
 			favUniNode* test = favCont.readFavDatabase(userid);
 			switch (choice) {

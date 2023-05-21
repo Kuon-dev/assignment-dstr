@@ -25,7 +25,7 @@ ContinuationIndentWidth: 2
 FixNamespaceComments: false
 IndentWidth: 2
 KeepEmptyLinesAtTheStartOfBlocks: false
-MaxEmptyLinesToKeep: 2
+MaxEmptyLinesToKeep: 1
 PenaltyBreakBeforeFirstCallParameter: 2000
 PointerAlignment: Left
 SpaceAfterCStyleCast: true
