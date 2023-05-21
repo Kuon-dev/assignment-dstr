@@ -130,8 +130,6 @@ class FavouritesController {
 		favUniNode* searchNode = searchFavUniWithID(favlistid, favouritesobj.getFilteredHead());
 
 		favUniNode* unfilteredHead = favouritesobj.getHead();
-
-
 		if (unfilteredHead == NULL) {
 			cout << endl;
 			cout << endl;
