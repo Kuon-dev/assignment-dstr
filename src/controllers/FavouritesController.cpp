@@ -13,27 +13,27 @@ using namespace std;
 
 class FavouritesController {
 
-	private:
+private:
 	favUniList favouritesobj;
-	public:
-	
-	
+public:
+
+
 
 	favUniNode* readFavDatabase(string UserId) {
-		
+
 		// read from csv
 
-		
-		
-		
+
+
+
 		// append to userFavList if user id is equal
 		favouritesobj.filterFavUniData(UserId);
 
 		favUniNode* userFavList = favouritesobj.getFilteredHead();
- 
+
 		// retrun fav list
 		return userFavList;
-		
+
 	}
 	void getFULinkListFromDB() { favouritesobj.favUniData(); }
 
@@ -52,6 +52,27 @@ class FavouritesController {
 			current = current->NextAddress;
 		}
 		cout << "list ended at here." << endl;
+	}
+
+	void displayTopTenUniData() {
+		favouritesobj.getTopTenUniData();
+		TopTenUniNode* current = favouritesobj.getSortedTopTenUniHead();
+		cout << endl;
+
+		// favouritesobj.overwriteFavUniData();
+		cout<< "----------------------------------------------------------------------------------------------------------" << endl;
+		cout << "Top 10 university added as favourite university by members:" << endl;
+		cout << "----------------------------------------------------------------------------------------------------------" << endl;
+
+		cout<<endl;
+		while (current != NULL) {
+			cout << "University ID: " << current->UniId << endl;
+			cout << "University Name: " << current->UniName << endl;
+			cout << "Total: " << current->Count << endl;
+			cout << endl;
+			current = current->NextAddress;
+		}
+		cout << "Report ends at here." << endl;
 	}
 
 	void add_newnode_to_end_of_list_history() {
@@ -106,7 +127,7 @@ class FavouritesController {
 				return current;
 
 			}
-			
+
 			current = current->NextAddress;
 		}
 		cout << "No record found." << endl;
@@ -115,14 +136,14 @@ class FavouritesController {
 
 	void deleteBasedOnFavUni(string favlistid) {
 
-		
+
 
 		favUniNode* searchNode = searchFavUniWithID(favlistid, favouritesobj.getFilteredHead());
 
 		favUniNode* unfilteredHead = favouritesobj.getHead();
 
 
-		
+
 		if (unfilteredHead == NULL) {
 			cout << endl;
 			cout << endl;
@@ -133,7 +154,7 @@ class FavouritesController {
 		}
 
 		if (searchNode == NULL) {
-			
+
 			return;
 		}
 
@@ -143,27 +164,34 @@ class FavouritesController {
 			favouritesobj.setHead(unfilteredHead->NextAddress);
 			if (favouritesobj.getHead() != NULL) {
 				favouritesobj.getHead()->PrevAddress = NULL;
-			} else {
+			}
+			else {
 				favouritesobj.setTail(NULL);
 			}
 			cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
 			cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
 			delete currentFavUni;
 			favouritesobj.overwriteFavUniData(getHead());
-			
-		} else if (searchNode->FavUniId == favouritesobj.getTail()->FavUniId) {
+
+		}
+		else if (searchNode->FavUniId == favouritesobj.getTail()->FavUniId) {
 			favUniNode* currentFavUni = favouritesobj.getTail();
 			favouritesobj.setTail(favouritesobj.getTail()->PrevAddress);
+
 			if (favouritesobj.getTail() != NULL) {
-				favouritesobj.getTail()->NextAddress == NULL;
-			} else {
+
+				favouritesobj.getTail()->NextAddress = NULL;
+
+			}
+			else {
 				favouritesobj.setHead(NULL);
 			}
 			cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
 			cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
 			delete currentFavUni;
 			favouritesobj.overwriteFavUniData(getHead());
-		} else {
+		}
+		else {
 			favUniNode* PrevAddress = unfilteredHead;
 			favUniNode* currentFavUni = unfilteredHead->NextAddress;
 
@@ -173,7 +201,6 @@ class FavouritesController {
 					cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
 					cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
 					delete currentFavUni;
-					favUniNode* test = readFavDatabase(unfilteredHead->UserId);
 					favouritesobj.overwriteFavUniData(getHead());
 					return;
 				}
@@ -183,7 +210,7 @@ class FavouritesController {
 			cout << "Record of Favorite University record in List with ID of " << searchNode->FavUniId << " is not found." << endl;
 		}
 
-		
+
 
 	}
 
@@ -203,14 +230,16 @@ class FavouritesController {
 		cout << "enter user name as temporary name for fav uni" << endl;
 		cin >> Name;
 
-		favUniHead= currentFavUni = favUniTail = NULL;
+		favUniHead = currentFavUni = favUniTail = NULL;
 
 		favouritesobj.InsertFavUni(to_string(stoi(favouritesobj.getTail()->FavUniId) + 1), ID, Name, to_string(searched->Rank), searched->Name);
 		favouritesobj.overwriteFavUniData(getHead());
 	}
 
 	favUniNode* getHead() {
-		return favouritesobj.getHead(); }
-	
+		return favouritesobj.getHead();
+	}
+
 	favUniNode* getFilteredHead() { return favouritesobj.getFilteredHead(); }
 };
+
