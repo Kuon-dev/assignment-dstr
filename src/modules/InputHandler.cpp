@@ -66,8 +66,6 @@ int handleIntInput(string title) {
 			cout << "Error: Invalid input. Please enter an integer number." << endl;
 			;
 		}
-
-
 	}
 }
 

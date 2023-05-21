@@ -24,6 +24,7 @@ class FavouritesController {
 
 		favUniNode* userFavList = favouritesobj.getFilteredHead();
 
+
 		// retrun fav list
 		return userFavList;
 	}
@@ -44,6 +45,29 @@ class FavouritesController {
 			current = current->NextAddress;
 		}
 		cout << "list ended at here." << endl;
+	}
+
+	void displayTopTenUniData() {
+		favouritesobj.getTopTenUniData();
+		TopTenUniNode* current = favouritesobj.getSortedTopTenUniHead();
+		cout << endl;
+
+		// favouritesobj.overwriteFavUniData();
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << "Top 10 university added as favourite university by members:" << endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+
+		cout << endl;
+		while (current != NULL) {
+			cout << "University ID: " << current->UniId << endl;
+			cout << "University Name: " << current->UniName << endl;
+			cout << "Total: " << current->Count << endl;
+			cout << endl;
+			current = current->NextAddress;
+		}
+		cout << "Report ends at here." << endl;
 	}
 
 	void add_newnode_to_end_of_list_history() {
@@ -138,8 +162,10 @@ class FavouritesController {
 		} else if (searchNode->FavUniId == favouritesobj.getTail()->FavUniId) {
 			favUniNode* currentFavUni = favouritesobj.getTail();
 			favouritesobj.setTail(favouritesobj.getTail()->PrevAddress);
+
 			if (favouritesobj.getTail() != NULL) {
-				favouritesobj.getTail()->NextAddress == NULL;
+				favouritesobj.getTail()->NextAddress = NULL;
+
 			} else {
 				favouritesobj.setHead(NULL);
 			}
@@ -157,7 +183,6 @@ class FavouritesController {
 					cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
 					cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
 					delete currentFavUni;
-					favUniNode* test = readFavDatabase(unfilteredHead->UserId);
 					favouritesobj.overwriteFavUniData(getHead());
 					return;
 				}

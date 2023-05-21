@@ -9,5 +9,5 @@ using namespace std;
 
 class MemberController {
 	public:
-	userNode createNewMember() {};
+	userNode createNewMember(){};
 };
