@@ -24,19 +24,17 @@ void displaySearchUniversityMenu() {
 		case 1:
 			cout << "Enter your query: ";
 			cin >> input;
-			uniController.searchUniversityColumn("Name", input);
+			// uniController.searchUniversityColumn("Name", input);
 			break;
 
 		case 2:
-			cout << "Enter your query: ";
-			cin >> input;
-			uniController.searchUniversityColumn("Rank", input);
+			uniController.searchUniversityColumn("Rank", handleIntInput("Enter your rank query:"));
 			break;
 
 		case 3:
 			cout << "Enter your query: ";
 			cin >> input;
-			uniController.searchUniversityColumn("Location", input);
+			// uniController.searchUniversityColumn("Location", input);
 			break;
 
 		case 4:

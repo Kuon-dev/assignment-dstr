@@ -177,6 +177,7 @@ class universityList {
 		}
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
+		cout << "End of list" << endl;
 	}
 
 	void updateUniversityByRank(int rank) {

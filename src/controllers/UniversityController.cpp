@@ -1,4 +1,5 @@
 #include "../Modules/Algorithms.cpp"
+#include "../modules/InputHandler.cpp"
 
 class UniversityContoller {
 	public:
@@ -148,15 +149,14 @@ class UniversityContoller {
 		newList.displayFirst20Nodes();
 	}
 
-	void searchUniversityColumn(string column, string input) {
+	void searchUniversityColumn(string column, int input) {
 		cout << "Fetcing database..." << endl;
 		universityList currentList = readUniversityDatabase();
 		universityList queryList;
 		universitySearcher searcher;
 		cout << "Searching database..." << endl;
 
-
-		universityNode* searched = searcher.binarySearch(currentList.getHead(), column, stoi(input));
+		universityNode* searched = searcher.binarySearch(currentList.getHead(), column,(input));
 		queryList.addUniversityNode(searched);
 		queryList.displayFirst20Nodes();
 		// loop
