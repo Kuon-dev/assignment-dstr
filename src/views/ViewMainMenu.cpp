@@ -45,6 +45,7 @@ void displaySearchUniversityMenu() {
 
 void displayMenu() {
 	UniversityContoller uniController;
+	MemberController userListController;
 
 	while (true) {
 		cout << "----------------------------------------------------------------------------------------------------------"
@@ -73,7 +74,7 @@ void displayMenu() {
 			displayLoginMenu();
 			break;
 		case 4:
-			cout << "Register user" << endl;
+			userListController.createNewMember();
 			return;
 		case 5:
 			cout << "Exiting the system. Goodbye!" << endl;

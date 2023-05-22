@@ -1,4 +1,5 @@
 #include "../controllers/FavouritesController.cpp"
+#include "../controllers/MemberController.cpp"
 #include <conio.h>
 #include <iostream>
 #include <string>
