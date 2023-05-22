@@ -1,4 +1,5 @@
 #include "../Models/University.cpp"
+#include <cctype>
 
 /*
 ---------------------------------
@@ -70,49 +71,89 @@ string getColumn(universityNode* node, string column) {
 
 class universitySorter {
 	public:
-	void quickSortUniversity(universityNode* head, universityNode* tail, string column) {
+	// merge sort
+	void mergeSortUniversityInt(universityNode** head, string column) {
+		if (*head == nullptr || (*head)->next == nullptr) {
+			return; // Base case: list is empty or has only one node
+		}
+
+		universityNode* middle = getMiddleNode(*head);
+		universityNode* nextToMiddle = middle->next;
+		middle->next = nullptr;
+
+		mergeSortUniversityInt(head, column);					 // Sort the left half
+		mergeSortUniversityInt(&nextToMiddle, column); // Sort the right half
+
+		*head = mergeByColumn(*head, nextToMiddle, column); // Merge the sorted halves
+	}
+
+universityNode* mergeSortUniversityString(universityNode** head, string column) {
+    universityNode* current = *head;
+    universityNode* left;
+    universityNode* right;
+
+    if (current == nullptr || current->next == nullptr) {
+        return current;
+    }
+
+    splitList(current, &left, &right);
+    left = mergeSortUniversityString(&left, column);
+    right = mergeSortUniversityString(&right, column);
+    return mergeByStringColumn(left, right, column);
+}
+	// quick sort
+	void quickSortUniversityInt(universityNode* head, universityNode* tail, string column) {
 		if (tail != nullptr && head != tail && head != tail->next) {
 			universityNode* p = partition(head, tail, column);
-			quickSortUniversity(head, p->prev, column);
-			quickSortUniversity(p->next, tail, column);
+			quickSortUniversityInt(head, p->prev, column);
+			quickSortUniversityInt(p->next, tail, column);
 		}
 	}
 
-
-	void mergeSortUniversity(universityNode** head, string column) {
-	if (*head == nullptr || (*head)->next == nullptr) {
-		return;  // Base case: list is empty or has only one node
-	}
-
-	universityNode* middle = getMiddleNode(*head);
-	universityNode* nextToMiddle = middle->next;
-	middle->next = nullptr;
-
-	mergeSortUniversity(head, column);            // Sort the left half
-	mergeSortUniversity(&nextToMiddle, column);   // Sort the right half
-
-	*head = mergeByColumn(*head, nextToMiddle, column);  // Merge the sorted halves
+	void quickSortUniversityString(universityNode* head, universityNode* tail, string column) {
+		if (tail != nullptr && head != tail && head != tail->next) {
+			universityNode* pivot = partitionString(head, tail, column);
+			quickSortUniversityString(head, pivot->prev, column);
+			quickSortUniversityString(pivot->next, tail, column);
+		}
 	}
 
 	private:
 	universityNode* getMiddleNode(universityNode* head) {
-	if (head == nullptr || head->next == nullptr) {
-		return head;
-	}
-
-	universityNode* slow = head;
-	universityNode* fast = head->next;
-
-	while (fast != nullptr) {
-		fast = fast->next;
-		if (fast != nullptr) {
-			slow = slow->next;
-			fast = fast->next;
+		if (head == nullptr || head->next == nullptr) {
+			return head;
 		}
+
+		universityNode* slow = head;
+		universityNode* fast = head->next;
+
+		while (fast != nullptr) {
+			fast = fast->next;
+			if (fast != nullptr) {
+				slow = slow->next;
+				fast = fast->next;
+			}
+		}
+
+		return slow;
 	}
 
-	return slow;
-	}
+void splitList(universityNode* source, universityNode** front, universityNode** back) {
+    universityNode* slow = source;
+    universityNode* fast = source->next;
+
+    while (fast != nullptr) {
+        fast = fast->next;
+        if (fast != nullptr) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+
+    *front = source;
+    *back = slow->next;
+    slow->next = nullptr;
+}
 
 	universityNode* mergeByColumn(universityNode* left, universityNode* right, string column) {
 		if (left == nullptr) {
@@ -130,6 +171,27 @@ class universitySorter {
 		} else {
 			result = right;
 			result->next = mergeByColumn(left, right->next, column);
+		}
+
+		return result;
+	}
+
+	universityNode* mergeByStringColumn(universityNode* left, universityNode* right, string column) {
+		if (left == nullptr) {
+			return right;
+		}
+		if (right == nullptr) {
+			return left;
+		}
+
+		universityNode* result = nullptr;
+
+		if (toLower(getColumn(left, column)).compare(toLower(getColumn(right, column))) <= 0) {
+			result = left;
+			result->next = mergeByStringColumn(left->next, right, column);
+		} else {
+			result = right;
+			result->next = mergeByStringColumn(left, right->next, column);
 		}
 
 		return result;
@@ -175,6 +237,28 @@ class universitySorter {
 		swapNodes(i, tail);
 		return i;
 	}
+
+	universityNode* partitionString(universityNode* head, universityNode* tail, string column) {
+		string pivot = getColumn(tail, column);
+		universityNode* i = head->prev;
+
+		for (universityNode* j = head; j != tail; j = j->next) {
+			if (getColumn(j, column).compare(pivot) <= 0) {
+				i = (i == nullptr) ? head : i->next;
+				swapNodes(i, j);
+			}
+		}
+		i = (i == nullptr) ? head : i->next;
+		swapNodes(i, tail);
+		return i;
+	}
+
+	string toLowerCase(string str) {
+		for (char& c: str) {
+			c = std::tolower(c);
+		}
+		return str;
+	}
 };
 
 /*
@@ -211,7 +295,6 @@ class universitySearcher {
 		return nullptr;
 	};
 
-
 	universityList linearSearch(universityNode* head, string column, string query) {
 		universityList newList;
 		universityNode* current = head;
@@ -219,7 +302,7 @@ class universitySearcher {
 		universityNode* matched = nullptr;
 
 		while (current != nullptr) {
-			currentNext = current->next;  // Assign next node before moving current
+			currentNext = current->next; // Assign next node before moving current
 
 			if (fuzzyMatch(current->Name, query)) {
 				newList.addUniversityNode(current);
@@ -240,21 +323,22 @@ class universitySearcher {
 	}
 
 	private:
-    bool fuzzyMatch(const string& str, const string& query) {
-        int strLen = str.length();
-        int queryLen = query.length();
-        int i = 0;
-        int j = 0;
+	bool fuzzyMatch(const string& str, const string& query) {
+		int strLen = str.length();
+		int queryLen = query.length();
+		int i = 0;
+		int j = 0;
 
-        while (i < strLen && j < queryLen) {
-            if (tolower(str[i]) == tolower(query[j])) {
-                i++;
-                j++;
-            } else {
-                j = 0; // Reset query index
-                i = i - j + 1; // Move back to the next character in str
-            }
-        }
+		while (i < strLen && j < queryLen) {
+			if (tolower(str[i]) == tolower(query[j])) {
+				i++;
+				j++;
+			} else {
+				j = 0;				 // Reset query index
+				i = i - j + 1; // Move back to the next character in str
+			}
+		}
 
-        return (j == queryLen);
-    }};
+		return (j == queryLen);
+	}
+};

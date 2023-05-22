@@ -146,7 +146,7 @@ class UniversityContoller {
 	void dispalyFirst20UniSorted() {
 		universityList newList = readUniversityDatabase();
 		universitySorter sorter;
-		sorter.quickSortUniversity(newList.getHead(), newList.getTail(), "ArScore");
+		sorter.quickSortUniversityString(newList.getHead(), newList.getTail(), "Name");
 		newList.displayFirst20Nodes();
 	}
 
@@ -159,7 +159,7 @@ class UniversityContoller {
 		auto startTime = high_resolution_clock::now();
 
 		cout << "\033[94mUsing Quick sort...\033[0m" << endl;
-		sorter.quickSortUniversity(currentList.getHead(), currentList.getTail(), "ArScore");
+		sorter.quickSortUniversityString(currentList.getHead(), currentList.getTail(), "Name");
 
 		auto endTime = high_resolution_clock::now();
 		auto duration = duration_cast<milliseconds>(endTime - startTime);
@@ -169,19 +169,6 @@ class UniversityContoller {
 
 		queryList.addUniversityNode(searched);
 		queryList.displayFirst20Nodes();
-		// loop
-
-		/*
-		universityNode* current = currentList.getHead();
-		while (current != nullptr) {
-			universityNode* searched = searcher.binarySearch(currentList, column, input);
-			cout << current->Name << endl;
-			queryList.addUniversityNode(searched);
-			current = current->next;
-		}
-		queryList.displayFirst20Nodes();
-		*/
-		return;
 	}
 
 	void searchUniversityStringColumn(string column, string input) {
@@ -195,11 +182,10 @@ class UniversityContoller {
 		cout << "\033[94mUsing Merge sort...\033[0m" << endl;
 		auto sortStartTime = high_resolution_clock::now();
 		universityNode* head = currentList.getHead();
-		sorter.mergeSortUniversity(&head, "ArScore");
+		currentList.setHead(sorter.mergeSortUniversityString(&head, "Name"));
 		auto sortEndTime = high_resolution_clock::now();
 		auto sortDuration = duration_cast<milliseconds>(sortEndTime - sortStartTime);
 		cout << "\033[94mTime taken to sort: " << sortDuration.count() << " milliseconds\033[0m" << endl;
-
 		cout << "\033[94mSearching database...\033[0m" << endl;
 		auto searchStartTime = high_resolution_clock::now();
 		// Implementation for searching the database
