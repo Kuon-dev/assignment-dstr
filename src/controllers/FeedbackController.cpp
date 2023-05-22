@@ -112,7 +112,6 @@ class FeedbackController {
 		}
 	};
 
-
 	int readAllFeedbacks() {
 		feedbackList feedback;
 		ifstream file("Database/FeedbackDatabase.csv");

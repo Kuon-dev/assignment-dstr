@@ -3,13 +3,11 @@
 #include <iostream>
 #include <string>
 
-
 using namespace std;
 
 class UserMenu {
-	// UserMenu() { userNode* current; }
-
 	public:
+	// UserMenu() { userNode* currentUser; }
 	void userDashboard() {
 		while (true) {
 			cout
@@ -69,16 +67,8 @@ class UserMenu {
 
 	void profileMenu() {
 		// TODO: display profile
-		//
-		// TODO: edit profile
-		// TODO: view favourite uni
-		// variables to be assigned later
 		string uniid, userid, favid;
-
-		// create object favCont of FavouritesController class
 		FavouritesController favCont;
-
-		// get complete data from favuni data set
 		favCont.getFULinkListFromDB();
 
 		cout << "User ID: ";
@@ -103,7 +93,6 @@ class UserMenu {
 			int choice;
 			cin >> choice;
 
-
 			favUniNode* test = favCont.readFavDatabase(userid);
 			switch (choice) {
 			case 1:
@@ -117,12 +106,8 @@ class UserMenu {
 			case 3:
 				cout << "You have selected 'View Favourite Universities'" << endl;
 				// TODO: Implement 'View Favourite Universities' functionality
-
-
 				// display uni list based on user id
 				favCont.displayFavUni(test);
-
-
 				break;
 			case 4:
 				cout << "You have selected 'Add Favourite Universities'" << endl;
@@ -135,7 +120,7 @@ class UserMenu {
 				cout << "You have selected 'Delete Favourite Universities'" << endl;
 				// TODO: Implement 'Delete Favourite Universities' functionality
 				// favCont.displayFavUni(test);
-				cout << "Fav Uni List ID: ";
+				cout << "Input the University You want to Delete: ";
 				cin >> favid;
 				favCont.deleteBasedOnFavUni(favid);
 				// favCont.displayFavUni(favCont.getHead());
@@ -149,33 +134,6 @@ class UserMenu {
 				break;
 			}
 		}
-
-		// code which display report for top 10 fav university
-		// favCont.displayTopTenUniData();
-
-		/*cout << "University ID: ";
-		getline(cin, uniid);*/
-
-		/*cout << "User ID: ";
-		getline(cin, userid);*/
-
-		/*cout << "Fav Uni List ID: ";
-		getline(cin, favid);*/
-
-		// display all fav uni list
-		// favCont.displayFavUni(favCont.getHead());
-
-
-		// favCont.createUserFavUni(uniid);
-		// favUniNode* test = favCont.readFavDatabase("987");
-		// favCont.deleteBasedOnFavUni(favid);
-		// favCont.displayFavUni(favCont.getHead());
-
-		// system("cls");
-
-
-		// test = favCont.readFavDatabase("987");
-		// favCont.displayFavUni(favCont.getHead());
 	}
 
 	private:

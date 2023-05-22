@@ -92,7 +92,6 @@ class userList {
 		cout << "-----------------------------------------" << endl;
 	}
 
-
 	void updateUserNode(
 		string userId, string userName, string name, int age, string gender, string email, int contact, string lastLogin) {
 		userNode* currentNode = head;
@@ -160,7 +159,6 @@ class userList {
 			cout << "User " << userId << " not found. Deletion failed." << endl;
 		}
 	}
-
 
 	private:
 };

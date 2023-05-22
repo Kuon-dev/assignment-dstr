@@ -5,10 +5,7 @@
 
 using namespace std;
 
-bool authenticateUser(string username, string password) {
-	// hard-coded credentials for now
-	return (username == "admin" && password == "password");
-}
+bool authenticateUser(string username, string password) { return (username == "admin" && password == "password"); }
 
 void displayLoginMenu() {
 	string username, password;
@@ -16,13 +13,13 @@ void displayLoginMenu() {
 
 	while (true) {
 		system("cls");
-		cout << "===========" << endl;
+		cout << "-------------------------" << endl;
 		cout << "| LOGIN MENU" << endl;
 		cout << "| Press 0 to exit" << endl;
-		cout << "===========" << endl;
+		cout << "------------------------" << endl;
 		cout << "Username: ";
 		username = "";
-		getline(cin, username);
+		cin >> username;
 
 		// allow user to go back to main menu
 		if (username == "0") {

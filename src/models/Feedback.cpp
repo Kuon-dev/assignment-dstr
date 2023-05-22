@@ -158,7 +158,6 @@ class feedbackList {
 			cout << left << setw(15) << current->FeedbackId << setw(15) << current->UserId << setw(50)
 					 << current->FeedbackContent << setw(30) << put_time(&timestamp_tm, "%c %Z") << endl;
 
-
 			current = current->NextAddress;
 		}
 	}

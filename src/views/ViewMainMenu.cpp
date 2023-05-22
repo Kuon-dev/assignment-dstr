@@ -22,9 +22,7 @@ void displaySearchUniversityMenu() {
 
 		switch (choice) {
 		case 1:
-			cout << "Enter your query: ";
-			cin >> input;
-			// uniController.searchUniversityColumn("Name", input);
+			uniController.searchUniversityStringColumn("Name", handleStringInput("Enter your rank query:"));
 			break;
 
 		case 2:
