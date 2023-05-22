@@ -87,20 +87,20 @@ class universitySorter {
 		*head = mergeByColumn(*head, nextToMiddle, column); // Merge the sorted halves
 	}
 
-universityNode* mergeSortUniversityString(universityNode** head, string column) {
-    universityNode* current = *head;
-    universityNode* left;
-    universityNode* right;
+	universityNode* mergeSortUniversityString(universityNode** head, string column) {
+		universityNode* current = *head;
+		universityNode* left;
+		universityNode* right;
 
-    if (current == nullptr || current->next == nullptr) {
-        return current;
-    }
+		if (current == nullptr || current->next == nullptr) {
+			return current;
+		}
 
-    splitList(current, &left, &right);
-    left = mergeSortUniversityString(&left, column);
-    right = mergeSortUniversityString(&right, column);
-    return mergeByStringColumn(left, right, column);
-}
+		splitList(current, &left, &right);
+		left = mergeSortUniversityString(&left, column);
+		right = mergeSortUniversityString(&right, column);
+		return mergeByStringColumn(left, right, column);
+	}
 	// quick sort
 	void quickSortUniversityInt(universityNode* head, universityNode* tail, string column) {
 		if (tail != nullptr && head != tail && head != tail->next) {
@@ -138,22 +138,22 @@ universityNode* mergeSortUniversityString(universityNode** head, string column) 
 		return slow;
 	}
 
-void splitList(universityNode* source, universityNode** front, universityNode** back) {
-    universityNode* slow = source;
-    universityNode* fast = source->next;
+	void splitList(universityNode* source, universityNode** front, universityNode** back) {
+		universityNode* slow = source;
+		universityNode* fast = source->next;
 
-    while (fast != nullptr) {
-        fast = fast->next;
-        if (fast != nullptr) {
-            slow = slow->next;
-            fast = fast->next;
-        }
-    }
+		while (fast != nullptr) {
+			fast = fast->next;
+			if (fast != nullptr) {
+				slow = slow->next;
+				fast = fast->next;
+			}
+		}
 
-    *front = source;
-    *back = slow->next;
-    slow->next = nullptr;
-}
+		*front = source;
+		*back = slow->next;
+		slow->next = nullptr;
+	}
 
 	universityNode* mergeByColumn(universityNode* left, universityNode* right, string column) {
 		if (left == nullptr) {
