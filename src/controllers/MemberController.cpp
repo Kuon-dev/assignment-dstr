@@ -10,9 +10,6 @@ using namespace std;
 
 class MemberController {
 	public:
-<<<<<<< Updated upstream
-	userNode createNewMember(){};
-=======
 
 	// read users database from Users.csv
 	userList readUserDatabase() {
@@ -121,28 +118,29 @@ class MemberController {
 	// create a new user node and append to csv
 	void createNewMember(string username, string password, string name, string gender, string email, int age, int contact) {
     userNode* newUser = new userNode();
-
+		newUser->UserId = createUserId();
     newUser->userUserName = username;
     newUser->UserPassword = password;
     newUser->UserName = name;    
-		newUser->UserAge = age;
+		newUser->UserAge = 0;
     newUser->UserGender = gender;
     newUser->UserEmail = email;
-    newUser->UserContact = contact;
+    newUser->UserContact = 0;
 		newUser->UserLastLogin = "null";
-		cout << createUserId() << endl;
 
     ofstream outfile("./Users.csv", ios::app);
     if (outfile) {
-			outfile<< newUser->UserId << ","
+			outfile
+					<< newUser->UserId << ","
 					<< newUser->userUserName << ","
 					<< newUser->UserPassword << ","
 					<< newUser->UserName << ","
-					<< newUser->UserAge << ","
 					<< newUser->UserGender << ","
 					<< newUser->UserEmail << ","
-					<< newUser->UserContact << ","
-					<< newUser->UserLastLogin << endl;
+					<< newUser->UserLastLogin << ","
+					<< to_string(newUser->UserAge) << ","
+					<< to_string(newUser->UserContact) << endl;
+
 			outfile.close();
 			cout << "User acccount created." << endl;
     } else {
@@ -158,8 +156,7 @@ class MemberController {
 	int createUserId(){
 		userList data = readUserDatabase();
 		userNode* lastNode = data.getTail();
-		cout << lastNode->userUserName << endl;
-		return 0;
+		if (lastNode == nullptr) return 1;
+		else return stoi(lastNode->UserId) + 1;
 	}
->>>>>>> Stashed changes
 };

@@ -22,17 +22,19 @@ void displaySearchUniversityMenu() {
 
 		switch (choice) {
 		case 1:
-			uniController.searchUniversityStringColumn("Name", handleStringInput("Enter your rank query:"));
+			cout << "Enter your query: ";
+			cin >> input;
+			uniController.searchUniversityStringColumn("Name", input);
 			break;
 
 		case 2:
-			uniController.searchUniversityColumn("Rank", handleIntInput("Enter your rank query:"));
+			uniController.searchUniversityColumn("Rank", handleIntInput("Enter your rank query: "));
 			break;
 
 		case 3:
 			cout << "Enter your query: ";
 			cin >> input;
-			// uniController.searchUniversityColumn("Location", input);
+			uniController.searchUniversityStringColumn("Location", input);
 			break;
 
 		case 4:
@@ -62,6 +64,8 @@ void displayMenu() {
 				 << endl;
 
 		int choice = handleUserInput();
+		string name, username, email, password, gender;
+		int age, contact;
 
 		switch (choice) {
 		case 1:
@@ -74,8 +78,17 @@ void displayMenu() {
 			displayLoginMenu();
 			break;
 		case 4:
-			userListController.createNewMember();
-			return;
+			name = handleStringInput("Enter your name");
+			username = handleStringInput("Enter your username");
+    	password = handleStringInput("Enter your password");
+			age = handleIntInput("Enter your age");
+			gender = handleStringInput("Enter your gender");
+			email = handleStringInput("Enter your email");
+			contact = handleIntInput("Enter your contact");
+
+			userListController.createNewMember(username, password, name, gender, email, age, contact);
+			// how did i not saaw this return
+			break;
 		case 5:
 			cout << "Exiting the system. Goodbye!" << endl;
 			return;
