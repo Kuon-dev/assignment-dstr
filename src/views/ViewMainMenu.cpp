@@ -80,7 +80,7 @@ void displayMenu() {
 		case 4:
 			name = handleStringInput("Enter your name");
 			username = handleStringInput("Enter your username");
-    	password = handleStringInput("Enter your password");
+			password = handleStringInput("Enter your password");
 			age = handleIntInput("Enter your age");
 			gender = handleStringInput("Enter your gender");
 			email = handleStringInput("Enter your email");

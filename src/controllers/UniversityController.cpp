@@ -218,5 +218,4 @@ class UniversityContoller {
 		cout << "\033[94mTime taken to search: " << searchDuration.count() << " milliseconds\033[0m" << endl;
 		filteredList.displayFirst20Nodes();
 	}
-
 };

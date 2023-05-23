@@ -183,12 +183,11 @@ class universityMergeSort {
 
 	// quick sort section
 	// Partition function for quicksort
-
 };
 
 class universityQuickSort {
 	public:
-	void quicksortInt (universityNode* head, universityNode* tail, string column) {
+	void quicksortInt(universityNode* head, universityNode* tail, string column) {
 		if (tail != nullptr && head != tail && head != tail->next) {
 			universityNode* p = partition(head, tail, column);
 			quicksortInt(head, p->prev, column);
@@ -196,29 +195,29 @@ class universityQuickSort {
 		}
 	}
 
-    universityNode* quicksortString(universityNode* head, universityNode* tail, string column) {
-        if (head == nullptr || head == tail) {
-            return head;
-        }
+	universityNode* quicksortString(universityNode* head, universityNode* tail, string column) {
+		if (head == nullptr || head == tail) {
+			return head;
+		}
 
-        // Partition the list and get the pivot node
-        universityNode* pivot = partitionString(head, tail, column);
+		// Partition the list and get the pivot node
+		universityNode* pivot = partitionString(head, tail, column);
 
-        // Recursively sort the two sublists
-        if (pivot != head) {
-            universityNode* prev = head;
-            while (prev->next != pivot) {
-                prev = prev->next;
-            }
-            prev->next = nullptr;
-            head = quicksortString(head, prev, column);
-            prev = getTail(head);
-            prev->next = pivot;
-        }
-        pivot->next = quicksortString(pivot->next, tail, column);
+		// Recursively sort the two sublists
+		if (pivot != head) {
+			universityNode* prev = head;
+			while (prev->next != pivot) {
+				prev = prev->next;
+			}
+			prev->next = nullptr;
+			head = quicksortString(head, prev, column);
+			prev = getTail(head);
+			prev->next = pivot;
+		}
+		pivot->next = quicksortString(pivot->next, tail, column);
 
-        return head;
-    }
+		return head;
+	}
 
 	private:
 	universityNode* partition(universityNode* head, universityNode* tail, string column) {
@@ -282,17 +281,16 @@ class universityQuickSort {
 		swap(node1->GerScore, node2->GerScore);
 		swap(node1->GerRank, node2->GerRank);
 		swap(node1->ScoreScaled, node2->ScoreScaled);
-    }
-    universityNode* getTail(universityNode* head) {
-        if (head == nullptr) {
-            return nullptr;
-        }
-        while (head->next != nullptr) {
-            head = head->next;
-        }
-        return head;
-    }
-
+	}
+	universityNode* getTail(universityNode* head) {
+		if (head == nullptr) {
+			return nullptr;
+		}
+		while (head->next != nullptr) {
+			head = head->next;
+		}
+		return head;
+	}
 };
 
 /*

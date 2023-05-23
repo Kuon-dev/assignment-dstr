@@ -1,8 +1,8 @@
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include <sstream>
 #include <string>
-#include <regex>
 
 #include "../Models/Member.cpp"
 
@@ -10,16 +10,15 @@ using namespace std;
 
 class MemberController {
 	public:
-
 	// read users database from Users.csv
 	userList readUserDatabase() {
 		userList* list = new userList();
 		ifstream file("./Users.csv"); // get user database
 		// validate file open
-		if (!file.is_open()) { 
+		if (!file.is_open()) {
 			cout << "\033[31m"
-				<< "Error: could not open file "
-				<< "\033[0m" << endl;
+					 << "Error: could not open file "
+					 << "\033[0m" << endl;
 			return *list;
 		}
 		// define database haeder and line
@@ -33,7 +32,7 @@ class MemberController {
 			string UserId, userUserName, UserPassword, UserName, UserGender, UserEmail, UserLastLogin;
 			int UserAge, UserContact;
 
-			string token; //to get value
+			string token; // to get value
 
 			getline(iss, token, ',');
 			UserId = token;
@@ -79,21 +78,21 @@ class MemberController {
 		return *list;
 	};
 
-	//execute function and store
-	// userList userDatabaseList = this.readUserDatabase();
+	// execute function and store
+	//  userList userDatabaseList = this.readUserDatabase();
 
-	//check username special characters and unique
+	// check username special characters and unique
 	bool validateUsername(const string& username, const userList& users) {
-    // Regular expression pattern for username without special characters
-    regex pattern("^[a-zA-Z0-9_]+$");
+		// Regular expression pattern for username without special characters
+		regex pattern("^[a-zA-Z0-9_]+$");
 
-    // Check if the username matches the pattern
-    if (!regex_match(username, pattern)) {
+		// Check if the username matches the pattern
+		if (!regex_match(username, pattern)) {
 			cout << "Invalid username. Username should only contain alphanumeric characters and underscore (_)." << endl;
 			return false;
-    }
+		}
 
-		//validate username length
+		// validate username length
 		if (username.length() > 60) {
 			cout << "Error: input exceeds 60 characters" << endl;
 			return false;
@@ -102,50 +101,45 @@ class MemberController {
 		// cout << "userlist " << (users.length() ? "got" : "no") << endl;
 
 		userNode* current = readUserDatabase().getHead();
-    // Check if the username already exists in the user list
-    while (current != nullptr) {
+		// Check if the username already exists in the user list
+		while (current != nullptr) {
 			// if (current->userUserName == username) {
 			// 	cout << "Username already exists. Please choose a different username." << endl;
 			// 	return false;
 			// }
 			current = current->NextAddress;
-    }
+		}
 
-    // Username is valid
-    return true;
+		// Username is valid
+		return true;
 	}
 
 	// create a new user node and append to csv
-	void createNewMember(string username, string password, string name, string gender, string email, int age, int contact) {
-    userNode* newUser = new userNode();
+	void
+	createNewMember(string username, string password, string name, string gender, string email, int age, int contact) {
+		userNode* newUser = new userNode();
 		newUser->UserId = createUserId();
-    newUser->userUserName = username;
-    newUser->UserPassword = password;
-    newUser->UserName = name;    
+		newUser->userUserName = username;
+		newUser->UserPassword = password;
+		newUser->UserName = name;
 		newUser->UserAge = 0;
-    newUser->UserGender = gender;
-    newUser->UserEmail = email;
-    newUser->UserContact = 0;
+		newUser->UserGender = gender;
+		newUser->UserEmail = email;
+		newUser->UserContact = 0;
 		newUser->UserLastLogin = "null";
 
-    ofstream outfile("./Users.csv", ios::app);
-    if (outfile) {
-			outfile
-					<< newUser->UserId << ","
-					<< newUser->userUserName << ","
-					<< newUser->UserPassword << ","
-					<< newUser->UserName << ","
-					<< newUser->UserGender << ","
-					<< newUser->UserEmail << ","
-					<< newUser->UserLastLogin << ","
-					<< to_string(newUser->UserAge) << ","
-					<< to_string(newUser->UserContact) << endl;
+		ofstream outfile("./Users.csv", ios::app);
+		if (outfile) {
+			outfile << newUser->UserId << "," << newUser->userUserName << "," << newUser->UserPassword << ","
+							<< newUser->UserName << "," << newUser->UserGender << "," << newUser->UserEmail << ","
+							<< newUser->UserLastLogin << "," << to_string(newUser->UserAge) << "," << to_string(newUser->UserContact)
+							<< endl;
 
 			outfile.close();
 			cout << "User acccount created." << endl;
-    } else {
+		} else {
 			cout << "Please try again later." << endl;
-    }
+		}
 
 		// after write data into excel need to append to the linked list
 		// assign new user as tail then the previous node need change
@@ -153,7 +147,7 @@ class MemberController {
 	}
 
 	private:
-	int createUserId(){
+	int createUserId() {
 		userList data = readUserDatabase();
 		userNode* lastNode = data.getTail();
 		if (lastNode == nullptr) return 1;
