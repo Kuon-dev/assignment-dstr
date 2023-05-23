@@ -24,7 +24,7 @@ void displaySearchUniversityMenu() {
 		case 1:
 			cout << "Enter your query: ";
 			cin >> input;
-			uniController.searchUniversityStringColumn("Name", input);
+			uniController.searchUniMerge("Name", input);
 			break;
 
 		case 2:
@@ -34,7 +34,7 @@ void displaySearchUniversityMenu() {
 		case 3:
 			cout << "Enter your query: ";
 			cin >> input;
-			uniController.searchUniversityStringColumn("Location", input);
+			uniController.searchUniQuick("Location", input);
 			break;
 
 		case 4:
