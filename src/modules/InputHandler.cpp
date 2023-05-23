@@ -30,7 +30,7 @@ int handleUserInput() {
 string handleStringInput(string title) {
 	string userInput;
 	while (true) {
-		cout << title;
+		cout << title << endl;
 		cin >> userInput;
 
 		if (userInput == "q") {
@@ -48,7 +48,7 @@ string handleStringInput(string title) {
 int handleIntInput(string title) {
 	string userInput;
 	while (true) {
-		cout << title;
+		cout << title << endl;
 		cin >> userInput;
 
 		if (userInput == "q") {

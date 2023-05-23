@@ -16,7 +16,7 @@ class AdminMenu {
 			cout << "Please select an option:" << endl;
 			cout << "1. Feedback" << endl;
 			cout << "2. View Universities" << endl;
-			cout << "3. Profile" << endl;
+			cout << "3. View all users" << endl;
 			cout << "4. Logout" << endl;
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -27,22 +27,19 @@ class AdminMenu {
 
 			switch (choice) {
 			case 1:
-				cout << "You have selected 'Leave Feedback'" << endl;
-				// TODO: Implement 'Leave Feedback' functionality
-				break;
-			case 2:
 				cout << "You have selected 'View Replied Feedback'" << endl;
 				// TODO: Implement 'View Replied Feedback' functionality
 				break;
-			case 3:
+			case 2:
 				cout << "You have selected 'View Universities'" << endl;
 				// TODO: Implement 'View Universities' functionality
 				break;
-			case 4:
-				cout << "You have selected 'Edit Profile'" << endl;
-				// TODO: Implement 'Edit Profile' functionality
+			case 3:
+				cout << "You have selected 'View all users'" << endl;
+				// userList userFunc = readUserDatabase();
+				// userFunc.displayAllUser();
 				break;
-			case 5:
+			case 4:
 				cout << "You have selected 'Logout'" << endl;
 				cout << "Goodbye!" << endl;
 				return;

@@ -1,5 +1,10 @@
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
+
+#include <iomanip>
+#include <typeinfo>
 
 using namespace std;
 
@@ -22,6 +27,10 @@ class userList {
 	userNode* tail = nullptr;
 
 	public:
+
+	userNode* getHead() { return this->head; }
+	userNode* getTail() { return this->tail; }
+
 	void createUserNode(
 		string userId,
 		string userName,
@@ -158,6 +167,25 @@ class userList {
 		} else {
 			cout << "User " << userId << " not found. Deletion failed." << endl;
 		}
+	}
+
+	void displayAllUser() {
+		if (head == nullptr) {
+			cout << "----------------------------------------------------------------------------------------------------------" << endl;
+			cout << "There is no user account." << endl;
+			cout << "----------------------------------------------------------------------------------------------------------" << endl;
+			return;
+		}
+
+		userNode* current = head;
+		
+		cout << "----------------------------------------------------------------------------------------------------------" << endl;
+		while (current != nullptr) {
+			cout  << left << setw(15) << current->UserId << setw(15) << current->userUserName << setw(50)
+						<< current->UserName << endl;
+			current = current->NextAddress;
+		}
+		cout << "----------------------------------------------------------------------------------------------------------" << endl;
 	}
 
 	private:
