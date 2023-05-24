@@ -172,15 +172,18 @@ class GuestMenu {
 			int page;
 			string name, username, email, password, gender;
 			int age, contact;
+			bool exitPaginate = true;
 
 			switch (choice) {
 			case 1:
 				uniController.displayPaginated(uniData, 1);
-				page = handleIntInput("Enter page number to skip or enter 0 to return");
-				if (page == 0) continue;
-				else {
-					uniController.displayPaginated(uniData, page);
-					continue;
+				while (exitPaginate){
+					page = handleIntInput("Enter page number to skip or enter 0 to return");
+					if (page == 0) exitPaginate = false;
+					else {
+						uniController.displayPaginated(uniData, page);
+						continue;
+					}
 				}
 				break;
 			case 2:
@@ -199,7 +202,6 @@ class GuestMenu {
 				contact = handleIntInput("Enter your contact");
 
 				userListController.createNewMember(username, password, name, gender, email, age, contact);
-				// how did i not saaw this return
 				break;
 			case 5:
 				cout << "Exiting the system. Goodbye!" << endl;
@@ -278,7 +280,6 @@ class GuestMenu {
 		}
 	}
 
-	bool authenticateUser(string username, string password) { return (username == "admin" && password == "password"); }
 
 	void displayLoginMenu() {
 		string username, password;
@@ -330,6 +331,9 @@ class GuestMenu {
 			}
 		}
 	}
+
+	private:
+	bool authenticateUser(string username, string password) { return (username == "admin" && password == "password"); }
 };
 
 class AdminMenu {};
