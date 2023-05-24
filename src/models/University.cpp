@@ -1,4 +1,3 @@
-#include "../Modules/Conversions.cpp"
 
 #include <fstream>
 #include <iostream>
@@ -154,7 +153,15 @@ class universityList {
 				 << endl;
 	}
 
-	void displayFirst20Nodes() {
+	void displaySpecific(universityNode* node) {
+		universityNode* current = node;
+		cout << setw(6) << current->Rank << setw(70) << current->Name << setw(30) << current->Location << setw(12)
+				 << current->ArScore << setw(12) << current->ArRank << setw(12) << current->ErScore << setw(12)
+				 << current->IsrScore << endl;
+		current = current->next;
+	}
+
+	void displayAll() {
 		universityNode* current = head;
 		if (head == nullptr) {
 			cout << "The uni list is empty." << endl;
@@ -179,6 +186,36 @@ class universityList {
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 		cout << "End of list" << endl;
+	}
+
+	void displayPaginated(int pageNumber) {
+		const int universitiesPerPage = 20;
+		int count = 0;
+		int startIdx = (pageNumber - 1) * universitiesPerPage;
+		int endIdx = startIdx + universitiesPerPage;
+
+		universityNode* currentNode = head;
+		cout << "------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << setw(6) << "Rank" << setw(70) << "Name" << setw(30) << "Location" << setw(12) << "AR Score" << setw(12)
+				 << "AR Rank" << setw(12) << "ER Score" << setw(12) << "IrsScore" << endl;
+		cout << "------------------------------------------------------------------------------------------------------"
+				 << endl;
+
+		while (currentNode != nullptr && count < endIdx) {
+			if (count >= startIdx) {
+				displaySpecific(currentNode);
+			}
+
+			currentNode = currentNode->next;
+			count++;
+		}
+		cout << "------------------------------------------------------------------------------------------------------"
+				 << endl;
+
+		if (count < startIdx) {
+			std::cout << "Invalid page number. There are fewer universities than the requested page." << std::endl;
+		}
 	}
 
 	void updateUniversityByRank(int rank) {
@@ -267,4 +304,15 @@ class universityList {
 	// void sortArScore() { quickSort(this->head, this->tail, "ArScore"); }
 
 	private:
+	double stringToDouble(string s) {
+		if (s.empty()) return 0.0;
+
+		try {
+			// convert string to double with decimal point
+			return stod(s);
+		} catch (const std::invalid_argument& e) {
+			// handle invalid input string
+			return 0.0;
+		}
+	}
 };

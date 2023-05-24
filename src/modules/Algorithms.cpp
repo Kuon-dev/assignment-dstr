@@ -1,6 +1,8 @@
 #include "../Models/University.cpp"
 #include <cctype>
+#include <string>
 
+using namespace std;
 /*
 ---------------------------------
 | Helper function section
@@ -8,6 +10,24 @@
 | This section contains list of helper functions
 |
 */
+double stringToDouble(string s) {
+	if (s.empty()) return 0.0;
+
+	try {
+		// convert string to double with decimal point
+		return stod(s);
+	} catch (const std::invalid_argument& e) {
+		// handle invalid input string
+		return 0.0;
+	}
+}
+
+string toLower(string s) {
+	for (int i = 0; i < s.length(); i++) {
+		s[i] = std::tolower(s[i]);
+	}
+	return s;
+}
 
 // for uni
 string getColumn(universityNode* node, string column) {
@@ -253,13 +273,6 @@ class universityQuickSort {
 		return i;
 	}
 
-	string toLowerCase(string str) {
-		for (char& c: str) {
-			c = std::tolower(c);
-		}
-		return str;
-	}
-
 	void swapNodes(universityNode* node1, universityNode* node2) {
 		swap(node1->Name, node2->Name);
 		swap(node1->LocationCode, node2->LocationCode);
@@ -282,6 +295,7 @@ class universityQuickSort {
 		swap(node1->GerRank, node2->GerRank);
 		swap(node1->ScoreScaled, node2->ScoreScaled);
 	}
+
 	universityNode* getTail(universityNode* head) {
 		if (head == nullptr) {
 			return nullptr;

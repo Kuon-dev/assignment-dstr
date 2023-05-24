@@ -47,11 +47,7 @@ target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/Feedback.cpp
 target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/Member.cpp")
 
 # Add the ViewMainMenu.cpp file to the views library
-target_sources(views PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/views/ViewFeedback.cpp")
-target_sources(views PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/views/ViewLoginMenu.cpp")
 target_sources(views PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/views/ViewMainMenu.cpp")
-target_sources(views PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/views/ViewRegisterMenu.cpp")
-target_sources(views PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/views/ViewUniversityMenu.cpp")
 
 
 add_custom_command(TARGET main POST_BUILD

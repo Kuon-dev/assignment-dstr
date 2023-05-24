@@ -1,5 +1,5 @@
-#include "../Controllers/UniversityController.cpp"
 #include "../Models/Favourites.cpp"
+#include "../controllers/UniversityController.cpp"
 // #include "../Models/Member.cpp"
 
 #include <fstream>
@@ -82,15 +82,6 @@ class FavouritesController {
 			favUniTail = newnodeFavUni;
 		}
 	}
-
-	// void displayFavUniName(favUniNode* head) {
-	//	favUniNode* current = head;
-	//	while (current != NULL) {
-	//		cout << "University Name: " << current->UniName << endl;
-	//		cout << endl;
-	//		current = current->NextAddress;
-	//	}
-	// }
 
 	void count() // function to count number of nodes
 	{
