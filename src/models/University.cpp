@@ -289,15 +289,10 @@ class universityList {
 	// remove a node from a linked list
 	void removeUniversityNode(universityNode* node) {
 		if (node == nullptr) return;
-
 		if (node == head) head = node->next;
-
 		if (node == tail) tail = node->prev;
-
 		if (node->prev != nullptr) node->prev->next = node->next;
-
 		if (node->next != nullptr) node->next->prev = node->prev;
-
 		delete node;
 	}
 
