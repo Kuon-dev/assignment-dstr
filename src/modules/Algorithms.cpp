@@ -1,6 +1,8 @@
 #include "../Models/University.cpp"
 #include <cctype>
+#include <string>
 
+using namespace std;
 /*
 ---------------------------------
 | Helper function section
@@ -8,6 +10,24 @@
 | This section contains list of helper functions
 |
 */
+double stringToDouble(string s) {
+	if (s.empty()) return 0.0;
+
+	try {
+		// convert string to double with decimal point
+		return stod(s);
+	} catch (const std::invalid_argument& e) {
+		// handle invalid input string
+		return 0.0;
+	}
+}
+
+string toLower(string s) {
+	for (int i = 0; i < s.length(); i++) {
+		s[i] = std::tolower(s[i]);
+	}
+	return s;
+}
 
 // for uni
 string getColumn(universityNode* node, string column) {
@@ -69,22 +89,22 @@ string getColumn(universityNode* node, string column) {
 |
 */
 
-class universitySorter {
+class universityMergeSort {
 	public:
 	// merge sort
-	void mergeSortUniversityInt(universityNode** head, string column) {
+	universityNode* mergeSortUniversityInt(universityNode** head, string column) {
+		universityNode* current = *head;
+		universityNode* left;
+		universityNode* right;
+
 		if (*head == nullptr || (*head)->next == nullptr) {
-			return; // Base case: list is empty or has only one node
+			return current; // Base case: list is empty or has only one node
 		}
 
-		universityNode* middle = getMiddleNode(*head);
-		universityNode* nextToMiddle = middle->next;
-		middle->next = nullptr;
-
-		mergeSortUniversityInt(head, column);					 // Sort the left half
-		mergeSortUniversityInt(&nextToMiddle, column); // Sort the right half
-
-		*head = mergeByColumn(*head, nextToMiddle, column); // Merge the sorted halves
+		splitList(current, &left, &right);
+		left = mergeSortUniversityInt(&left, column);
+		right = mergeSortUniversityInt(&right, column);
+		return mergeByColumn(left, right, column);
 	}
 
 	universityNode* mergeSortUniversityString(universityNode** head, string column) {
@@ -102,22 +122,6 @@ class universitySorter {
 		return mergeByStringColumn(left, right, column);
 	}
 	// quick sort
-	void quickSortUniversityInt(universityNode* head, universityNode* tail, string column) {
-		if (tail != nullptr && head != tail && head != tail->next) {
-			universityNode* p = partition(head, tail, column);
-			quickSortUniversityInt(head, p->prev, column);
-			quickSortUniversityInt(p->next, tail, column);
-		}
-	}
-
-	void quickSortUniversityString(universityNode* head, universityNode* tail, string column) {
-		if (tail != nullptr && head != tail && head != tail->next) {
-			universityNode* pivot = partitionString(head, tail, column);
-			quickSortUniversityString(head, pivot->prev, column);
-			quickSortUniversityString(pivot->next, tail, column);
-		}
-	}
-
 	private:
 	universityNode* getMiddleNode(universityNode* head) {
 		if (head == nullptr || head->next == nullptr) {
@@ -198,6 +202,76 @@ class universitySorter {
 	}
 
 	// quick sort section
+	// Partition function for quicksort
+};
+
+class universityQuickSort {
+	public:
+	void quicksortInt(universityNode* head, universityNode* tail, string column) {
+		if (tail != nullptr && head != tail && head != tail->next) {
+			universityNode* p = partition(head, tail, column);
+			quicksortInt(head, p->prev, column);
+			quicksortInt(p->next, tail, column);
+		}
+	}
+
+	universityNode* quicksortString(universityNode* head, universityNode* tail, string column) {
+		if (head == nullptr || head == tail) {
+			return head;
+		}
+
+		// Partition the list and get the pivot node
+		universityNode* pivot = partitionString(head, tail, column);
+
+		// Recursively sort the two sublists
+		if (pivot != head) {
+			universityNode* prev = head;
+			while (prev->next != pivot) {
+				prev = prev->next;
+			}
+			prev->next = nullptr;
+			head = quicksortString(head, prev, column);
+			prev = getTail(head);
+			prev->next = pivot;
+		}
+		pivot->next = quicksortString(pivot->next, tail, column);
+
+		return head;
+	}
+
+	private:
+	universityNode* partition(universityNode* head, universityNode* tail, string column) {
+		double pivot = stringToDouble(getColumn(tail, column));
+		universityNode* i = head->prev;
+
+		for (universityNode* j = head; j != tail; j = j->next) {
+			if (stringToDouble(getColumn(j, column)) <= pivot) {
+				i = (i == nullptr) ? head : i->next;
+				swapNodes(i, j);
+			}
+		}
+		i = (i == nullptr) ? head : i->next;
+		swapNodes(i, tail);
+		return i;
+	}
+
+	universityNode* partitionString(universityNode* head, universityNode* tail, string column) {
+		string pivot = getColumn(tail, column);
+
+		universityNode* i = head->prev;
+
+		for (universityNode* j = head; j != tail; j = j->next) {
+			if (toLower(getColumn(j, column)).compare(toLower(pivot)) <= 0) {
+				i = (i == nullptr) ? head : i->next;
+				swapNodes(i, j);
+			}
+		}
+
+		i = (i == nullptr) ? head : i->next;
+		swapNodes(i, tail);
+
+		return i;
+	}
 
 	void swapNodes(universityNode* node1, universityNode* node2) {
 		swap(node1->Name, node2->Name);
@@ -222,42 +296,14 @@ class universitySorter {
 		swap(node1->ScoreScaled, node2->ScoreScaled);
 	}
 
-	// Partition function for quicksort
-	universityNode* partition(universityNode* head, universityNode* tail, string column) {
-		double pivot = stringToDouble(getColumn(tail, column));
-		universityNode* i = head->prev;
-
-		for (universityNode* j = head; j != tail; j = j->next) {
-			if (stringToDouble(getColumn(j, column)) <= pivot) {
-				i = (i == nullptr) ? head : i->next;
-				swapNodes(i, j);
-			}
+	universityNode* getTail(universityNode* head) {
+		if (head == nullptr) {
+			return nullptr;
 		}
-		i = (i == nullptr) ? head : i->next;
-		swapNodes(i, tail);
-		return i;
-	}
-
-	universityNode* partitionString(universityNode* head, universityNode* tail, string column) {
-		string pivot = getColumn(tail, column);
-		universityNode* i = head->prev;
-
-		for (universityNode* j = head; j != tail; j = j->next) {
-			if (getColumn(j, column).compare(pivot) <= 0) {
-				i = (i == nullptr) ? head : i->next;
-				swapNodes(i, j);
-			}
+		while (head->next != nullptr) {
+			head = head->next;
 		}
-		i = (i == nullptr) ? head : i->next;
-		swapNodes(i, tail);
-		return i;
-	}
-
-	string toLowerCase(string str) {
-		for (char& c: str) {
-			c = std::tolower(c);
-		}
-		return str;
+		return head;
 	}
 };
 
@@ -304,7 +350,7 @@ class universitySearcher {
 		while (current != nullptr) {
 			currentNext = current->next; // Assign next node before moving current
 
-			if (fuzzyMatch(current->Name, query)) {
+			if (fuzzyMatch(getColumn(current, column), query)) {
 				newList.addUniversityNode(current);
 
 				if (matched == nullptr) {
