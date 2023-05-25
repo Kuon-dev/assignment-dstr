@@ -160,17 +160,17 @@ class UserMenu {
 
 			choice = handleUserInput();
 			switch (choice) {
-				case 1:
-					return;
-				case 2:
-					feedbackController.createFeedback();
-					break;
-				case 3:
-					cout << "Exiting..." << endl;
-					return;
-				default:
-					cout << "Invalid choice" << endl;
-					break;
+			case 1:
+				return;
+			case 2:
+				feedbackController.createFeedback();
+				break;
+			case 3:
+				cout << "Exiting..." << endl;
+				return;
+			default:
+				cout << "Invalid choice" << endl;
+				break;
 			}
 		}
 	}
@@ -188,15 +188,15 @@ class UserMenu {
 				<< endl;
 			choice = handleUserInput();
 			switch (choice) {
-				case 1:
-					// Handle leaving new feedback confirmation
-					// ...
-					return;
-				case 2:
-					return;
-				default:
-					cout << "Invalid choice" << endl;
-					break;
+			case 1:
+				// Handle leaving new feedback confirmation
+				// ...
+				return;
+			case 2:
+				return;
+			default:
+				cout << "Invalid choice" << endl;
+				break;
 			}
 		}
 	}
@@ -279,7 +279,7 @@ class GuestMenu {
 			switch (choice) {
 			case 1:
 				uniController.displayPaginated(uniData, 1);
-				while (exitPaginate){
+				while (exitPaginate) {
 					page = handleIntInput("Enter page number to skip or enter 0 to return");
 					if (page == 0) exitPaginate = false;
 					else {

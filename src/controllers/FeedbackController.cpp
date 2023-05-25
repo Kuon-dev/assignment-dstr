@@ -163,7 +163,6 @@ class FeedbackController {
 		return 1;
 	}
 
-
 	void deleteFeedback(string feedbackId) {
 		// open the file for reading
 		ifstream inFile(databaseFileName);
