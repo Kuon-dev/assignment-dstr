@@ -7,10 +7,11 @@
 UniversityContoller uniController;
 universityList uniData = uniController.readUniversityDatabase();
 MemberController userListController;
+userList userData = userListController.readUserDatabase();
 
 class UserMenu {
 	public:
-	// normal user
+	FeedbackController feedbackController;
 	void userDashboard() {
 		while (true) {
 			cout
@@ -28,8 +29,7 @@ class UserMenu {
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
 			cout << "Enter your choice (1-5): ";
-			int choice;
-			cin >> choice;
+			int choice = handleUserInput();
 
 			switch (choice) {
 			case 1:
@@ -98,8 +98,7 @@ class UserMenu {
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
 			cout << "Enter your choice (1-5): ";
-			int choice;
-			cin >> choice;
+			int choice = handleUserInput();
 
 			favUniNode* test = favCont.readFavDatabase(userid);
 			switch (choice) {
@@ -145,10 +144,113 @@ class UserMenu {
 	}
 
 	private:
+	void FeedbackDisplayAllUser() {
+		int choice;
+		while (true) {
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "Feedback Dashboard" << endl;
+			cout << "1. Select feedback" << endl;
+			cout << "2. Leave a new feedback" << endl;
+			cout << "3. Exit" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+
+			choice = handleUserInput();
+			switch (choice) {
+				case 1:
+					return;
+				case 2:
+					feedbackController.createFeedback();
+					break;
+				case 3:
+					cout << "Exiting..." << endl;
+					return;
+				default:
+					cout << "Invalid choice" << endl;
+					break;
+			}
+		}
+	}
+
+	void FeedbackCreateConfirm() {
+		int choice;
+		while (true) {
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "1. Confirm leave a new feedback?" << endl;
+			cout << "2. Return" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			choice = handleUserInput();
+			switch (choice) {
+				case 1:
+					// Handle leaving new feedback confirmation
+					// ...
+					return;
+				case 2:
+					return;
+				default:
+					cout << "Invalid choice" << endl;
+					break;
+			}
+		}
+	}
 };
 
 class GuestMenu {
 	public:
+	void displaySearchUniversityMenu() {
+		FavouritesController favouriteData;
+		favouriteData.getFULinkListFromDB();
+		while (true) {
+			string input;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "| Please select an option:" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "| 1. Search University by name" << endl;
+			cout << "| 2. Search University by rank" << endl;
+			cout << "| 3. Search University by country" << endl;
+			cout << "| 4. Exit" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+
+			int choice = handleUserInput();
+
+			switch (choice) {
+			case 1:
+				cout << "Enter your query: ";
+				cin >> input;
+				uniController.searchUniMerge("Name", input);
+				break;
+
+			case 2:
+				uniController.searchUniversityColumn("Rank", handleIntInput("Enter your rank query: "));
+				break;
+
+			case 3:
+				cout << "Enter your query: ";
+				cin >> input;
+				uniController.searchUniQuick("Location", input);
+				break;
+
+			case 4:
+				return;
+			default:
+				cout << "Invalid choice. Please enter a valid choice." << endl;
+			}
+		}
+	}
+
 	void displayMenu() {
 		while (true) {
 			cout
@@ -201,7 +303,7 @@ class GuestMenu {
 				email = handleStringInput("Enter your email");
 				contact = handleIntInput("Enter your contact");
 
-				userListController.createNewMember(username, password, name, gender, email, age, contact);
+				userListController.createNewMember(userData, username, password, name, gender, email, age, contact);
 				break;
 			case 5:
 				cout << "Exiting the system. Goodbye!" << endl;
@@ -279,7 +381,6 @@ class GuestMenu {
 				<< endl;
 		}
 	}
-
 
 	void displayLoginMenu() {
 		string username, password;
