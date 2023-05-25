@@ -330,22 +330,12 @@ class GuestMenu {
 	void displayLoginMenu() {
 		string username, password;
 		char ch;
-		// userList userData = userListController.readUserDatabase();
 		while (true) {
 			system("cls");
-			cout << "-------------------------" << endl;
-
-			userNode* current = userData->getHead();
-			cout << "-----------------------------------------" << endl;
-			while (current != nullptr) {
-				cout << current->userUserName << endl;
-				current = current->NextAddress;
-			}
-			cout << "-----------------------------------------" << endl;
-			cout << "-------------------------" << endl;
+			cout << "----------------------------------------------------------------------------------------------------------" << endl;
 			cout << "| LOGIN MENU" << endl;
 			cout << "| Press 0 to exit" << endl;
-			cout << "------------------------" << endl;
+			cout << "----------------------------------------------------------------------------------------------------------" << endl;
 			cout << "Username: ";
 			username = "";
 			cin >> username;
@@ -371,27 +361,44 @@ class GuestMenu {
 				}
 				ch = _getch();
 			}
+			userNode* authUser = authenticateUser(username, password);
 
-			if (authenticateUser(username, password)) {
-				// call loginSuccess function when credentials are correct
+			if (authUser == nullptr){
+				cout << endl << endl << "Incorrect username or password. Please try again." << endl;
+				system("pause");
+				return;
+			}
+			else if (authUser->UserId == "0"){
+				// admin
+			}
+			else { //login for user
 				cout << endl << endl << "Logged in successfully!" << endl;
 				// loginSuccess();
 				UserMenu menu;
-				menu.profileMenu();
+				menu.userDashboard();
 				return;
-			} else {
-				cout << endl << endl << "Incorrect username or password. Please try again." << endl;
-				system("pause");
-			}
+			};
 		}
-	}
+	};
 
 	private:
-	bool authenticateUser(string username, string password) {
+	userNode* authenticateUser(string username, string password) {
+		// if the user authentication is admin
 		if (username == "admin" && password == "password") {
-			return true;
+			userNode* temp;
+			temp->UserName = "admin";
+			temp->UserId = "0";
+			return temp;
+		};
+		// if the user account and password valid and authorized
+		userNode* current = userData->getHead();
+		while (current != nullptr) {
+			if(current->userUserName == username && current->UserPassword == password) {
+				return current;
+			}
+			current = current->NextAddress;
 		}
-		return false;
+		return nullptr;
 	}
 };
 

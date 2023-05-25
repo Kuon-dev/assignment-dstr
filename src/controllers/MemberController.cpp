@@ -118,6 +118,7 @@ class MemberController {
 	void createNewMember(
 		userList data, string username, string password, string name, string gender, string email, int age, int contact) {
 		userNode* newUser = new userNode();
+		userList* list = new userList();
 		newUser->UserId = to_string(createUserId(data));
 		newUser->userUserName = username;
 		newUser->UserPassword = password;
@@ -136,6 +137,9 @@ class MemberController {
 							<< endl;
 
 			outfile.close();
+
+			data.addUserNode(newUser);
+
 			cout << "User acccount created." << endl;
 		} else {
 			cout << "Please try again later." << endl;
