@@ -12,9 +12,6 @@ userList userData = userListController.readUserDatabase();
 class UserMenu {
 	public:
 	userNode *currentUser;
-	UserMenu(userNode* currentUser){
-		this->currentUser = currentUser;
-	};
 	FeedbackController feedbackController;
 	void userDashboard() {
 		while (true) {
@@ -115,6 +112,7 @@ class UserMenu {
 			case 4:
 				cout << "You have selected 'Add Favourite Universities'" << endl;
 				// TODO: Implement 'Add Favourite Universities' functionality
+				cin.ignore();
 				cout << "University ID: ";
 				getline(cin, uniid);
 				favCont.createUserFavUni(uniid);
@@ -160,7 +158,7 @@ class UserMenu {
 			choice = handleUserInput();
 			switch (choice) {
 			case 1:
-					feedbackController.readFeedbackByUser(userNode *user)
+				feedbackController.readFeedbackByUser(currentUser);
 				return;
 			case 2:
 				feedbackController.createFeedback();
