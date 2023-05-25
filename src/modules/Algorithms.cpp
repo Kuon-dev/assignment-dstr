@@ -26,6 +26,11 @@ string toLower(string s) {
 	for (int i = 0; i < s.length(); i++) {
 		s[i] = std::tolower(s[i]);
 	}
+	size_t firstNonSpace = s.find_first_not_of(' ');
+
+	if (firstNonSpace != std::string::npos) {
+		return s.erase(0, firstNonSpace);
+	}
 	return s;
 }
 
