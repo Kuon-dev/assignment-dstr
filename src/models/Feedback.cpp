@@ -50,7 +50,7 @@ class feedbackList {
 		feedbackNode* newFeedback = new feedbackNode;
 		newFeedback->FeedbackId = newId;
 		newFeedback->UserId = userId;
-		newFeedback->ReplyContent= NULL;
+		newFeedback->ReplyContent = "";
 		newFeedback->FeedbackContent = feedbackContent;
 		newFeedback->Timestamp = time(nullptr);
 

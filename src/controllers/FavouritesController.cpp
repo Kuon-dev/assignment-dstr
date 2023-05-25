@@ -180,13 +180,13 @@ class FavouritesController {
 	}
 
 	void createUserFavUni(string input) {
-		UniversityContoller uniObject;
+		UniversityContoller* uniObject;
 
-		universityList uniCurrentList = uniObject.readUniversityDatabase();
+		universityList* uniCurrentList = uniObject->readUniversityDatabase();
 
 		universitySearcher searcher;
 
-		universityNode* searched = searcher.binarySearch(uniCurrentList.getHead(), "Rank", stoi(input));
+		universityNode* searched = searcher.binarySearch(uniCurrentList->getHead(), "Rank", stoi(input));
 
 		string ID, Name;
 		cout << "enter user id as temporary name for fav uni" << endl;

@@ -5,14 +5,14 @@
 using namespace std::chrono;
 class UniversityContoller {
 	public:
-	universityList readUniversityDatabase() {
+	universityList* readUniversityDatabase() {
 		universityList* list = new universityList();
 		ifstream file("./Universities.csv");
 		if (!file.is_open()) {
 			cout << "\033[31m"
 					 << "Error: could not open file "
 					 << "\033[0m" << endl;
-			return *list;
+			return list;
 		}
 		// skip header
 		string header;
@@ -135,72 +135,69 @@ class UniversityContoller {
 		};
 
 		file.close();
-		return *list;
+		return list;
 	};
 
 	void displayPaginated(universityList list, int index) { list.displayPaginated(index); }
 
 	void displayAll(universityList list) { list.displayAll(); }
 
-	void searchUniversityColumn(string column, int input) {
+	void searchUniversityColumn(string column, int input, universityList* currentList) {
 		cout << "\033[94mFetching database...\033[0m" << endl;
-		universityList currentList = readUniversityDatabase();
 		universityList queryList;
 		universityQuickSort sorter;
 		universitySearcher searcher;
 		auto startTime = high_resolution_clock::now();
 
 		cout << "\033[94mUsing Quick sort...\033[0m" << endl;
-		sorter.quicksortString(currentList.getHead(), currentList.getTail(), "Name");
+		sorter.quicksortString(currentList->getHead(), currentList->getTail(), "Name");
 
 		auto endTime = high_resolution_clock::now();
 		auto duration = duration_cast<milliseconds>(endTime - startTime);
 
 		cout << "\033[94mTime taken to sort: " << duration.count() << " milliseconds \033[0m" << endl;
-		universityNode* searched = searcher.binarySearch(currentList.getHead(), column, (input));
+		universityNode* searched = searcher.binarySearch(currentList->getHead(), column, (input));
 
 		queryList.addUniversityNode(searched);
 		queryList.displayAll();
 	}
 
-	void searchUniMerge(string column, string input) {
+	void searchUniMerge(string column, string input, universityList* currentList) {
 		universityMergeSort mergeSorter;
 		universitySearcher searcher;
 
 		cout << "\033[94mFetching database...\033[0m" << endl;
-		universityList currentList = readUniversityDatabase();
 
 		cout << "\033[94mSorting list...\033[0m" << endl;
 		cout << "\033[94mUsing Merge sort...\033[0m" << endl;
 		auto sortStartTime = high_resolution_clock::now();
-		universityNode* head = currentList.getHead();
-		currentList.setHead(mergeSorter.mergeSortUniversityString(&head, "Name"));
+		universityNode* head = currentList->getHead();
+		currentList->setHead(mergeSorter.mergeSortUniversityString(&head, "Name"));
 		auto sortEndTime = high_resolution_clock::now();
 		auto sortDuration = duration_cast<milliseconds>(sortEndTime - sortStartTime);
 		cout << "\033[94mTime taken to sort: " << sortDuration.count() << " milliseconds\033[0m" << endl;
 		cout << "\033[94mSearching database...\033[0m" << endl;
 		auto searchStartTime = high_resolution_clock::now();
-		universityList filteredList = searcher.linearSearch(currentList.getHead(), column, (input));
+		universityList filteredList = searcher.linearSearch(currentList->getHead(), column, (input));
 		auto endTime = high_resolution_clock::now();
 		auto searchDuration = duration_cast<milliseconds>(endTime - searchStartTime);
 		cout << "\033[94mTime taken to search: " << searchDuration.count() << " milliseconds\033[0m" << endl;
 		filteredList.displayAll();
 	}
 
-	void searchUniQuick(string column, string input) {
+	void searchUniQuick(string column, string input, universityList* currentList) {
 		universityQuickSort sorter;
 		universitySearcher searcher;
 
 		cout << "\033[94mFetching database...\033[0m" << endl;
-		universityList currentList = readUniversityDatabase();
 
 		// start sort
 		cout << "\033[94mSorting list...\033[0m" << endl;
 		cout << "\033[94mUsing Quick sort...\033[0m" << endl;
 		auto sortStartTime = high_resolution_clock::now();
-		universityNode* head = currentList.getHead();
-		universityNode* tail = currentList.getTail();
-		currentList.setHead(sorter.quicksortString(head, tail, "Name"));
+		universityNode* head = currentList->getHead();
+		universityNode* tail = currentList->getTail();
+		currentList->setHead(sorter.quicksortString(head, tail, column));
 		auto sortEndTime = high_resolution_clock::now();
 		auto sortDuration = duration_cast<milliseconds>(sortEndTime - sortStartTime);
 		cout << "\033[94mTime taken to sort: " << sortDuration.count() << " milliseconds\033[0m" << endl;
@@ -208,7 +205,7 @@ class UniversityContoller {
 		// sort ends, start search
 		cout << "\033[94mSearching database...\033[0m" << endl;
 		auto searchStartTime = high_resolution_clock::now();
-		universityList filteredList = searcher.linearSearch(currentList.getHead(), column, (input));
+		universityList filteredList = searcher.linearSearch(currentList->getHead(), column, (input));
 		auto endTime = high_resolution_clock::now();
 		auto searchDuration = duration_cast<milliseconds>(endTime - searchStartTime);
 		cout << "\033[94mTime taken to search: " << searchDuration.count() << " milliseconds\033[0m" << endl;

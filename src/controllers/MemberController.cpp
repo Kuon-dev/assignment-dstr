@@ -11,7 +11,7 @@ using namespace std;
 class MemberController {
 	public:
 	// read users database from Users.csv
-	userList readUserDatabase() {
+	userList* readUserDatabase() {
 		userList* list = new userList();
 		ifstream file("Database/Users.csv"); // get user database
 		// validate file open
@@ -19,7 +19,7 @@ class MemberController {
 			cout << "\033[31m"
 					 << "Error: could not open file "
 					 << "\033[0m" << endl;
-			return *list;
+			return list;
 		}
 		// define database haeder and line
 		string header, line;
@@ -75,16 +75,17 @@ class MemberController {
 		};
 
 		file.close();
-		return *list;
+		return list;
 	};
 
 	// execute function and store
 	//  userList userDatabaseList = this.readUserDatabase();
 
 	// check username special characters and unique
-	bool validateUsername(const string& username, const userList& users) {
+	bool validateUsername(const string& username, const userList& users, userNode* headNode) {
 		// Regular expression pattern for username without special characters
 		regex pattern("^[a-zA-Z0-9_]+$");
+		userNode* current = headNode;
 
 		// Check if the username matches the pattern
 		if (!regex_match(username, pattern)) {
@@ -100,7 +101,6 @@ class MemberController {
 		cout << "username" << username;
 		// cout << "userlist " << (users.length() ? "got" : "no") << endl;
 
-		userNode* current = readUserDatabase().getHead();
 		// Check if the username already exists in the user list
 		while (current != nullptr) {
 			// if (current->userUserName == username) {
