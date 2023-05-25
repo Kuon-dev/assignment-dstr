@@ -13,6 +13,7 @@ struct feedbackNode {
 	string FeedbackId;
 	string UserId;
 	string FeedbackContent;
+	string ReplyContent;
 	time_t Timestamp;
 
 } *head, *tail;
@@ -49,6 +50,7 @@ class feedbackList {
 		feedbackNode* newFeedback = new feedbackNode;
 		newFeedback->FeedbackId = newId;
 		newFeedback->UserId = userId;
+		newFeedback->ReplyContent= NULL;
 		newFeedback->FeedbackContent = feedbackContent;
 		newFeedback->Timestamp = time(nullptr);
 
