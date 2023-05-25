@@ -11,6 +11,10 @@ userList userData = userListController.readUserDatabase();
 
 class UserMenu {
 	public:
+	userNode *currentUser;
+	UserMenu(userNode* currentUser){
+		this->currentUser = currentUser;
+	};
 	FeedbackController feedbackController;
 	void userDashboard() {
 		while (true) {
@@ -96,6 +100,7 @@ class UserMenu {
 			case 1:
 				cout << "You have selected 'View Profile'" << endl;
 				// TODO: Implement 'View Profile' functionality
+				FeedbackDisplayUser();
 				break;
 			case 2:
 				cout << "You have selected 'Edit Profile'" << endl;
@@ -135,7 +140,10 @@ class UserMenu {
 	}
 
 	private:
-	void FeedbackDisplayAllUser() {
+	void setUser(userNode *user){
+		this->currentUser = user;
+	}
+	void FeedbackDisplayUser() {
 		int choice;
 		while (true) {
 			cout
@@ -152,6 +160,7 @@ class UserMenu {
 			choice = handleUserInput();
 			switch (choice) {
 			case 1:
+					feedbackController.readFeedbackByUser(userNode *user)
 				return;
 			case 2:
 				feedbackController.createFeedback();
