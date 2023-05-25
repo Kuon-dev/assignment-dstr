@@ -115,10 +115,10 @@ class MemberController {
 	}
 
 	// create a new user node and append to csv
-	void
-	createNewMember(userList data, string username, string password, string name, string gender, string email, int age, int contact) {
+	void createNewMember(
+		userList data, string username, string password, string name, string gender, string email, int age, int contact) {
 		userNode* newUser = new userNode();
-		newUser->UserId = createUserId(data);
+		newUser->UserId = to_string(createUserId(data));
 		newUser->userUserName = username;
 		newUser->UserPassword = password;
 		newUser->UserName = name;
@@ -150,6 +150,7 @@ class MemberController {
 	int createUserId(userList data) {
 		userNode* lastNode = data.getTail();
 		if (lastNode == nullptr) return 1;
-		else return stoi(lastNode->UserId) + 1;
+		else if (lastNode->UserId == "") return 1;
+		else return (stoi(lastNode->UserId) + 1);
 	}
 };
