@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 
-#include "../Models/Member.cpp"
+#include "../controllers/FeedbackController.cpp"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ class MemberController {
 	// read users database from Users.csv
 	userList readUserDatabase() {
 		userList* list = new userList();
-		ifstream file("./Users.csv"); // get user database
+		ifstream file("Database/Users.csv"); // get user database
 		// validate file open
 		if (!file.is_open()) {
 			cout << "\033[31m"
@@ -115,10 +115,10 @@ class MemberController {
 	}
 
 	// create a new user node and append to csv
-	void
-	createNewMember(string username, string password, string name, string gender, string email, int age, int contact) {
+	void createNewMember(
+		userList data, string username, string password, string name, string gender, string email, int age, int contact) {
 		userNode* newUser = new userNode();
-		newUser->UserId = createUserId();
+		newUser->UserId = to_string(createUserId(data));
 		newUser->userUserName = username;
 		newUser->UserPassword = password;
 		newUser->UserName = name;
@@ -128,7 +128,7 @@ class MemberController {
 		newUser->UserContact = 0;
 		newUser->UserLastLogin = "null";
 
-		ofstream outfile("./Users.csv", ios::app);
+		ofstream outfile("Database/Users.csv", ios::app);
 		if (outfile) {
 			outfile << newUser->UserId << "," << newUser->userUserName << "," << newUser->UserPassword << ","
 							<< newUser->UserName << "," << newUser->UserGender << "," << newUser->UserEmail << ","
@@ -147,10 +147,10 @@ class MemberController {
 	}
 
 	private:
-	int createUserId() {
-		userList data = readUserDatabase();
+	int createUserId(userList data) {
 		userNode* lastNode = data.getTail();
 		if (lastNode == nullptr) return 1;
-		else return stoi(lastNode->UserId) + 1;
+		else if (lastNode->UserId == "") return 1;
+		else return (stoi(lastNode->UserId) + 1);
 	}
 };

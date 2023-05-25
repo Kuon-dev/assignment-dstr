@@ -51,6 +51,17 @@ target_sources(views PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/views/ViewMainMenu.c
 
 
 add_custom_command(TARGET main POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy
-                       ${CMAKE_SOURCE_DIR}/database/Universities.csv
-                       $<TARGET_FILE_DIR:main>/Universities.csv)
+   COMMAND ${CMAKE_COMMAND} -E copy
+	   ${CMAKE_SOURCE_DIR}/Database/Universities.csv
+	   $<TARGET_FILE_DIR:main>/Database/Universities.csv)
+
+add_custom_command(TARGET main POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy
+	   ${CMAKE_SOURCE_DIR}/Database/FavUni.csv
+	   $<TARGET_FILE_DIR:main>/Database/FavUni.csv)
+
+add_custom_command(TARGET main POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy
+	   ${CMAKE_SOURCE_DIR}/Database/Users.csv
+	   $<TARGET_FILE_DIR:main>/Database/Users.csv)
+

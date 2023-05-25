@@ -7,9 +7,15 @@
 UniversityContoller uniController;
 universityList uniData = uniController.readUniversityDatabase();
 MemberController userListController;
+userList userData = userListController.readUserDatabase();
 
 class UserMenu {
 	public:
+	userNode *currentUser;
+	UserMenu(userNode* currentUser){
+		this->currentUser = currentUser;
+	};
+	FeedbackController feedbackController;
 	void userDashboard() {
 		while (true) {
 			cout
@@ -17,7 +23,7 @@ class UserMenu {
 				<< endl;
 			cout << "Welcome to the User Dashboard" << endl;
 			cout << "Please select an option:" << endl;
-			cout << "1. Feedback" << endl;
+			cout << "1. Leave a Feedback" << endl;
 			cout << "2. View Universities" << endl;
 			cout << "3. Profile" << endl;
 			cout << "4. Logout" << endl;
@@ -25,8 +31,7 @@ class UserMenu {
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
 			cout << "Enter your choice (1-5): ";
-			int choice;
-			cin >> choice;
+			int choice = handleUserInput();
 
 			switch (choice) {
 			case 1:
@@ -34,18 +39,14 @@ class UserMenu {
 				// TODO: Implement 'Leave Feedback' functionality
 				break;
 			case 2:
-				cout << "You have selected 'View Replied Feedback'" << endl;
-				// TODO: Implement 'View Replied Feedback' functionality
-				break;
-			case 3:
 				cout << "You have selected 'View Universities'" << endl;
 				// TODO: Implement 'View Universities' functionality
 				break;
-			case 4:
+			case 3:
 				cout << "You have selected 'Edit Profile'" << endl;
 				// TODO: Implement 'Edit Profile' functionality
 				break;
-			case 5:
+			case 4:
 				cout << "You have selected 'Logout'" << endl;
 				cout << "Goodbye!" << endl;
 				return;
@@ -92,14 +93,14 @@ class UserMenu {
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
 			cout << "Enter your choice (1-5): ";
-			int choice;
-			cin >> choice;
+			int choice = handleUserInput();
 
 			favUniNode* test = favCont.readFavDatabase(userid);
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'View Profile'" << endl;
 				// TODO: Implement 'View Profile' functionality
+				FeedbackDisplayUser();
 				break;
 			case 2:
 				cout << "You have selected 'Edit Profile'" << endl;
@@ -139,6 +140,66 @@ class UserMenu {
 	}
 
 	private:
+	void setUser(userNode *user){
+		this->currentUser = user;
+	}
+	void FeedbackDisplayUser() {
+		int choice;
+		while (true) {
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "Feedback Dashboard" << endl;
+			cout << "1. Select feedback" << endl;
+			cout << "2. Leave a new feedback" << endl;
+			cout << "3. Exit" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+
+			choice = handleUserInput();
+			switch (choice) {
+			case 1:
+					feedbackController.readFeedbackByUser(userNode *user)
+				return;
+			case 2:
+				feedbackController.createFeedback();
+				break;
+			case 3:
+				cout << "Exiting..." << endl;
+				return;
+			default:
+				cout << "Invalid choice" << endl;
+				break;
+			}
+		}
+	}
+
+	void FeedbackCreateConfirm() {
+		int choice;
+		while (true) {
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "1. Confirm leave a new feedback?" << endl;
+			cout << "2. Return" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			choice = handleUserInput();
+			switch (choice) {
+			case 1:
+				// Handle leaving new feedback confirmation
+				// ...
+				return;
+			case 2:
+				return;
+			default:
+				cout << "Invalid choice" << endl;
+				break;
+			}
+		}
+	}
 };
 
 class GuestMenu {
@@ -212,15 +273,18 @@ class GuestMenu {
 			int page;
 			string name, username, email, password, gender;
 			int age, contact;
+			bool exitPaginate = true;
 
 			switch (choice) {
 			case 1:
 				uniController.displayPaginated(uniData, 1);
-				page = handleIntInput("Enter page number to skip or enter 0 to return");
-				if (page == 0) continue;
-				else {
-					uniController.displayPaginated(uniData, page);
-					continue;
+				while (exitPaginate) {
+					page = handleIntInput("Enter page number to skip or enter 0 to return");
+					if (page == 0) exitPaginate = false;
+					else {
+						uniController.displayPaginated(uniData, page);
+						continue;
+					}
 				}
 				break;
 			case 2:
@@ -238,8 +302,7 @@ class GuestMenu {
 				email = handleStringInput("Enter your email");
 				contact = handleIntInput("Enter your contact");
 
-				userListController.createNewMember(username, password, name, gender, email, age, contact);
-				// how did i not saaw this return
+				userListController.createNewMember(userData, username, password, name, gender, email, age, contact);
 				break;
 			case 5:
 				cout << "Exiting the system. Goodbye!" << endl;
@@ -270,8 +333,6 @@ class GuestMenu {
 				<< endl;
 		}
 	}
-
-	bool authenticateUser(string username, string password) { return (username == "admin" && password == "password"); }
 
 	void displayLoginMenu() {
 		string username, password;
@@ -322,6 +383,9 @@ class GuestMenu {
 			}
 		}
 	}
+
+	private:
+	bool authenticateUser(string username, string password) { return (username == "admin" && password == "password"); }
 };
 
 class AdminMenu {};
