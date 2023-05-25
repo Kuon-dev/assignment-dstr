@@ -12,9 +12,6 @@ userList userData = userListController.readUserDatabase();
 class UserMenu {
 	public:
 	userNode *currentUser;
-	UserMenu(userNode* currentUser){
-		this->currentUser = currentUser;
-	};
 	FeedbackController feedbackController;
 	void userDashboard() {
 		while (true) {
@@ -160,7 +157,7 @@ class UserMenu {
 			choice = handleUserInput();
 			switch (choice) {
 			case 1:
-					feedbackController.readFeedbackByUser(userNode *user)
+				feedbackController.readFeedbackByUser(currentUser);
 				return;
 			case 2:
 				feedbackController.createFeedback();

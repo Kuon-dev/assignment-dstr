@@ -132,10 +132,6 @@ class favUniList {
 			}
 
 			InsertTopTenUni(curr);
-<<<<<<< HEAD
-
-=======
->>>>>>> main
 		}
 	}
 
