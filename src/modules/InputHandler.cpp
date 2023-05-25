@@ -27,6 +27,48 @@ int handleUserInput() {
 	}
 }
 
+string handleStringInput(string title) {
+	string userInput;
+	while (true) {
+		cout << title << endl;
+		cin >> userInput;
+
+		if (userInput == "q") {
+			exitProgram();
+		}
+
+		if (userInput.length() > 60) {
+			cout << "Error: input exceeds 60 characters" << endl;
+			return NULL;
+		}
+		return userInput;
+	}
+}
+
+int handleIntInput(string title) {
+	string userInput;
+	while (true) {
+		cout << title << endl;
+		cin >> userInput;
+
+		if (userInput == "q") {
+			exitProgram();
+		}
+		if (userInput.length() > 60) {
+			cout << "Error: input exceeds 60 characters" << endl;
+			return -1;
+		}
+
+		try {
+			int number = stoi(userInput);
+			return number;
+		} catch (const invalid_argument&) {
+			cout << "Error: Invalid input. Please enter an integer number." << endl;
+			;
+		}
+	}
+}
+
 string handleUserSearch() {
 	string userInput;
 	cin >> userInput;

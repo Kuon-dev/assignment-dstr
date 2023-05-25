@@ -1,10 +1,10 @@
-#include "Views/ViewFeedback.cpp"
 #include "Views/ViewMainMenu.cpp"
 #include <iostream>
 
 using namespace std;
 
 int main() {
-	// feedbackMenu();
-	displayMenu();
+	system("cls");
+	GuestMenu main;
+	main.displayMenu();
 }

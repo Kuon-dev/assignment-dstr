@@ -1,4 +1,5 @@
 #include "../Models/Feedback.cpp"
+#include "../Models/Member.cpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -112,7 +113,6 @@ class FeedbackController {
 		}
 	};
 
-
 	int readAllFeedbacks() {
 		feedbackList feedback;
 		ifstream file("Database/FeedbackDatabase.csv");
@@ -135,7 +135,31 @@ class FeedbackController {
 			cerr << "Error opening file." << endl;
 			return 0;
 		}
-		feedback.displayAllFeedback();
+		return 1;
+	}
+
+	int readFeedbackByUser(userNode* user) {
+		feedbackList feedback;
+		ifstream file("Database/FeedbackDatabase.csv");
+		if (file) {
+			cout << left << setw(15) << "Feedback ID" << setw(15) << "User ID" << setw(50) << "Feedback Content" << setw(30)
+					 << "Timestamp" << endl;
+			string line;
+			while (getline(file, line)) {
+				stringstream ss(line);
+				string feedbackId, userId, feedbackContent, timestamp;
+				getline(ss, feedbackId, ',');
+				getline(ss, userId, ',');
+				getline(ss, feedbackContent, ',');
+				getline(ss, timestamp, ',');
+
+				feedback.setFeedbackNode(feedbackId, userId, feedbackContent, stoi(timestamp));
+			}
+			file.close();
+		} else {
+			cerr << "Error opening file." << endl;
+			return 0;
+		}
 		return 1;
 	}
 

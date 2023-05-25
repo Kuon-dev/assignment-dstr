@@ -1,5 +1,8 @@
 #include "../Models/University.cpp"
+#include <cctype>
+#include <string>
 
+using namespace std;
 /*
 ---------------------------------
 | Helper function section
@@ -7,7 +10,24 @@
 | This section contains list of helper functions
 |
 */
+double stringToDouble(string s) {
+	if (s.empty()) return 0.0;
 
+	try {
+		// convert string to double with decimal point
+		return stod(s);
+	} catch (const std::invalid_argument& e) {
+		// handle invalid input string
+		return 0.0;
+	}
+}
+
+string toLower(string s) {
+	for (int i = 0; i < s.length(); i++) {
+		s[i] = std::tolower(s[i]);
+	}
+	return s;
+}
 
 // for uni
 string getColumn(universityNode* node, string column) {
@@ -69,26 +89,48 @@ string getColumn(universityNode* node, string column) {
 |
 */
 
-class universitySorter {
+class universityMergeSort {
 	public:
-	void quickSortUniversity(universityNode* head, universityNode* tail, string column) {
-		if (tail != nullptr && head != tail && head != tail->next) {
-			universityNode* p = partition(head, tail, column);
-			quickSortUniversity(head, p->prev, column);
-			quickSortUniversity(p->next, tail, column);
+	// merge sort
+	universityNode* mergeSortUniversityInt(universityNode** head, string column) {
+		universityNode* current = *head;
+		universityNode* left;
+		universityNode* right;
+
+		if (*head == nullptr || (*head)->next == nullptr) {
+			return current; // Base case: list is empty or has only one node
 		}
+
+		splitList(current, &left, &right);
+		left = mergeSortUniversityInt(&left, column);
+		right = mergeSortUniversityInt(&right, column);
+		return mergeByColumn(left, right, column);
 	}
 
-	void mergeSortUniversity(universityNode* head, string column) { mergeSortByColumnRecursive(head, column); }
+	universityNode* mergeSortUniversityString(universityNode** head, string column) {
+		universityNode* current = *head;
+		universityNode* left;
+		universityNode* right;
 
+		if (current == nullptr || current->next == nullptr) {
+			return current;
+		}
+
+		splitList(current, &left, &right);
+		left = mergeSortUniversityString(&left, column);
+		right = mergeSortUniversityString(&right, column);
+		return mergeByStringColumn(left, right, column);
+	}
+	// quick sort
 	private:
 	universityNode* getMiddleNode(universityNode* head) {
-		if (head == nullptr) {
-			return nullptr;
+		if (head == nullptr || head->next == nullptr) {
+			return head;
 		}
 
 		universityNode* slow = head;
 		universityNode* fast = head->next;
+
 		while (fast != nullptr) {
 			fast = fast->next;
 			if (fast != nullptr) {
@@ -100,50 +142,136 @@ class universitySorter {
 		return slow;
 	}
 
-	universityNode* mergeByColumn(universityNode* left, universityNode* right, string column) {
-		universityNode temp;
-		universityNode* tail = &temp;
+	void splitList(universityNode* source, universityNode** front, universityNode** back) {
+		universityNode* slow = source;
+		universityNode* fast = source->next;
 
-		while (left != nullptr && right != nullptr) {
-			if (getColumn(left, column) >= getColumn(right, column)) {
-				tail->next = left;
-				left = left->next;
-			} else {
-				tail->next = right;
-				right = right->next;
+		while (fast != nullptr) {
+			fast = fast->next;
+			if (fast != nullptr) {
+				slow = slow->next;
+				fast = fast->next;
 			}
-			tail = tail->next;
 		}
 
-		if (left != nullptr) {
-			tail->next = left;
+		*front = source;
+		*back = slow->next;
+		slow->next = nullptr;
+	}
+
+	universityNode* mergeByColumn(universityNode* left, universityNode* right, string column) {
+		if (left == nullptr) {
+			return right;
+		}
+		if (right == nullptr) {
+			return left;
+		}
+
+		universityNode* result = nullptr;
+
+		if (getColumn(left, column) <= getColumn(right, column)) {
+			result = left;
+			result->next = mergeByColumn(left->next, right, column);
 		} else {
-			tail->next = right;
+			result = right;
+			result->next = mergeByColumn(left, right->next, column);
 		}
 
-		return temp.next;
+		return result;
 	}
 
-	universityNode* mergeSortByColumnRecursive(universityNode* head, string column) {
-		if (head == nullptr || head->next == nullptr) {
-			return head; // Base case: list is empty or has only one node
+	universityNode* mergeByStringColumn(universityNode* left, universityNode* right, string column) {
+		if (left == nullptr) {
+			return right;
+		}
+		if (right == nullptr) {
+			return left;
 		}
 
-		// Split the list into two halves
-		universityNode* middle = getMiddleNode(head);
-		universityNode* nextToMiddle = middle->next;
-		middle->next = nullptr;
+		universityNode* result = nullptr;
 
-		// Recursively sort the two halves
-		universityNode* left = mergeSortByColumnRecursive(head, column);
-		universityNode* right = mergeSortByColumnRecursive(nextToMiddle, column);
+		if (toLower(getColumn(left, column)).compare(toLower(getColumn(right, column))) <= 0) {
+			result = left;
+			result->next = mergeByStringColumn(left->next, right, column);
+		} else {
+			result = right;
+			result->next = mergeByStringColumn(left, right->next, column);
+		}
 
-		// Merge the two sorted halves
-		return mergeByColumn(left, right, column);
+		return result;
 	}
-
 
 	// quick sort section
+	// Partition function for quicksort
+};
+
+class universityQuickSort {
+	public:
+	void quicksortInt(universityNode* head, universityNode* tail, string column) {
+		if (tail != nullptr && head != tail && head != tail->next) {
+			universityNode* p = partition(head, tail, column);
+			quicksortInt(head, p->prev, column);
+			quicksortInt(p->next, tail, column);
+		}
+	}
+
+	universityNode* quicksortString(universityNode* head, universityNode* tail, string column) {
+		if (head == nullptr || head == tail) {
+			return head;
+		}
+
+		// Partition the list and get the pivot node
+		universityNode* pivot = partitionString(head, tail, column);
+
+		// Recursively sort the two sublists
+		if (pivot != head) {
+			universityNode* prev = head;
+			while (prev->next != pivot) {
+				prev = prev->next;
+			}
+			prev->next = nullptr;
+			head = quicksortString(head, prev, column);
+			prev = getTail(head);
+			prev->next = pivot;
+		}
+		pivot->next = quicksortString(pivot->next, tail, column);
+
+		return head;
+	}
+
+	private:
+	universityNode* partition(universityNode* head, universityNode* tail, string column) {
+		double pivot = stringToDouble(getColumn(tail, column));
+		universityNode* i = head->prev;
+
+		for (universityNode* j = head; j != tail; j = j->next) {
+			if (stringToDouble(getColumn(j, column)) <= pivot) {
+				i = (i == nullptr) ? head : i->next;
+				swapNodes(i, j);
+			}
+		}
+		i = (i == nullptr) ? head : i->next;
+		swapNodes(i, tail);
+		return i;
+	}
+
+	universityNode* partitionString(universityNode* head, universityNode* tail, string column) {
+		string pivot = getColumn(tail, column);
+
+		universityNode* i = head->prev;
+
+		for (universityNode* j = head; j != tail; j = j->next) {
+			if (toLower(getColumn(j, column)).compare(toLower(pivot)) <= 0) {
+				i = (i == nullptr) ? head : i->next;
+				swapNodes(i, j);
+			}
+		}
+
+		i = (i == nullptr) ? head : i->next;
+		swapNodes(i, tail);
+
+		return i;
+	}
 
 	void swapNodes(universityNode* node1, universityNode* node2) {
 		swap(node1->Name, node2->Name);
@@ -168,20 +296,14 @@ class universitySorter {
 		swap(node1->ScoreScaled, node2->ScoreScaled);
 	}
 
-	// Partition function for quicksort
-	universityNode* partition(universityNode* head, universityNode* tail, string column) {
-		double pivot = stringToDouble(getColumn(tail, "ArScore"));
-		universityNode* i = head->prev;
-
-		for (universityNode* j = head; j != tail; j = j->next) {
-			if (stringToDouble(getColumn(j, "ArScore")) <= pivot) {
-				i = (i == nullptr) ? head : i->next;
-				swapNodes(i, j);
-			}
+	universityNode* getTail(universityNode* head) {
+		if (head == nullptr) {
+			return nullptr;
 		}
-		i = (i == nullptr) ? head : i->next;
-		swapNodes(i, tail);
-		return i;
+		while (head->next != nullptr) {
+			head = head->next;
+		}
+		return head;
 	}
 };
 
@@ -193,7 +315,6 @@ class universitySorter {
 | university node
 |
 */
-
 
 class universitySearcher {
 	public:
@@ -219,4 +340,51 @@ class universitySearcher {
 
 		return nullptr;
 	};
+
+	universityList linearSearch(universityNode* head, string column, string query) {
+		universityList newList;
+		universityNode* current = head;
+		universityNode* currentNext = nullptr;
+		universityNode* matched = nullptr;
+
+		while (current != nullptr) {
+			currentNext = current->next; // Assign next node before moving current
+
+			if (fuzzyMatch(getColumn(current, column), query)) {
+				newList.addUniversityNode(current);
+
+				if (matched == nullptr) {
+					matched = current;
+					matched->prev = nullptr;
+					matched->next = nullptr;
+				} else {
+					matched->next = current;
+					current->prev = matched;
+					matched = current;
+				}
+			}
+			current = currentNext;
+		}
+		return newList;
+	}
+
+	private:
+	bool fuzzyMatch(const string& str, const string& query) {
+		int strLen = str.length();
+		int queryLen = query.length();
+		int i = 0;
+		int j = 0;
+
+		while (i < strLen && j < queryLen) {
+			if (tolower(str[i]) == tolower(query[j])) {
+				i++;
+				j++;
+			} else {
+				j = 0;				 // Reset query index
+				i = i - j + 1; // Move back to the next character in str
+			}
+		}
+
+		return (j == queryLen);
+	}
 };
