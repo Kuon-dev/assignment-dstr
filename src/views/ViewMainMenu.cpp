@@ -112,6 +112,7 @@ class UserMenu {
 			case 4:
 				cout << "You have selected 'Add Favourite Universities'" << endl;
 				// TODO: Implement 'Add Favourite Universities' functionality
+				cin.ignore();
 				cout << "University ID: ";
 				getline(cin, uniid);
 				favCont.createUserFavUni(uniid);
