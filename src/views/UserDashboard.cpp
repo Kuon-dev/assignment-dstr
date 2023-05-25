@@ -85,6 +85,25 @@ class UserMenu {
 		cout << "User ID: ";
 		getline(cin, userid);
 
+		favUniNode* test = favCont.readFavDatabase(userid);
+
+		//display uni list based on user id
+
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+
+		cout << "List of Favourite University" << endl;
+
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+
+		favCont.displayFavUni(test);
+
+
+		cout<< endl;
+
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -106,7 +125,11 @@ class UserMenu {
 
 			
 
-			favUniNode* test = favCont.readFavDatabase(userid);
+			//favUniNode* test = favCont.readFavDatabase(userid);
+
+			////display uni list based on user id
+			//favCont.displayFavUni(test);
+
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'View Profile'" << endl;
@@ -131,7 +154,7 @@ class UserMenu {
 				cout << "You have selected 'Add Favourite Universities'" << endl;
 				// TODO: Implement 'Add Favourite Universities' functionality
 
-
+				cin.ignore();
 				cout << "University ID: ";
 				getline(cin, uniid);
 
