@@ -50,7 +50,7 @@ class UserMenu {
 				break;
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
-				// TODO: Implement 'Send Feedback' functionality
+				feedbackController->createFeedback(feedbackData, currentUser);;
 				break;
 			case 4:
 				cout << "You have selected 'View Submitted Feedback'" << endl;
@@ -179,7 +179,7 @@ class UserMenu {
 				feedbackController->getFeedbacksByUser(feedbackData, currentUser);
 				return;
 			case 2:
-				feedbackController->createFeedback(feedbackData->getTail(), currentUser);
+				// feedbackController->createFeedback(feedbackData->getTail(), currentUser);
 				break;
 			case 3:
 				cout << "Exiting..." << endl;

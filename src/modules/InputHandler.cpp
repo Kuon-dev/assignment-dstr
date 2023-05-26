@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <limits>
 using namespace std;
 
 void exitProgram() {
@@ -31,7 +32,7 @@ string handleStringInput(string title) {
 	string userInput;
 	while (true) {
 		cout << title << endl;
-		cin >> userInput;
+		getline(cin >> ws, userInput);
 
 		if (userInput == "q") {
 			exitProgram();
@@ -39,8 +40,9 @@ string handleStringInput(string title) {
 
 		if (userInput.length() > 60) {
 			cout << "Error: input exceeds 60 characters" << endl;
-			return NULL;
+			continue;
 		}
+
 		return userInput;
 	}
 }
@@ -50,6 +52,7 @@ int handleIntInput(string title) {
 	while (true) {
 		cout << title << endl;
 		cin >> userInput;
+		cin.ignore();
 
 		if (userInput == "q") {
 			exitProgram();

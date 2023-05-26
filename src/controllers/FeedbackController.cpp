@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <chrono>
 
 using namespace std;
 
@@ -107,16 +108,27 @@ class FeedbackController {
 		return feedback;
 	};
 
-	feedbackNode* createFeedback(feedbackNode* lastFeedback, userNode* currentUser) {
-		feedbackNode* newFeedback = new feedbackNode;
+	void createFeedback(feedbackList* currentList, userNode* currentUser) {
+		if (currentList == nullptr) {
+			cout << "Invalid feedback list." << endl;
+			return;
+		}
+
+		feedbackNode* newFeedback = new feedbackNode();
 		string feedbackContent = handleStringInput("Enter your feedback: ");
 		newFeedback->FeedbackId = "11"; // should random generate i guess
 		newFeedback->UserId = currentUser->UserId;
 		newFeedback->ReplyContent = "";
-		newFeedback->Timestamp = time(nullptr);
+		newFeedback->FeedbackContent = feedbackContent;
+		auto now = std::chrono::system_clock::now();
+		newFeedback->Timestamp = std::chrono::system_clock::to_time_t(now);
+
+		newFeedback->PreviousAddress = nullptr;
 		newFeedback->NextAddress = nullptr;
-		newFeedback->PreviousAddress = lastFeedback;
-		return newFeedback;
+
+		currentList->addFeedbackNode(newFeedback);
+		cout << "Feedback created" << endl;
+		return;
 	};
 
 	private:
