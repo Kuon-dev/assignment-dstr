@@ -22,51 +22,8 @@ class feedbackList {
 	public:
 	feedbackList(): head(nullptr), tail(nullptr) {}
 
-	int createFeedback(string userId, string feedbackContent) {
-		ifstream file("FeedbackDatabase.csv");
-		string line;
-		string lastId;
-		if (file) {
-			while (getline(file, line)) {
-				stringstream ss(line);
-				string id;
-				getline(ss, id, ',');
-				lastId = id;
-			}
-			file.close();
-		} else {
-			cerr << "Error opening file while generating new ID for user feedback." << endl;
-			return 1;
-		}
-
-		string newId;
-		if (lastId.empty()) {
-			newId = "UF1";
-		} else {
-			int num = stoi(lastId.substr(2)) + 1;
-			newId = "UF" + to_string(num);
-		}
-
-		feedbackNode* newFeedback = new feedbackNode;
-		newFeedback->FeedbackId = newId;
-		newFeedback->UserId = userId;
-		newFeedback->ReplyContent = "";
-		newFeedback->FeedbackContent = feedbackContent;
-		newFeedback->Timestamp = time(nullptr);
-
-		newFeedback->PreviousAddress = tail;
-		newFeedback->NextAddress = nullptr;
-		if (head == nullptr) {
-			head = tail = newFeedback;
-		} else {
-			tail->NextAddress = newFeedback;
-			tail = newFeedback;
-		}
-		return 0;
-	}
-
 	// add existing feedback from the database to the linked list
-	int setFeedbackNode(string feedbackId, string userId, string content, time_t time) {
+	int createFeedbackNode(string feedbackId, string userId, string content, time_t time) {
 		feedbackNode* newFeedback = new feedbackNode;
 		newFeedback->FeedbackId = feedbackId;
 		newFeedback->UserId = userId;
@@ -83,6 +40,17 @@ class feedbackList {
 		}
 		return 0;
 	}
+
+	void addFeedbackNode(feedbackNode* newNode) {
+		if (head == nullptr) {
+			head = tail = newNode;
+		} else {
+			tail->NextAddress = newNode;
+			newNode->PreviousAddress = tail;
+			tail = newNode;
+		};
+	}
+
 
 	void updateFeedback(string feedbackId, string newContent) {
 		feedbackNode* current = head;

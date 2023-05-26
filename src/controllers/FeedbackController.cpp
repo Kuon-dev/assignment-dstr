@@ -10,7 +10,57 @@ using namespace std;
 class FeedbackController {
 	public:
 	// initialize new feedback
-	int createFeedback() {
+	feedbackList* readFeedbackDatabase(){
+		feedbackList* list;
+		ifstream file("Database/Users.csv"); // get user database
+		// validate file open
+		if (!file.is_open()) {
+			cout << "\033[31m"
+					 << "Error: could not open file "
+					 << "\033[0m" << endl;
+			return list;
+		}
+		// define database haeder and line
+		string header, line;
+		getline(file, header);
+		while (getline(file, line)) {
+			stringstream iss(line);
+			feedbackNode* node;
+
+			string FeedbackId, UserId, FeedbackContent, ReplyContent;
+			time_t Timestamp;
+
+			string token; // to get value
+
+			getline(iss, token, ',');
+			FeedbackId = token;
+
+			getline(iss, token, ',');
+			UserId = token;
+
+			getline(iss, token, ',');
+			FeedbackContent = token;
+
+			getline(iss, token, ',');
+			ReplyContent = token;
+
+			getline(iss, token, ',');
+			Timestamp =  static_cast<time_t>(stoi(token));
+
+			node->UserId = UserId;
+			node->FeedbackId = FeedbackId;
+			node->FeedbackContent = FeedbackContent;
+			node->ReplyContent = ReplyContent;
+			node->Timestamp = Timestamp;
+			list->addFeedbackNode(node);
+		};
+
+		file.close();
+		return list;
+
+	};
+
+	int addFeedbackToDatabase() {
 		string userId, feedbackContent;
 		cout << "Enter user ID: ";
 		cin >> userId;
@@ -21,21 +71,21 @@ class FeedbackController {
 
 		time_t now = time(nullptr);
 		feedbackList newFeedback;
-		newFeedback.createFeedback(userId, feedbackContent);
+		// newFeedback.createFeedback(userId, feedbackContent);
 
 		feedbackNode* feedback = newFeedback.getHead();
 
-		ofstream outfile("Database/FeedbackDatabase.csv", ios::app);
-		if (outfile) {
-			outfile << feedback->FeedbackId << "," << feedback->UserId << "," << feedback->FeedbackContent << ","
-							<< feedback->Timestamp << endl;
-			outfile.close();
-		} else {
-			cerr << "Error opening file." << endl;
-			return 1;
-		}
-
-		cout << "Feedback created and stored in database." << endl;
+		// ofstream outfile("Database/FeedbackDatabase.csv", ios::app);
+		// if (outfile) {
+		// 	outfile << feedback->FeedbackId << "," << feedback->UserId << "," << feedback->FeedbackContent << ","
+		// 					<< feedback->Timestamp << endl;
+		// 	outfile.close();
+		// } else {
+		// 	cerr << "Error opening file." << endl;
+		// 	return 1;
+		// }
+		//
+		// cout << "Feedback created and stored in database." << endl;
 		return 0;
 	}
 

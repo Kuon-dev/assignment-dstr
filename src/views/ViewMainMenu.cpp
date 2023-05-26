@@ -16,6 +16,7 @@ class UserMenu {
 	public:
 	userNode* currentUser;
 	FeedbackController feedbackController;
+	feedbackList feedbackData = feedbackController.readFeedbackDatabase();
 	void userDashboard() {
 		while (true) {
 			cout
