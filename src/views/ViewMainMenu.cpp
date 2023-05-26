@@ -19,6 +19,7 @@ class UserMenu {
 	public:
 	// feedbackList* feedbackData = feedbackController->readFeedbackDatabase();
 	userNode* currentUser;
+	feedbackList* userFeedback;
 	void userDashboard() {
 		while (true) {
 			cout
@@ -53,6 +54,8 @@ class UserMenu {
 				break;
 			case 4:
 				cout << "You have selected 'View Submitted Feedback'" << endl;
+				userFeedback = feedbackController->getFeedbacksByUser(feedbackData, currentUser);
+				userFeedback->displayAllFeedback();
 				// TODO: Implement 'View Submitted Feedback' functionality
 				break;
 			case 5:
@@ -465,6 +468,7 @@ class GuestMenu {
 			} else { // login for user
 				cout << endl << endl << "Logged in successfully!" << endl;
 				UserMenu menu;
+				menu.currentUser = authUser;
 				menu.userDashboard();
 				return;
 			};
