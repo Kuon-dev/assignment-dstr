@@ -50,7 +50,8 @@ class UserMenu {
 				break;
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
-				feedbackController->createFeedback(feedbackData, currentUser);;
+				feedbackController->createFeedback(feedbackData, currentUser);
+				;
 				break;
 			case 4:
 				cout << "You have selected 'View Submitted Feedback'" << endl;
@@ -299,26 +300,22 @@ class AdminMenu {
 	}
 };
 
-
 void displaySearchUniversityMenu() {
 	FavouritesController favouriteData;
 	favouriteData.getFULinkListFromDB();
 	while (true) {
 		string input;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 		cout << "| Please select an option:" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 		cout << "| 1. Search University by name" << endl;
 		cout << "| 2. Search University by rank" << endl;
 		cout << "| 3. Search University by country" << endl;
 		cout << "| 4. Exit" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 
 		int choice = handleUserInput();
 
@@ -389,14 +386,12 @@ void displayLoginMenu() {
 	char ch;
 	while (true) {
 		// system("cls");
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 		cout << "| LOGIN MENU" << endl;
 		cout << "| Press 0 to exit" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 		cout << "Username: ";
 		username = "";
 		cin >> username;
@@ -445,22 +440,19 @@ void displayLoginMenu() {
 
 void displayMenu() {
 	while (true) {
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 		cout << "| Please select an option:" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 		cout << "| 1. View all universities" << endl;
 		cout << "| 2. View university by name" << endl;
 		cout << "| 3. Search university" << endl;
 		cout << "| 4. Log in" << endl;
 		cout << "| 5. Register" << endl;
 		cout << "| 6. Exit" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 
 		int choice = handleUserInput();
 		int page;
@@ -510,5 +502,3 @@ void displayMenu() {
 		}
 	}
 }
-
-

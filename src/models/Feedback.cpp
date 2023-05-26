@@ -136,9 +136,11 @@ class feedbackList {
 				ss << put_time(&timestamp_tm, "%c %Z");
 				string formattedTimestamp = ss.str();
 				int remainingWidth = std::min(width, static_cast<int>(feedbackContent.length() - startPos));
-				printTableRow(current->FeedbackId,
-							  feedbackContent.substr(startPos, remainingWidth),
-							  current->ReplyContent, formattedTimestamp);
+				printTableRow(
+					current->FeedbackId,
+					feedbackContent.substr(startPos, remainingWidth),
+					current->ReplyContent,
+					formattedTimestamp);
 				startPos += width;
 			}
 
@@ -205,20 +207,20 @@ class feedbackList {
 		}
 		return slowPtr;
 	}
+
 	private:
-
-
-	void printTableRow(const std::string& col1, const std::string& col2, const std::string& col3, const std::string& col4) {
+	void
+	printTableRow(const std::string& col1, const std::string& col2, const std::string& col3, const std::string& col4) {
 		int col1Width = 15;
 		int col2Width = 60;
 		int col3Width = 50;
 		int col4Width = 30;
 
-		std::cout << std::left << std::setw(col1Width) << col1.substr(0, col1Width - 1) << " | "
-				  << std::setw(col2Width) << col2.substr(0, col2Width - 1) << " | "
-				  << std::setw(col3Width) << col3.substr(0, col3Width - 1) << " | "
-				  << std::setw(col4Width) << col4.substr(0, col4Width - 1) << std::endl;
+		std::cout << std::left << std::setw(col1Width) << col1.substr(0, col1Width - 1) << " | " << std::setw(col2Width)
+							<< col2.substr(0, col2Width - 1) << " | " << std::setw(col3Width) << col3.substr(0, col3Width - 1)
+							<< " | " << std::setw(col4Width) << col4.substr(0, col4Width - 1) << std::endl;
 
-		std::cout << std::setfill('-') << std::setw(col1Width + col2Width + col3Width + col4Width + 9) << "" << std::setfill(' ') << std::endl;
+		std::cout << std::setfill('-') << std::setw(col1Width + col2Width + col3Width + col4Width + 9) << ""
+							<< std::setfill(' ') << std::endl;
 	}
 };
