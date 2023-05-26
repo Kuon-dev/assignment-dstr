@@ -17,7 +17,7 @@ class MemberController {
 		// validate file open
 		if (!file.is_open()) {
 			cout << "\033[31m"
-					 << "Error: could not open file "
+					 << "Error: could not open user file "
 					 << "\033[0m" << endl;
 			return list;
 		}
@@ -78,8 +78,10 @@ class MemberController {
 		return list;
 	};
 
-	// execute function and store
-	//  userList userDatabaseList = this.readUserDatabase();
+	void readAllUserNode() { 
+		userList list;
+		list.readAllUserNode(); 
+	}
 
 	// check username special characters and unique
 	bool validateUsername(const string& username, const userList& users, userNode* headNode) {
@@ -123,10 +125,10 @@ class MemberController {
 		newUser->userUserName = username;
 		newUser->UserPassword = password;
 		newUser->UserName = name;
-		newUser->UserAge = 0;
+		newUser->UserAge = age;
 		newUser->UserGender = gender;
 		newUser->UserEmail = email;
-		newUser->UserContact = 0;
+		newUser->UserContact = contact;
 		newUser->UserLastLogin = "null";
 
 		ofstream outfile("Database/Users.csv", ios::app);

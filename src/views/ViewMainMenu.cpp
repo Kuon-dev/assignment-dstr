@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <iostream>
 #include <string>
+#include <ctime>
 
 UniversityContoller* uniController = new UniversityContoller();
 universityQuickSort sorter;
@@ -210,6 +211,89 @@ class UserMenu {
 	}
 };
 
+class AdminMenu {
+	public:
+	userNode* currentUser;
+
+		void displayAllMember() {
+		while (true) {
+			// system("cls");
+			userData->displayAllUser();
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "1. Modify member account details" << endl;
+			cout << "2. Delete member account" << endl;
+			cout << "3. Return" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "Enter your choice (1-3): ";
+			int choice = handleUserInput();
+
+			switch (choice) {
+			case 1:
+				cout << "You have selected 'Modify member'" << endl;
+				// TODO: Implement 'Modify Member' functionality
+				break;
+			case 2:
+				cout << "You have selected 'View all feedback'" << endl;
+				// TODO: Implement 'delete member account' functionality
+				break;
+			case 3:
+				return;
+				break;
+			default:
+				cout << "Invalid choice, please try again." << endl;
+				break;
+			}
+		}
+	}
+
+	void adminDashboard() {
+		while (true) {
+			// system("cls");
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "Welcome to the Admin Dashboard" << endl;
+			cout << "Please select an option:" << endl;
+			cout << "1. Manage member" << endl;
+			cout << "2. View all feedbacks" << endl;
+			cout << "3. Generate Top 10 University" << endl;
+			cout << "4. Logout" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "Enter your choice (1-4): ";
+			int choice = handleUserInput();
+
+			switch (choice) {
+			case 1:
+				displayAllMember();
+				break;
+			case 2:
+				cout << "You have selected 'View all feedback'" << endl;
+				// TODO: Implement 'view all feedback' functionality
+				break;
+			case 3:
+				cout << "You have selected 'Generate top 10 university'" << endl;
+				// TODO: Implement 'top 10 uni' functionality
+				break;
+			case 4:
+				cout << "You have selected 'Logout'" << endl;
+				cout << "Goodbye!" << endl;
+				return;
+			default:
+				cout << "Invalid choice, please try again." << endl;
+				break;
+			}
+		}
+	}
+
+
+};
+
 class GuestMenu {
 	public:
 	void displayMenu() {
@@ -331,7 +415,7 @@ class GuestMenu {
 		string username, password;
 		char ch;
 		while (true) {
-			system("cls");
+			// system("cls");
 			cout << "----------------------------------------------------------------------------------------------------------" << endl;
 			cout << "| LOGIN MENU" << endl;
 			cout << "| Press 0 to exit" << endl;
@@ -342,7 +426,7 @@ class GuestMenu {
 
 			// allow user to go back to main menu
 			if (username == "0") {
-				return;
+				break;
 			}
 
 			cout << "Password: ";
@@ -362,18 +446,20 @@ class GuestMenu {
 				ch = _getch();
 			}
 			userNode* authUser = authenticateUser(username, password);
-
-			if (authUser == nullptr){
+			cout<< authUser->UserId;
+			if (authUser->UserId == ""){
 				cout << endl << endl << "Incorrect username or password. Please try again." << endl;
 				system("pause");
-				return;
+				continue;
 			}
 			else if (authUser->UserId == "0"){
-				// admin
+				cout << endl << endl << "Logged in successfully!" << endl;
+				AdminMenu menu;
+				menu.adminDashboard();
+				return;
 			}
 			else { //login for user
 				cout << endl << endl << "Logged in successfully!" << endl;
-				// loginSuccess();
 				UserMenu menu;
 				menu.userDashboard();
 				return;
@@ -383,23 +469,42 @@ class GuestMenu {
 
 	private:
 	userNode* authenticateUser(string username, string password) {
+		userNode* temp = new userNode;
+		temp->UserId = "";
+
+		// Get the current time
+		std::time_t currentTime = std::time(nullptr);
+		// Convert the current time to string format
+		std::string currentLoginTime = std::ctime(&currentTime);
+		if (!currentLoginTime.empty() && currentLoginTime.back() == '\n') {
+			currentLoginTime.erase(currentLoginTime.length() - 1);
+		}
 		// if the user authentication is admin
 		if (username == "admin" && password == "password") {
-			userNode* temp;
-			temp->UserName = "admin";
 			temp->UserId = "0";
+			temp->userUserName = "admin";
+			temp->UserPassword = "admin";
+			temp->UserName = "admin";
+			temp->UserGender = "none";
+			temp->UserEmail = "none";
+			temp->UserLastLogin = "none";
+			temp->UserAge = 20;
+			temp->UserContact = 20;
+			return temp;
+		}
+		else {
+			userNode* current = userData->getHead();
+			// if the user account and password valid and authorized
+			while (current != nullptr) {
+				if(current->userUserName == username && current->UserPassword == password) {
+					current->UserLastLogin = currentLoginTime;
+					return current;
+				}
+				current = current->NextAddress;
+			}
 			return temp;
 		};
-		// if the user account and password valid and authorized
-		userNode* current = userData->getHead();
-		while (current != nullptr) {
-			if(current->userUserName == username && current->UserPassword == password) {
-				return current;
-			}
-			current = current->NextAddress;
-		}
-		return nullptr;
 	}
 };
 
-class AdminMenu {};
+

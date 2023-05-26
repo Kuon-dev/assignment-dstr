@@ -27,7 +27,7 @@ class userList {
 	userNode* tail = nullptr;
 
 	public:
-	userNode* getHead() { return this->head; }
+	userNode* getHead() { return head; }
 	userNode* getTail() { return this->tail; }
 
 	void createUserNode(
@@ -91,14 +91,14 @@ class userList {
 		}
 	}
 
-	void readAllUserNode() {
-		userNode* current = head;
-		cout << "-----------------------------------------" << endl;
-		while (current != nullptr) {
-			current = current->NextAddress;
-		}
-		cout << "-----------------------------------------" << endl;
-	}
+		void readAllUserNode() {
+        userNode* current = head;
+        cout << "-----------------------------------------" << endl;
+        while (current != nullptr) {
+            current = current->NextAddress;
+        }
+        cout << "-----------------------------------------" << endl;
+    }
 
 	void updateUserNode(
 		string userId, string userName, string name, int age, string gender, string email, int contact, string lastLogin) {
@@ -169,28 +169,28 @@ class userList {
 	}
 
 	void displayAllUser() {
-		if (head == nullptr) {
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "There is no user account." << endl;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			return;
-		}
+
+
 
 		userNode* current = head;
-
+		// if no data
+		if (head == nullptr) {
+			cout << "No user data available." << endl;
+			return;
+		}
+		cout
+				<< "=========================================================================================================="
+				<< endl;
+		cout << setw(6) << "UserId" << setw(15) << "Username" << setw(15) << "Name" << setw(10) << "Gender" << setw(20)
+				<< "Email" << setw(12) << "Contact" << setw(6) << "Age"<< setw(28) << "Last Login" << endl;
 		cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
+				<< endl;
 		while (current != nullptr) {
-			cout << left << setw(15) << current->UserId << setw(15) << current->userUserName << setw(50) << current->UserName
-					 << endl;
+			cout << setw(6) << current->UserId << setw(15) << current->userUserName << setw(15) << current->UserName << setw(10)
+					<< current->UserGender << setw(20) << current->UserEmail << setw(12)
+					<< current->UserContact << setw(6) << current->UserAge << setw(28) << current->UserLastLogin << endl;
 			current = current->NextAddress;
 		}
-		cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
 	}
 
 	private:
