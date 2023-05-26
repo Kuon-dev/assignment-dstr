@@ -10,9 +10,10 @@ using namespace std;
 class FeedbackController {
 	public:
 	// initialize new feedback
-	feedbackList* readFeedbackDatabase(){
-		feedbackList* list;
-		ifstream file("Database/Users.csv"); // get user database
+	feedbackList* readFeedbackDatabase() {
+		feedbackList* list = new feedbackList(); // Allocate memory for the feedbackList
+
+		ifstream file("Database/FeedbackDatabase.csv"); // get user database
 		// validate file open
 		if (!file.is_open()) {
 			cout << "\033[31m"
@@ -20,12 +21,12 @@ class FeedbackController {
 					 << "\033[0m" << endl;
 			return list;
 		}
-		// define database haeder and line
+		// define database header and line
 		string header, line;
 		getline(file, header);
 		while (getline(file, line)) {
 			stringstream iss(line);
-			feedbackNode* node;
+			feedbackNode* node = new feedbackNode(); // Allocate memory for the node
 
 			string FeedbackId, UserId, FeedbackContent, ReplyContent;
 			time_t Timestamp;
@@ -45,7 +46,7 @@ class FeedbackController {
 			ReplyContent = token;
 
 			getline(iss, token, ',');
-			Timestamp =  static_cast<time_t>(stoi(token));
+			Timestamp = static_cast<time_t>(stoi(token));
 
 			node->UserId = UserId;
 			node->FeedbackId = FeedbackId;
@@ -53,13 +54,11 @@ class FeedbackController {
 			node->ReplyContent = ReplyContent;
 			node->Timestamp = Timestamp;
 			list->addFeedbackNode(node);
-		};
+		}
 
 		file.close();
 		return list;
-
-	};
-
+	}
 	int addFeedbackToDatabase() {
 		string userId, feedbackContent;
 		cout << "Enter user ID: ";
@@ -89,174 +88,36 @@ class FeedbackController {
 		return 0;
 	}
 
-	void updateFeedback(string feedbackId, string newContent) {
-		ofstream tempFile("temp.csv");
-		ifstream file("Database/FeedbackDatabase.csv");
-		string line;
-		bool found = false;
-		while (getline(file, line)) {
-			istringstream iss(line);
-			string id, userId, content, timestamp;
-			getline(iss, id, ',');
-			getline(iss, userId, ',');
-			getline(iss, content, ',');
-			getline(iss, timestamp, ',');
-			if (id == feedbackId) {
-				found = true;
-				tempFile << id << "," << userId << "," << newContent << "," << timestamp << endl;
-			} else {
-				tempFile << line << endl;
-			}
+	feedbackNode* getFeedbackById(feedbackList* list, string feedbackId) {
+		feedbackNode* current = list->getHead();
+		while (current != nullptr) {
+			if (current->FeedbackId == feedbackId) return current;
+			current = current->NextAddress;
 		}
-		file.close();
-		tempFile.close();
-		if (found) {
-			remove("Database/FeedbackDatabase.csv");
-			rename("temp.csv", "Database/FeedbackDatabase.csv");
-			cout << "Feedback with ID " << feedbackId << " updated." << endl;
-		} else {
-			remove("temp.csv");
-			cout << "Feedback with ID " << feedbackId << " not found." << endl;
-		}
-	}
-
-	feedbackNode* getFeedbackById(string feedbackId) {
-		ifstream file("Database/FeedbackDatabase.csv");
-		string line;
-		while (getline(file, line)) {
-			cout << feedbackId << endl;
-			istringstream iss(line);
-			string id, userId, content, timestamp;
-			getline(iss, id, ',');
-			getline(iss, userId, ',');
-			getline(iss, content, ',');
-			getline(iss, timestamp, ',');
-			if (id == feedbackId) {
-				try {
-					feedbackNode* feedback = new feedbackNode;
-					feedback->FeedbackId = id;
-					feedback->UserId = userId;
-					feedback->FeedbackContent = content;
-					feedback->Timestamp = stoi(timestamp);
-					file.close();
-					return feedback;
-				} catch (std::bad_alloc& e) {
-					cerr << "Error allocating memory: " << e.what() << endl;
-					return nullptr;
-				}
-			}
-		}
-		file.close();
-		cout << "Feedback with ID " << feedbackId << " not found." << endl;
 		return nullptr;
 	};
 
-	void readFeedbackById(string feedbackId) {
-		feedbackList newFeedbackList;
-		feedbackNode newFeedback;
-
-		feedbackNode* feedback = getFeedbackById(feedbackId);
-		if (feedback != nullptr) {
-			newFeedbackList.setFeedbackNode(
-				newFeedback.UserId, newFeedback.FeedbackId, newFeedback.FeedbackContent, newFeedback.Timestamp);
-			newFeedbackList.displayFeedback(feedback);
+	feedbackList* getFeedbacksByUser(feedbackList* list, userNode* node) {
+		feedbackList* feedback = new feedbackList;
+		feedbackNode* current = list->getHead();
+		while (current != nullptr) {
+			if (current->UserId == node->UserId) feedback->addFeedbackNode(current);
+			current = current->NextAddress;
 		}
+		return feedback;
 	};
 
-	int readAllFeedbacks() {
-		feedbackList feedback;
-		ifstream file("Database/FeedbackDatabase.csv");
-		if (file) {
-			cout << left << setw(15) << "Feedback ID" << setw(15) << "User ID" << setw(50) << "Feedback Content" << setw(30)
-					 << "Timestamp" << endl;
-			string line;
-			while (getline(file, line)) {
-				stringstream ss(line);
-				string feedbackId, userId, feedbackContent, timestamp;
-				getline(ss, feedbackId, ',');
-				getline(ss, userId, ',');
-				getline(ss, feedbackContent, ',');
-				getline(ss, timestamp, ',');
-
-				feedback.setFeedbackNode(feedbackId, userId, feedbackContent, stoi(timestamp));
-			}
-			file.close();
-		} else {
-			cerr << "Error opening file." << endl;
-			return 0;
-		}
-		return 1;
-	}
-
-	int readFeedbackByUser(userNode* user) {
-		feedbackList feedback;
-		ifstream file("Database/FeedbackDatabase.csv");
-		if (file) {
-			cout << left << setw(15) << "Feedback ID" << setw(15) << "User ID" << setw(50) << "Feedback Content" << setw(30)
-					 << "Timestamp" << endl;
-			string line;
-			while (getline(file, line)) {
-				stringstream ss(line);
-				string feedbackId, userId, feedbackContent, timestamp;
-				getline(ss, feedbackId, ',');
-				getline(ss, userId, ',');
-				getline(ss, feedbackContent, ',');
-				getline(ss, timestamp, ',');
-
-				feedback.setFeedbackNode(feedbackId, userId, feedbackContent, stoi(timestamp));
-			}
-			file.close();
-		} else {
-			cerr << "Error opening file." << endl;
-			return 0;
-		}
-		return 1;
-	}
-
-	void deleteFeedback(string feedbackId) {
-		// open the file for reading
-		ifstream inFile(databaseFileName);
-		if (!inFile.is_open()) {
-			cout << "Error: could not open file " << databaseFileName << endl;
-			return;
-		}
-
-		// read the file line by line, copying all lines that don't match the ID to a new file
-		ofstream outFile(tempFileName);
-		if (!outFile.is_open()) {
-			cout << "Error: could not open file " << tempFileName << endl;
-			inFile.close();
-			return;
-		}
-
-		string line;
-		bool feedbackDeleted = false;
-		while (getline(inFile, line)) {
-			stringstream ss(line);
-			string field;
-			getline(ss, field, ','); // get the feedback ID field
-
-			if (field == feedbackId) {
-				feedbackDeleted = true;
-			} else {
-				outFile << line << endl;
-			}
-		}
-
-		// close both files and delete the original file
-		inFile.close();
-		outFile.close();
-		remove(databaseFileName.c_str());
-
-		// rename the temporary file to the original name
-		rename(tempFileName.c_str(), databaseFileName.c_str());
-
-		if (feedbackDeleted) {
-			cout << "Feedback with ID " << feedbackId << " has been deleted." << endl;
-		} else {
-			cout << "Feedback with ID " << feedbackId << " not found." << endl;
-		}
-	}
+	feedbackNode* createFeedback(feedbackNode* lastFeedback, userNode* currentUser) {
+		feedbackNode* newFeedback = new feedbackNode;
+		string feedbackContent = handleStringInput("Enter your feedback: ");
+		newFeedback->FeedbackId = "11"; // should random generate i guess
+		newFeedback->UserId = currentUser->UserId;
+		newFeedback->ReplyContent = "";
+		newFeedback->Timestamp = time(nullptr);
+		newFeedback->NextAddress = nullptr;
+		newFeedback->PreviousAddress = lastFeedback;
+		return newFeedback;
+	};
 
 	private:
 	string databaseFileName = "./Database/FeedbackDatabase.csv";

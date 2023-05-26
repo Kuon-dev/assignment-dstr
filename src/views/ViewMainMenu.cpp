@@ -1,22 +1,24 @@
 #include "../controllers/FavouritesController.cpp"
 #include "../controllers/MemberController.cpp"
 #include <conio.h>
+#include <ctime>
 #include <iostream>
 #include <string>
-#include <ctime>
 
 UniversityContoller* uniController = new UniversityContoller();
 universityQuickSort sorter;
 universityList* uniData = uniController->readUniversityDatabase();
+
+FeedbackController* feedbackController;
+feedbackList* feedbackData = feedbackController->readFeedbackDatabase();
 
 MemberController* userListController;
 userList* userData = userListController->readUserDatabase();
 
 class UserMenu {
 	public:
+	// feedbackList* feedbackData = feedbackController->readFeedbackDatabase();
 	userNode* currentUser;
-	FeedbackController feedbackController;
-	feedbackList feedbackData = feedbackController.readFeedbackDatabase();
 	void userDashboard() {
 		while (true) {
 			cout
@@ -82,6 +84,7 @@ class UserMenu {
 	void profileMenu() {
 		// TODO: display profile
 		string uniid, userid, favid;
+
 		FavouritesController favCont;
 		favCont.getFULinkListFromDB();
 
@@ -170,10 +173,10 @@ class UserMenu {
 			choice = handleUserInput();
 			switch (choice) {
 			case 1:
-				feedbackController.readFeedbackByUser(currentUser);
+				feedbackController->getFeedbacksByUser(feedbackData, currentUser);
 				return;
 			case 2:
-				feedbackController.createFeedback();
+				feedbackController->createFeedback(feedbackData->getTail(), currentUser);
 				break;
 			case 3:
 				cout << "Exiting..." << endl;
@@ -216,7 +219,7 @@ class AdminMenu {
 	public:
 	userNode* currentUser;
 
-		void displayAllMember() {
+	void displayAllMember() {
 		while (true) {
 			// system("cls");
 			userData->displayAllUser();
@@ -291,8 +294,6 @@ class AdminMenu {
 			}
 		}
 	}
-
-
 };
 
 class GuestMenu {
@@ -417,10 +418,14 @@ class GuestMenu {
 		char ch;
 		while (true) {
 			// system("cls");
-			cout << "----------------------------------------------------------------------------------------------------------" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| LOGIN MENU" << endl;
 			cout << "| Press 0 to exit" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "Username: ";
 			username = "";
 			cin >> username;
@@ -447,19 +452,17 @@ class GuestMenu {
 				ch = _getch();
 			}
 			userNode* authUser = authenticateUser(username, password);
-			cout<< authUser->UserId;
-			if (authUser->UserId == ""){
+			cout << authUser->UserId;
+			if (authUser->UserId == "") {
 				cout << endl << endl << "Incorrect username or password. Please try again." << endl;
 				system("pause");
 				continue;
-			}
-			else if (authUser->UserId == "0"){
+			} else if (authUser->UserId == "0") {
 				cout << endl << endl << "Logged in successfully!" << endl;
 				AdminMenu menu;
 				menu.adminDashboard();
 				return;
-			}
-			else { //login for user
+			} else { // login for user
 				cout << endl << endl << "Logged in successfully!" << endl;
 				UserMenu menu;
 				menu.userDashboard();
@@ -492,12 +495,11 @@ class GuestMenu {
 			temp->UserAge = 20;
 			temp->UserContact = 20;
 			return temp;
-		}
-		else {
+		} else {
 			userNode* current = userData->getHead();
 			// if the user account and password valid and authorized
 			while (current != nullptr) {
-				if(current->userUserName == username && current->UserPassword == password) {
+				if (current->userUserName == username && current->UserPassword == password) {
 					current->UserLastLogin = currentLoginTime;
 					return current;
 				}
@@ -507,5 +509,3 @@ class GuestMenu {
 		};
 	}
 };
-
-

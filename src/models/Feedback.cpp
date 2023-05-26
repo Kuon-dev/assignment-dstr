@@ -42,6 +42,7 @@ class feedbackList {
 	}
 
 	void addFeedbackNode(feedbackNode* newNode) {
+		cout << newNode->FeedbackContent;
 		if (head == nullptr) {
 			head = tail = newNode;
 		} else {
@@ -50,7 +51,6 @@ class feedbackList {
 			tail = newNode;
 		};
 	}
-
 
 	void updateFeedback(string feedbackId, string newContent) {
 		feedbackNode* current = head;
@@ -133,6 +133,7 @@ class feedbackList {
 	}
 
 	feedbackNode* getHead() { return head; }
+	feedbackNode* getTail() { return tail; }
 
 	void sortFeedbackByUserId() {
 		head = mergeSort(head);

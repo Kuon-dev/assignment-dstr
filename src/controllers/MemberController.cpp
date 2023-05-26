@@ -78,9 +78,9 @@ class MemberController {
 		return list;
 	};
 
-	void readAllUserNode() { 
+	void readAllUserNode() {
 		userList list;
-		list.readAllUserNode(); 
+		list.readAllUserNode();
 	}
 
 	// check username special characters and unique

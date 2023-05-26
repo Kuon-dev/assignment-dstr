@@ -67,6 +67,6 @@ add_custom_command(TARGET main POST_BUILD
 
 add_custom_command(TARGET main POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E copy
-	   ${CMAKE_SOURCE_DIR}/Database/FavUni.csv
+	   ${CMAKE_SOURCE_DIR}/Database/FeedbackDatabase.csv
 	   $<TARGET_FILE_DIR:main>/Database/FeedbackDatabase.csv)
 
