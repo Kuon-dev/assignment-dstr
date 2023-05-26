@@ -72,7 +72,7 @@ class UserMenu {
 		favCont.getFULinkListFromDB();
 
 		cout << "User ID: ";
-		getline(cin, userid);
+		getline(cin, userid);//	userNode *currentUser;
 
 		while (true) {
 			cout

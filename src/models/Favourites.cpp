@@ -290,4 +290,15 @@ class favUniList {
 		rename("temp.csv", "Database/FavUni.csv");
 		cout << "Favourite Univerity is updated." << endl;
 	}
+
+	void addFavUniNode(favUniNode* newFavUniNode) {
+		if (favUniHead == nullptr) {
+			favUniHead = favUniTail = newFavUniNode;
+		}
+		else {
+			favUniTail->NextAddress = newFavUniNode;
+			newFavUniNode->PrevAddress = favUniTail;
+			favUniTail = newFavUniNode;
+		};
+	}
 };
