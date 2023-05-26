@@ -1,1 +1,4 @@
-UF5,UF62,This uni is not good,1681088313
+FeedbackId, UserId, FeedbackContent, ReplyContent, Timestamp
+1,5,This uni is not good,ok boi,1681088313
+2,2,This uni is not good,ok boi,1681088313
+3,1,This uni is not good by user id of 1,ok boi,1681088313

@@ -1,5 +1,4 @@
 #include "../Modules/Algorithms.cpp"
-#include "../modules/InputHandler.cpp"
 #include <chrono>
 
 using namespace std::chrono;
