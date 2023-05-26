@@ -7,10 +7,10 @@ class UniversityContoller {
 	public:
 	universityList* readUniversityDatabase() {
 		universityList* list = new universityList();
-		ifstream file("./Universities.csv");
+		ifstream file("Database/Universities.csv");
 		if (!file.is_open()) {
 			cout << "\033[31m"
-					 << "Error: could not open file "
+					 << "Error: could not open uni file "
 					 << "\033[0m" << endl;
 			return list;
 		}
