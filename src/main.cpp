@@ -5,8 +5,7 @@ using namespace std;
 
 int main() {
 	// system("cls");
-	GuestMenu main;
-	main.displayMenu();
+	displayMenu();
 	// UserMenu usermain;
 	// usermain.profileMenu();
 }

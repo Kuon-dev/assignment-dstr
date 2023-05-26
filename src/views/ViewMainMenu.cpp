@@ -14,7 +14,7 @@ feedbackList* feedbackData = feedbackController->readFeedbackDatabase();
 
 MemberController* userListController;
 userList* userData = userListController->readUserDatabase();
-
+void displaySearchUniversityMenu();
 class UserMenu {
 	public:
 	// feedbackList* feedbackData = feedbackController->readFeedbackDatabase();
@@ -42,7 +42,7 @@ class UserMenu {
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'View Universities'" << endl;
-				// TODO: Implement 'View Universities' functionality
+				displaySearchUniversityMenu();
 				break;
 			case 2:
 				cout << "You have selected 'View Favourite Universities'" << endl;
@@ -299,217 +299,216 @@ class AdminMenu {
 	}
 };
 
-class GuestMenu {
-	public:
-	void displayMenu() {
-		while (true) {
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "| Please select an option:" << endl;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "| 1. View all universities" << endl;
-			cout << "| 2. View university by name" << endl;
-			cout << "| 3. Search university" << endl;
-			cout << "| 4. Log in" << endl;
-			cout << "| 5. Register" << endl;
-			cout << "| 6. Exit" << endl;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
 
-			int choice = handleUserInput();
-			int page;
-			string name, username, email, password, gender, input;
-			int age, contact;
-			bool exitPaginate = true;
+void displaySearchUniversityMenu() {
+	FavouritesController favouriteData;
+	favouriteData.getFULinkListFromDB();
+	while (true) {
+		string input;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+		cout << "| Please select an option:" << endl;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+		cout << "| 1. Search University by name" << endl;
+		cout << "| 2. Search University by rank" << endl;
+		cout << "| 3. Search University by country" << endl;
+		cout << "| 4. Exit" << endl;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
 
-			switch (choice) {
-			case 1:
-				uniController->displayPaginated(*uniData, 1);
-				while (exitPaginate) {
-					page = handleIntInput("Enter page number to skip or enter 0 to return");
-					if (page == 0) exitPaginate = false;
-					else {
-						uniController->displayPaginated(*uniData, page);
-						continue;
-					}
-				}
-				break;
-			case 2:
-				uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
-				// sort uni by name
-				break;
-			case 3:
-				displaySearchUniversityMenu();
-				break;
-			case 4:
-				displayLoginMenu();
-				break;
-			case 5:
-				name = handleStringInput("Enter your name");
-				username = handleStringInput("Enter your username");
-				password = handleStringInput("Enter your password");
-				age = handleIntInput("Enter your age");
-				gender = handleStringInput("Enter your gender");
-				email = handleStringInput("Enter your email");
-				contact = handleIntInput("Enter your contact");
+		int choice = handleUserInput();
 
-				userListController->createNewMember(*userData, username, password, name, gender, email, age, contact);
-				break;
-			case 6:
-				cout << "Exiting the system. Goodbye!" << endl;
-				return;
+		switch (choice) {
+		case 1:
+			cout << "Enter your query: ";
+			cin >> input;
+			uniController->searchUniMerge("Name", input, uniData);
+			break;
 
-			default:
-				cout << "Invalid choice. Please enter a valid choice." << endl;
-			}
+		case 2:
+			uniController->searchUniversityColumn("Rank", handleIntInput("Enter your rank query: "), uniData);
+			break;
+
+		case 3:
+			cout << "Enter your query: ";
+			cin >> input;
+			uniController->searchUniQuick("Location", input, uniData);
+			break;
+
+		case 4:
+			return;
+		default:
+			cout << "Invalid choice. Please enter a valid choice." << endl;
 		}
 	}
+}
 
-	void displaySearchUniversityMenu() {
-		FavouritesController favouriteData;
-		favouriteData.getFULinkListFromDB();
-		while (true) {
-			string input;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "| Please select an option:" << endl;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "| 1. Search University by name" << endl;
-			cout << "| 2. Search University by rank" << endl;
-			cout << "| 3. Search University by country" << endl;
-			cout << "| 4. Exit" << endl;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
+userNode* authenticateUser(string username, string password) {
+	userNode* temp = new userNode;
+	temp->UserId = "";
 
-			int choice = handleUserInput();
-
-			switch (choice) {
-			case 1:
-				cout << "Enter your query: ";
-				cin >> input;
-				uniController->searchUniMerge("Name", input, uniData);
-				break;
-
-			case 2:
-				uniController->searchUniversityColumn("Rank", handleIntInput("Enter your rank query: "), uniData);
-				break;
-
-			case 3:
-				cout << "Enter your query: ";
-				cin >> input;
-				uniController->searchUniQuick("Location", input, uniData);
-				break;
-
-			case 4:
-				return;
-			default:
-				cout << "Invalid choice. Please enter a valid choice." << endl;
-			}
-		}
+	// Get the current time
+	std::time_t currentTime = std::time(nullptr);
+	// Convert the current time to string format
+	std::string currentLoginTime = std::ctime(&currentTime);
+	if (!currentLoginTime.empty() && currentLoginTime.back() == '\n') {
+		currentLoginTime.erase(currentLoginTime.length() - 1);
 	}
-
-	void displayLoginMenu() {
-		string username, password;
-		char ch;
-		while (true) {
-			// system("cls");
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "| LOGIN MENU" << endl;
-			cout << "| Press 0 to exit" << endl;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "Username: ";
-			username = "";
-			cin >> username;
-
-			// allow user to go back to main menu
-			if (username == "0") {
-				break;
+	// if the user authentication is admin
+	if (username == "admin" && password == "password") {
+		temp->UserId = "0";
+		temp->userUserName = "admin";
+		temp->UserPassword = "admin";
+		temp->UserName = "admin";
+		temp->UserGender = "none";
+		temp->UserEmail = "none";
+		temp->UserLastLogin = "none";
+		temp->UserAge = 20;
+		temp->UserContact = 20;
+		return temp;
+	} else {
+		userNode* current = userData->getHead();
+		// if the user account and password valid and authorized
+		while (current != nullptr) {
+			if (current->userUserName == username && current->UserPassword == password) {
+				current->UserLastLogin = currentLoginTime;
+				return current;
 			}
-
-			cout << "Password: ";
-			// disable console output for password input
-			ch = _getch();
-			password = "";
-			while (ch != 13) {
-				if (ch == 8) {
-					if (password.length() > 0) {
-						password.pop_back();
-						cout << "\b \b";
-					}
-				} else {
-					password += ch;
-					cout << "*";
-				}
-				ch = _getch();
-			}
-			userNode* authUser = authenticateUser(username, password);
-			cout << authUser->UserId;
-			if (authUser->UserId == "") {
-				cout << endl << endl << "Incorrect username or password. Please try again." << endl;
-				system("pause");
-				continue;
-			} else if (authUser->UserId == "0") {
-				cout << endl << endl << "Logged in successfully!" << endl;
-				AdminMenu menu;
-				menu.adminDashboard();
-				return;
-			} else { // login for user
-				cout << endl << endl << "Logged in successfully!" << endl;
-				UserMenu menu;
-				menu.currentUser = authUser;
-				menu.userDashboard();
-				return;
-			};
+			current = current->NextAddress;
 		}
+		return temp;
 	};
+}
 
-	private:
-	userNode* authenticateUser(string username, string password) {
-		userNode* temp = new userNode;
-		temp->UserId = "";
+void displayLoginMenu() {
+	string username, password;
+	char ch;
+	while (true) {
+		// system("cls");
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+		cout << "| LOGIN MENU" << endl;
+		cout << "| Press 0 to exit" << endl;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+		cout << "Username: ";
+		username = "";
+		cin >> username;
 
-		// Get the current time
-		std::time_t currentTime = std::time(nullptr);
-		// Convert the current time to string format
-		std::string currentLoginTime = std::ctime(&currentTime);
-		if (!currentLoginTime.empty() && currentLoginTime.back() == '\n') {
-			currentLoginTime.erase(currentLoginTime.length() - 1);
+		// allow user to go back to main menu
+		if (username == "0") {
+			break;
 		}
-		// if the user authentication is admin
-		if (username == "admin" && password == "password") {
-			temp->UserId = "0";
-			temp->userUserName = "admin";
-			temp->UserPassword = "admin";
-			temp->UserName = "admin";
-			temp->UserGender = "none";
-			temp->UserEmail = "none";
-			temp->UserLastLogin = "none";
-			temp->UserAge = 20;
-			temp->UserContact = 20;
-			return temp;
-		} else {
-			userNode* current = userData->getHead();
-			// if the user account and password valid and authorized
-			while (current != nullptr) {
-				if (current->userUserName == username && current->UserPassword == password) {
-					current->UserLastLogin = currentLoginTime;
-					return current;
+
+		cout << "Password: ";
+		// disable console output for password input
+		ch = _getch();
+		password = "";
+		while (ch != 13) {
+			if (ch == 8) {
+				if (password.length() > 0) {
+					password.pop_back();
+					cout << "\b \b";
 				}
-				current = current->NextAddress;
+			} else {
+				password += ch;
+				cout << "*";
 			}
-			return temp;
+			ch = _getch();
+		}
+		userNode* authUser = authenticateUser(username, password);
+		cout << authUser->UserId;
+		if (authUser->UserId == "") {
+			cout << endl << endl << "Incorrect username or password. Please try again." << endl;
+			system("pause");
+			continue;
+		} else if (authUser->UserId == "0") {
+			cout << endl << endl << "Logged in successfully!" << endl;
+			AdminMenu menu;
+			menu.adminDashboard();
+			return;
+		} else { // login for user
+			cout << endl << endl << "Logged in successfully!" << endl;
+			UserMenu menu;
+			menu.currentUser = authUser;
+			menu.userDashboard();
+			return;
 		};
 	}
 };
+
+void displayMenu() {
+	while (true) {
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+		cout << "| Please select an option:" << endl;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+		cout << "| 1. View all universities" << endl;
+		cout << "| 2. View university by name" << endl;
+		cout << "| 3. Search university" << endl;
+		cout << "| 4. Log in" << endl;
+		cout << "| 5. Register" << endl;
+		cout << "| 6. Exit" << endl;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+
+		int choice = handleUserInput();
+		int page;
+		string name, username, email, password, gender, input;
+		int age, contact;
+		bool exitPaginate = true;
+
+		switch (choice) {
+		case 1:
+			uniController->displayPaginated(*uniData, 1);
+			while (exitPaginate) {
+				page = handleIntInput("Enter page number to skip or enter 0 to return");
+				if (page == 0) exitPaginate = false;
+				else {
+					uniController->displayPaginated(*uniData, page);
+					continue;
+				}
+			}
+			break;
+		case 2:
+			uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
+			// sort uni by name
+			break;
+		case 3:
+			displaySearchUniversityMenu();
+			break;
+		case 4:
+			displayLoginMenu();
+			break;
+		case 5:
+			name = handleStringInput("Enter your name");
+			username = handleStringInput("Enter your username");
+			password = handleStringInput("Enter your password");
+			age = handleIntInput("Enter your age");
+			gender = handleStringInput("Enter your gender");
+			email = handleStringInput("Enter your email");
+			contact = handleIntInput("Enter your contact");
+
+			userListController->createNewMember(*userData, username, password, name, gender, email, age, contact);
+			break;
+		case 6:
+			cout << "Exiting the system. Goodbye!" << endl;
+			return;
+
+		default:
+			cout << "Invalid choice. Please enter a valid choice." << endl;
+		}
+	}
+}
+
+
