@@ -502,3 +502,176 @@ void displayMenu() {
 		}
 	}
 }
+
+// this should be register no?
+void userLogin() {
+	while (true) {
+		string name, username, email, password, gender, input;
+		int age, contact;
+		bool userRegister = true;
+		username = handleStringInput("Enter your username (Enter 1 to return)");
+		if(username != "1") {
+			userRegister = userListController->validateUsername(username, *userData);
+			if(userRegister){
+				name = handleStringInput("Enter your name");
+				password = handleStringInput("Enter your password");
+				age = handleIntInput("Enter your age");
+				gender = handleStringInput("Enter your gender");
+				email = handleStringInput("Enter your email");
+				userRegister = userListController->validateEmail(email);
+			}
+			if(userRegister){
+				contact = handleIntInput("Enter your contact");
+				userRegister = userListController->validateContact(to_string(contact));
+			}
+			if(userRegister) {
+				userListController->createNewMember(*userData, username, password, name, gender, email, age, contact);
+				break;
+			};
+		} else return;
+	}
+}
+
+void displaySearchUniversityMenu() {
+	FavouritesController favouriteData;
+	favouriteData.getFULinkListFromDB();
+	while (true) {
+		string input;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+		cout << "| Please select an option:" << endl;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+		cout << "| 1. Search University by name" << endl;
+		cout << "| 2. Search University by rank" << endl;
+		cout << "| 3. Search University by country" << endl;
+		cout << "| 4. Exit" << endl;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+
+		int choice = handleUserInput();
+
+		switch (choice) {
+		case 1:
+			cout << "Enter your query: ";
+			cin >> input;
+			uniController->searchUniMerge("Name", input, uniData);
+			break;
+
+		case 2:
+			uniController->searchUniversityColumn("Rank", handleIntInput("Enter your rank query: "), uniData);
+			break;
+
+		case 3:
+			cout << "Enter your query: ";
+			cin >> input;
+			uniController->searchUniQuick("Location", input, uniData);
+			break;
+
+		case 4:
+			return;
+		default:
+			cout << "Invalid choice. Please enter a valid choice." << endl;
+		}
+	}
+	}
+
+void displayLoginMenu() {
+	string username, password;
+	char ch;
+	while (true) {
+		// system("cls");
+		cout << "----------------------------------------------------------------------------------------------------------" << endl;
+		cout << "| LOGIN MENU" << endl;
+		cout << "| Press 0 to exit" << endl;
+		cout << "----------------------------------------------------------------------------------------------------------" << endl;
+		cout << "Username: ";
+		username = "";
+		cin >> username;
+
+		// allow user to go back to main menu
+		if (username == "0") {
+			break;
+		}
+
+		cout << "Password: ";
+		// disable console output for password input
+		ch = _getch();
+		password = "";
+		while (ch != 13) {
+			if (ch == 8) {
+				if (password.length() > 0) {
+					password.pop_back();
+					cout << "\b \b";
+				}
+			} else {
+				password += ch;
+				cout << "*";
+			}
+			ch = _getch();
+		}
+		userNode* authUser = authenticateUser(username, password);
+		cout<< authUser->UserId;
+		if (authUser->UserId == ""){
+			cout << endl << endl << "Incorrect username or password. Please try again." << endl;
+			system("pause");
+			continue;
+		}
+		else if (authUser->UserId == "0"){
+			cout << endl << endl << "Logged in successfully!" << endl;
+			AdminMenu menu;
+			menu.adminDashboard();
+			return;
+		}
+		else { //login for user
+			cout << endl << endl << "Logged in successfully!" << endl;
+			UserMenu menu;
+			menu.userDashboard();
+			return;
+		};
+	}
+};
+
+userNode* authenticateUser(string username, string password) {
+	userNode* temp = new userNode;
+	temp->UserId = "";
+
+	// Get the current time
+	std::time_t currentTime = std::time(nullptr);
+	// Convert the current time to string format
+	std::string currentLoginTime = std::ctime(&currentTime);
+	if (!currentLoginTime.empty() && currentLoginTime.back() == '\n') {
+		currentLoginTime.erase(currentLoginTime.length() - 1);
+	}
+	// if the user authentication is admin
+	if (username == "admin" && password == "password") {
+		temp->UserId = "0";
+		temp->userUserName = "admin";
+		temp->UserPassword = "admin";
+		temp->UserName = "admin";
+		temp->UserGender = "none";
+		temp->UserEmail = "none";
+		temp->UserLastLogin = "none";
+		temp->UserAge = 20;
+		temp->UserContact = 20;
+		return temp;
+	}
+	else {
+		userNode* current = userData->getHead();
+		// if the user account and password valid and authorized
+		while (current != nullptr) {
+			if(current->userUserName == username && current->UserPassword == password) {
+				current->UserLastLogin = currentLoginTime;
+				return current;
+			}
+			current = current->NextAddress;
+		}
+		return temp;
+	};
+}
+
+
+
