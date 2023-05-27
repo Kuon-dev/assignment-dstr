@@ -279,26 +279,87 @@ class universityQuickSort {
 	}
 
 	void swapNodes(universityNode* node1, universityNode* node2) {
-		swap(node1->Name, node2->Name);
-		swap(node1->LocationCode, node2->LocationCode);
-		swap(node1->Location, node2->Location);
-		swap(node1->ArScore, node2->ArScore);
-		swap(node1->ArRank, node2->ArRank);
-		swap(node1->ErScore, node2->ErScore);
-		swap(node1->ErRank, node2->ErRank);
-		swap(node1->FsrScore, node2->FsrScore);
-		swap(node1->FsrRank, node2->FsrRank);
-		swap(node1->CpfScore, node2->CpfScore);
-		swap(node1->CpfRank, node2->CpfRank);
-		swap(node1->IfrScore, node2->IfrScore);
-		swap(node1->IfrRank, node2->IfrRank);
-		swap(node1->IsrScore, node2->IsrScore);
-		swap(node1->IsrRank, node2->IsrRank);
-		swap(node1->IrnScore, node2->IrnScore);
-		swap(node1->IrnRank, node2->IrnRank);
-		swap(node1->GerScore, node2->GerScore);
-		swap(node1->GerRank, node2->GerRank);
-		swap(node1->ScoreScaled, node2->ScoreScaled);
+		string temp;
+
+		temp = node1->Name;
+		node1->Name = node2->Name;
+		node2->Name = temp;
+
+		temp = node1->LocationCode;
+		node1->LocationCode = node2->LocationCode;
+		node2->LocationCode = temp;
+
+		temp = node1->Location;
+		node1->Location = node2->Location;
+		node2->Location = temp;
+
+		temp = node1->ArScore;
+		node1->ArScore = node2->ArScore;
+		node2->ArScore = temp;
+
+		temp = node1->ArRank;
+		node1->ArRank = node2->ArRank;
+		node2->ArRank = temp;
+
+		temp = node1->ErScore;
+		node1->ErScore = node2->ErScore;
+		node2->ErScore = temp;
+
+		temp = node1->ErRank;
+		node1->ErRank = node2->ErRank;
+		node2->ErRank = temp;
+
+		temp = node1->FsrScore;
+		node1->FsrScore = node2->FsrScore;
+		node2->FsrScore = temp;
+
+		temp = node1->FsrRank;
+		node1->FsrRank = node2->FsrRank;
+		node2->FsrRank = temp;
+
+		temp = node1->CpfScore;
+		node1->CpfScore = node2->CpfScore;
+		node2->CpfScore = temp;
+
+		temp = node1->CpfRank;
+		node1->CpfRank = node2->CpfRank;
+		node2->CpfRank = temp;
+
+		temp = node1->IfrScore;
+		node1->IfrScore = node2->IfrScore;
+		node2->IfrScore = temp;
+
+		temp = node1->IfrRank;
+		node1->IfrRank = node2->IfrRank;
+		node2->IfrRank = temp;
+
+		temp = node1->IsrScore;
+		node1->IsrScore = node2->IsrScore;
+		node2->IsrScore = temp;
+
+		temp = node1->IsrRank;
+		node1->IsrRank = node2->IsrRank;
+		node2->IsrRank = temp;
+
+		temp = node1->IrnScore;
+		node1->IrnScore = node2->IrnScore;
+		node2->IrnScore = temp;
+
+		temp = node1->IrnRank;
+		node1->IrnRank = node2->IrnRank;
+		node2->IrnRank = temp;
+
+		temp = node1->GerScore;
+		node1->GerScore = node2->GerScore;
+		node2->GerScore = temp;
+
+		temp = node1->GerRank;
+		node1->GerRank = node2->GerRank;
+		node2->GerRank = temp;
+
+		temp = node1->ScoreScaled;
+		node1->ScoreScaled = node2->ScoreScaled;
+		node2->ScoreScaled = temp;
 	}
 
 	universityNode* getTail(universityNode* head) {
