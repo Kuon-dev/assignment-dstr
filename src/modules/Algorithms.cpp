@@ -279,87 +279,72 @@ class universityQuickSort {
 	}
 
 	void swapNodes(universityNode* node1, universityNode* node2) {
-		string temp;
+		if (node1 == nullptr || node2 == nullptr) return;
 
-		temp = node1->Name;
+		universityNode tempNode;
+
+		tempNode.Name = node1->Name;
+		tempNode.LocationCode = node1->LocationCode;
+		tempNode.Location = node1->Location;
+		tempNode.ArScore = node1->ArScore;
+		tempNode.ArRank = node1->ArRank;
+		tempNode.ErScore = node1->ErScore;
+		tempNode.ErRank = node1->ErRank;
+		tempNode.FsrScore = node1->FsrScore;
+		tempNode.FsrRank = node1->FsrRank;
+		tempNode.CpfScore = node1->CpfScore;
+		tempNode.CpfRank = node1->CpfRank;
+		tempNode.IfrScore = node1->IfrScore;
+		tempNode.IfrRank = node1->IfrRank;
+		tempNode.IsrScore = node1->IsrScore;
+		tempNode.IsrRank = node1->IsrRank;
+		tempNode.IrnScore = node1->IrnScore;
+		tempNode.IrnRank = node1->IrnRank;
+		tempNode.GerScore = node1->GerScore;
+		tempNode.GerRank = node1->GerRank;
+		tempNode.ScoreScaled = node1->ScoreScaled;
+
 		node1->Name = node2->Name;
-		node2->Name = temp;
-
-		temp = node1->LocationCode;
 		node1->LocationCode = node2->LocationCode;
-		node2->LocationCode = temp;
-
-		temp = node1->Location;
 		node1->Location = node2->Location;
-		node2->Location = temp;
-
-		temp = node1->ArScore;
 		node1->ArScore = node2->ArScore;
-		node2->ArScore = temp;
-
-		temp = node1->ArRank;
 		node1->ArRank = node2->ArRank;
-		node2->ArRank = temp;
-
-		temp = node1->ErScore;
 		node1->ErScore = node2->ErScore;
-		node2->ErScore = temp;
-
-		temp = node1->ErRank;
 		node1->ErRank = node2->ErRank;
-		node2->ErRank = temp;
-
-		temp = node1->FsrScore;
 		node1->FsrScore = node2->FsrScore;
-		node2->FsrScore = temp;
-
-		temp = node1->FsrRank;
 		node1->FsrRank = node2->FsrRank;
-		node2->FsrRank = temp;
-
-		temp = node1->CpfScore;
 		node1->CpfScore = node2->CpfScore;
-		node2->CpfScore = temp;
-
-		temp = node1->CpfRank;
 		node1->CpfRank = node2->CpfRank;
-		node2->CpfRank = temp;
-
-		temp = node1->IfrScore;
 		node1->IfrScore = node2->IfrScore;
-		node2->IfrScore = temp;
-
-		temp = node1->IfrRank;
 		node1->IfrRank = node2->IfrRank;
-		node2->IfrRank = temp;
-
-		temp = node1->IsrScore;
 		node1->IsrScore = node2->IsrScore;
-		node2->IsrScore = temp;
-
-		temp = node1->IsrRank;
 		node1->IsrRank = node2->IsrRank;
-		node2->IsrRank = temp;
-
-		temp = node1->IrnScore;
 		node1->IrnScore = node2->IrnScore;
-		node2->IrnScore = temp;
-
-		temp = node1->IrnRank;
 		node1->IrnRank = node2->IrnRank;
-		node2->IrnRank = temp;
-
-		temp = node1->GerScore;
 		node1->GerScore = node2->GerScore;
-		node2->GerScore = temp;
-
-		temp = node1->GerRank;
 		node1->GerRank = node2->GerRank;
-		node2->GerRank = temp;
-
-		temp = node1->ScoreScaled;
 		node1->ScoreScaled = node2->ScoreScaled;
-		node2->ScoreScaled = temp;
+
+		node2->Name = tempNode.Name;
+		node2->LocationCode = tempNode.LocationCode;
+		node2->Location = tempNode.Location;
+		node2->ArScore = tempNode.ArScore;
+		node2->ArRank = tempNode.ArRank;
+		node2->ErScore = tempNode.ErScore;
+		node2->ErRank = tempNode.ErRank;
+		node2->FsrScore = tempNode.FsrScore;
+		node2->FsrRank = tempNode.FsrRank;
+		node2->CpfScore = tempNode.CpfScore;
+		node2->CpfRank = tempNode.CpfRank;
+		node2->IfrScore = tempNode.IfrScore;
+		node2->IfrRank = tempNode.IfrRank;
+		node2->IsrScore = tempNode.IsrScore;
+		node2->IsrRank = tempNode.IsrRank;
+		node2->IrnScore = tempNode.IrnScore;
+		node2->IrnRank = tempNode.IrnRank;
+		node2->GerScore = tempNode.GerScore;
+		node2->GerRank = tempNode.GerRank;
+		node2->ScoreScaled = tempNode.ScoreScaled;
 	}
 
 	universityNode* getTail(universityNode* head) {

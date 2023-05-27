@@ -447,7 +447,7 @@ void userRegister() {
 
 void displaySearchUniversityMenu() {
 	FavouritesController favouriteData;
-	favouriteData.getFULinkListFromDB();
+	// favouriteData.getFULinkListFromDB();
 	while (true) {
 		string input;
 		cout << "----------------------------------------------------------------------------------------------------------"
