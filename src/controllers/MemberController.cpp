@@ -84,7 +84,7 @@ class MemberController {
 	}
 
 	// check username special characters and unique
-	bool validateUsername(string username, userList &users) {
+	bool validateUsername(string username, userList& users) {
 		// Regular expression pattern for username without special characters
 		regex pattern("^[a-zA-Z0-9_]+$");
 		userNode* current = users.getHead();

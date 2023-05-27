@@ -14,10 +14,9 @@ class FavouritesController {
 	favUniList favouritesobj;
 
 	public:
-
-		favUniList readFavUniDatabase() {
+	favUniList readFavUniDatabase() {
 		favUniList* list = new favUniList();
-		ifstream file("C:/Users/Acer/source/repos/Kuon-dev/assignment-dstr/Database/FavUni.csv"); // get user database
+		ifstream file("Database/FavUni.csv"); // get user database
 		// validate file open
 		if (!file.is_open()) {
 			cout << "\033[31m"
@@ -75,8 +74,6 @@ class FavouritesController {
 	void displayFavUni(favUniNode* head) {
 		favUniNode* current = head;
 
-		// favouritesobj.overwriteFavUniData();
-
 		while (current != NULL) {
 			cout << "Favourite University ID: " << current->FavUniId << endl;
 			cout << "Account ID: " << current->UserId << endl;
@@ -113,7 +110,6 @@ class FavouritesController {
 	}
 
 	void add_newnode_to_end_of_list_history() {
-		// newnodeHist = new history_List;
 		newnodeFavUni->NextAddress = NULL;
 		newnodeFavUni->PrevAddress = NULL;
 		// situation 1: list empty
@@ -132,14 +128,11 @@ class FavouritesController {
 	{
 		struct favUniNode* current = favUniHead;
 
-		// bool exe = false;
-
 		// Iterating till end of list
 		for (int cnt = 1; current != NULL; cnt++) {
 			current = current->NextAddress;
 
 			if (current == NULL) {
-				// exe = true;
 				cout << cnt << endl;
 			}
 		};
@@ -226,19 +219,11 @@ class FavouritesController {
 
 	void createUserFavUni(string input, string testname, string testmemberid) {
 		UniversityContoller uniObject;
-
 		universityList uniCurrentList = uniObject.readUniversityDatabaseLinkedList();
-
 		universitySearcher searcher;
-
 		universityNode* searched = searcher.binarySearch(uniCurrentList.getHead(), "Rank", stoi(input));
 
 		string ID, Name;
-		/*cout << "enter user id as temporary member id for fav uni" << endl;
-		cin >> ID;
-		cout << "enter user name as temporary member name for fav uni" << endl;
-		cin >> Name;*/
-
 		ID = testmemberid;
 		Name = testname;
 		favUniHead = currentFavUni = favUniTail = NULL;
@@ -247,7 +232,6 @@ class FavouritesController {
 			to_string(stoi(favouritesobj.getTail()->FavUniId) + 1), ID, Name, to_string(searched->Rank), searched->Name);
 		favouritesobj.overwriteFavUniData(getHead());
 	}
-
 
 	favUniNode* getHead() { return favouritesobj.getHead(); }
 
