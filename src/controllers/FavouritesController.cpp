@@ -17,7 +17,8 @@ class FavouritesController {
 
 		favUniList readFavUniDatabase() {
 		favUniList* list = new favUniList();
-		ifstream file("C:/Users/Acer/source/repos/Kuon-dev/assignment-dstr/Database/FavUni.csv"); // get user database
+		//ifstream file("C:/Users/Acer/source/repos/Kuon-dev/assignment-dstr/Database/FavUni.csv"); // get user database
+		ifstream file("Database/FavUni.csv");
 		// validate file open
 		if (!file.is_open()) {
 			cout << "\033[31m"
