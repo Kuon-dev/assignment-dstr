@@ -317,8 +317,6 @@ class GuestMenu {
 
 			int choice = handleUserInput();
 			int page;
-			string name, username, email, password, gender, input;
-			int age, contact;
 			bool exitPaginate = true;
 
 			switch (choice) {
@@ -344,16 +342,8 @@ class GuestMenu {
 				displayLoginMenu();
 				break;
 			case 5:
-				name = handleStringInput("Enter your name");
-				username = handleStringInput("Enter your username");
-				password = handleStringInput("Enter your password");
-				age = handleIntInput("Enter your age");
-				gender = handleStringInput("Enter your gender");
-				email = handleStringInput("Enter your email");
-				contact = handleIntInput("Enter your contact");
-
-				userListController->createNewMember(*userData, username, password, name, gender, email, age, contact);
-				break;
+				userLogin();
+				continue;
 			case 6:
 				cout << "Exiting the system. Goodbye!" << endl;
 				return;
@@ -361,6 +351,34 @@ class GuestMenu {
 			default:
 				cout << "Invalid choice. Please enter a valid choice." << endl;
 			}
+		}
+	}
+
+	void userLogin() {
+		while (true) {
+			string name, username, email, password, gender, input;
+			int age, contact;
+			bool userRegister = true;
+			username = handleStringInput("Enter your username (Enter 1 to return)");
+			if(username != "1") {
+				userRegister = userListController->validateUsername(username, *userData);
+				if(userRegister){
+					name = handleStringInput("Enter your name");
+					password = handleStringInput("Enter your password");
+					age = handleIntInput("Enter your age");
+					gender = handleStringInput("Enter your gender");
+					email = handleStringInput("Enter your email");
+					userRegister = userListController->validateEmail(email);
+				}
+				if(userRegister){
+					contact = handleIntInput("Enter your contact");
+					userRegister = userListController->validateContact(to_string(contact));
+				}
+				if(userRegister) {
+					userListController->createNewMember(*userData, username, password, name, gender, email, age, contact);
+					break;
+				};
+			} else return;
 		}
 	}
 

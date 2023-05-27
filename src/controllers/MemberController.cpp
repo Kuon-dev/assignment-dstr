@@ -84,35 +84,49 @@ class MemberController {
 	}
 
 	// check username special characters and unique
-	bool validateUsername(const string& username, const userList& users, userNode* headNode) {
+	bool validateUsername(string username, userList &users) {
 		// Regular expression pattern for username without special characters
 		regex pattern("^[a-zA-Z0-9_]+$");
-		userNode* current = headNode;
+		userNode* current = users.getHead();
 
 		// Check if the username matches the pattern
 		if (!regex_match(username, pattern)) {
-			cout << "Invalid username. Username should only contain alphanumeric characters and underscore (_)." << endl;
+			cout << "Username should only contain alphanumeric characters and underscore (_)." << endl;
 			return false;
 		}
-
-		// validate username length
-		if (username.length() > 60) {
-			cout << "Error: input exceeds 60 characters" << endl;
-			return false;
-		}
-		cout << "username" << username;
-		// cout << "userlist " << (users.length() ? "got" : "no") << endl;
 
 		// Check if the username already exists in the user list
 		while (current != nullptr) {
-			// if (current->userUserName == username) {
-			// 	cout << "Username already exists. Please choose a different username." << endl;
-			// 	return false;
-			// }
+			if (current->userUserName == username) {
+				cout << "Username already exists. Please choose a different username." << endl;
+				return false;
+			}
 			current = current->NextAddress;
 		}
 
-		// Username is valid
+		// Username is unique
+		return true;
+	}
+
+	bool validateEmail(string email) {
+		// Regular expression pattern for email validation
+		regex pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+
+		// Check if the email matches the pattern
+		if (!regex_match(email, pattern)) {
+			cout << "Invalid email address." << endl;
+			return false;
+		}
+		return true;
+	}
+
+	bool validateContact(string contact) {
+		// Check the length of the contact number
+		int length = contact.length();
+		if (length < 10 || length > 12) {
+			cout << "Invalid contact number length. Number should be between 10 and 12 digits." << std::endl;
+			return false;
+		}
 		return true;
 	}
 
@@ -137,19 +151,12 @@ class MemberController {
 							<< newUser->UserName << "," << newUser->UserGender << "," << newUser->UserEmail << ","
 							<< newUser->UserLastLogin << "," << to_string(newUser->UserAge) << "," << to_string(newUser->UserContact)
 							<< endl;
-
 			outfile.close();
-
 			data.addUserNode(newUser);
-
 			cout << "User acccount created." << endl;
 		} else {
 			cout << "Please try again later." << endl;
 		}
-
-		// after write data into excel need to append to the linked list
-		// assign new user as tail then the previous node need change
-		// try this when display all user list
 	}
 
 	private:

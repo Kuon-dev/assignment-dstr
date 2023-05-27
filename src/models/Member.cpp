@@ -169,9 +169,6 @@ class userList {
 	}
 
 	void displayAllUser() {
-
-
-
 		userNode* current = head;
 		// if no data
 		if (head == nullptr) {
