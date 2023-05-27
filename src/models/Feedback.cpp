@@ -51,18 +51,44 @@ class feedbackList {
 		};
 	}
 
-	void updateFeedback(string feedbackId, string newContent) {
+	void updateFeedback(feedbackNode* newNode) {
+		if (head == nullptr) {
+			cout << "The feedback list is empty." << endl;
+			return;
+		}
+
 		feedbackNode* current = head;
-		while (current != nullptr && current->FeedbackId != feedbackId) {
+
+		while (current != nullptr) {
+			if (current->FeedbackId == newNode->FeedbackId) {
+				newNode->PreviousAddress = current->PreviousAddress;
+				newNode->NextAddress = current->NextAddress;
+
+				if (current->PreviousAddress != nullptr) {
+					current->PreviousAddress->NextAddress = newNode;
+				} else {
+					// Updating head node
+					head = newNode;
+				}
+
+				if (current->NextAddress != nullptr) {
+					current->NextAddress->PreviousAddress = newNode;
+				} else {
+					// Updating tail node
+					tail = newNode;
+				}
+
+				delete current; // Delete the existing node
+				break;
+			}
+
 			current = current->NextAddress;
 		}
-		if (current == nullptr) {
-			cout << "Feedback with ID " << feedbackId << " not found" << endl;
-		} else {
-			current->FeedbackContent = newContent;
-			current->Timestamp = time(nullptr);
-			cout << "Feedback with ID " << feedbackId << " updated" << endl;
-		}
+	}
+
+	void updateFeedbackReply(feedbackNode* node, string content){
+		node->ReplyContent = content;
+		updateFeedback(node);
 	}
 
 	feedbackNode* getFeedbackById(string feedbackId) {
@@ -148,64 +174,65 @@ class feedbackList {
 		}
 	}
 
+	void displayFeedbackPaginate(int pageNumber) {
+		if (head == nullptr) {
+			cout << "The feedback list is empty." << endl;
+			return;
+		}
+
+		int count = 0;
+		int startIdx = (pageNumber - 1) * 20;
+		int endIdx = startIdx + 20;
+
+		feedbackNode* current = head;
+		printTableRow("Feedback ID", "Feedback Content", "Reply Content", "Time created");
+		while (current != nullptr && count < endIdx) {
+			if (count >= startIdx) {
+				tm timestamp_tm;
+				localtime_s(&timestamp_tm, &current->Timestamp);
+				string feedbackContent = current->FeedbackContent;
+				int width = 60; // Width limit for Feedback Content
+				int startPos = 0;
+
+				// Print the Feedback Content with wrapping
+				while (startPos < feedbackContent.length()) {
+					stringstream ss;
+					ss << put_time(&timestamp_tm, "%c %Z");
+					string formattedTimestamp = ss.str();
+					int remainingWidth = std::min(width, static_cast<int>(feedbackContent.length() - startPos));
+					printTableRow(
+						current->FeedbackId,
+						feedbackContent.substr(startPos, remainingWidth),
+						current->ReplyContent,
+						formattedTimestamp);
+					startPos += width;
+				}
+			}
+
+			current = current->NextAddress; // Move to the next node
+			count++;
+		}
+
+		if (count < startIdx) {
+			cout << "Invalid page number. There are fewer feedbacks than the requested page." << endl;
+		}
+	}
+
 	feedbackNode* getHead() { return head; }
 	feedbackNode* getTail() { return tail; }
-
-	void sortFeedbackByUserId() {
-		head = mergeSort(head);
-		// update the tail pointer if necessary
-		feedbackNode* current = head;
-		while (current && current->NextAddress) {
-			current = current->NextAddress;
-		}
-		tail = current;
-	}
 
 	private:
 	feedbackNode* head;
 	feedbackNode* tail;
 
-	feedbackNode* merge(feedbackNode* leftList, feedbackNode* rightList) {
-		feedbackNode* mergedList = nullptr;
-		if (leftList == nullptr) {
-			return rightList;
-		} else if (rightList == nullptr) {
-			return leftList;
-		}
-		if (leftList->UserId <= rightList->UserId) {
-			mergedList = leftList;
-			mergedList->NextAddress = merge(leftList->NextAddress, rightList);
-		} else {
-			mergedList = rightList;
-			mergedList->NextAddress = merge(leftList, rightList->NextAddress);
-		}
-		mergedList->NextAddress->PreviousAddress = mergedList;
-		return mergedList;
-	}
 
-	feedbackNode* mergeSort(feedbackNode* currentHead) {
-		if (currentHead == nullptr || currentHead->NextAddress == nullptr) {
-			return currentHead;
-		}
-		feedbackNode* middle = getMiddle(currentHead);
-		feedbackNode* nextToMiddle = middle->NextAddress;
-		middle->NextAddress = nullptr;
-		feedbackNode* leftList = mergeSort(currentHead);
-		feedbackNode* rightList = mergeSort(nextToMiddle);
-		return merge(leftList, rightList);
-	}
-
-	feedbackNode* getMiddle(feedbackNode* currentHead) {
-		feedbackNode* slowPtr = currentHead;
-		feedbackNode* fastPtr = currentHead->NextAddress;
-		while (fastPtr != nullptr) {
-			fastPtr = fastPtr->NextAddress;
-			if (fastPtr != nullptr) {
-				slowPtr = slowPtr->NextAddress;
-				fastPtr = fastPtr->NextAddress;
-			}
-		}
-		return slowPtr;
+	feedbackNode* getFeedbackNodeById(feedbackList* data, string id){
+		feedbackNode* current = data->getHead();
+		while (current != nullptr){
+			if (current->FeedbackId == id) return current;
+			current = current->NextAddress;
+		};
+		return nullptr;
 	}
 
 	private:
