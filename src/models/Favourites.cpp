@@ -51,7 +51,7 @@ class favUniList {
 	TopTenUniNode* getSortedTopTenUniHead() { return SortedTopTenUniHead; }
 	void favUniData() {
 		string FavUniId, UserId, UserName, UniId, UniName, fline;
-		ifstream file("Database/FavUni.csv");
+		ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
 		getline(file, fline);
 		while (file.good()) {
 			newnodeFavUni = new favUniNode;
@@ -263,7 +263,7 @@ class favUniList {
 		favUniNode* current = saveFavUni;
 
 		ofstream tempFile("temp.csv");
-		ifstream file("Database/FavUni.csv");
+		ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
 		string line;
 		// bool found = false;
 		tempFile << "FavUniID"
@@ -289,5 +289,15 @@ class favUniList {
 		remove("Database/FavUni.csv");
 		rename("temp.csv", "Database/FavUni.csv");
 		cout << "Favourite Univerity is updated." << endl;
+	}
+
+	void addFavUniNode(favUniNode* newFavUniNode) {
+		if (favUniHead == nullptr) {
+			favUniHead = favUniTail = newFavUniNode;
+		} else {
+			favUniTail->NextAddress = newFavUniNode;
+			newFavUniNode->PrevAddress = favUniTail;
+			favUniTail = newFavUniNode;
+		};
 	}
 };

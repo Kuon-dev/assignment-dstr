@@ -21,6 +21,18 @@ class UserMenu {
 	userNode* currentUser;
 	feedbackList* userFeedback;
 	void userDashboard() {
+
+		string uniid, favid, testusername, testuserid;
+
+		// setUser(userNode * user);
+		// cout << currentUser->UserId << endl;
+		testuserid = currentUser->UserId;
+		testusername = currentUser->UserName;
+
+		FavouritesController favCont;
+		favCont.getFULinkListFromDB();
+		favUniNode* test = favCont.readFavDatabase(testuserid);
+
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -47,6 +59,10 @@ class UserMenu {
 			case 2:
 				cout << "You have selected 'View Favourite Universities'" << endl;
 				// TODO: Implement 'View Favourite Universities' functionality
+				//geberate report
+				//favCont.displayTopTenUniData();
+				// display uni list based on user id
+				//favCont.displayFavUni(test);
 				break;
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
@@ -85,15 +101,22 @@ class UserMenu {
 		// TODO: select uni as fav
 	}
 
-	void profileMenu() {
+void profileMenu() {
 		// TODO: display profile
-		string uniid, userid, favid;
+		string uniid, favid, testusername, testuserid;
+
+		// setUser(userNode * user);
+		// cout << currentUser->UserId << endl;
+		testuserid = /*userListController.returnUserId(currentUser)*/ "987";
+		testusername = /*userListController.returnUserName(currentUser)*/ "Loong";
 
 		FavouritesController favCont;
 		favCont.getFULinkListFromDB();
+		favUniNode* test = favCont.readFavDatabase(testuserid);
 
-		cout << "User ID: ";
-		getline(cin, userid);
+		// cout << "User ID: ";
+		// getline(cin, testuserid);
+
 
 		while (true) {
 			cout
@@ -113,7 +136,7 @@ class UserMenu {
 			cout << "Enter your choice (1-5): ";
 			int choice = handleUserInput();
 
-			favUniNode* test = favCont.readFavDatabase(userid);
+			//favUniNode* test = favCont.readFavDatabase(userid);
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'View Profile'" << endl;
@@ -136,7 +159,7 @@ class UserMenu {
 				cin.ignore();
 				cout << "University ID: ";
 				getline(cin, uniid);
-				favCont.createUserFavUni(uniid);
+				favCont.createUserFavUni(uniid, testuserid, testusername);
 				break;
 			case 5:
 				cout << "You have selected 'Delete Favourite Universities'" << endl;
@@ -222,6 +245,8 @@ class UserMenu {
 class AdminMenu {
 	public:
 	userNode* currentUser;
+	FavouritesController favCont;
+
 
 	void displayAllMember() {
 		while (true) {
@@ -286,7 +311,9 @@ class AdminMenu {
 				break;
 			case 3:
 				cout << "You have selected 'Generate top 10 university'" << endl;
+				favCont.displayTopTenUniData();
 				// TODO: Implement 'top 10 uni' functionality
+
 				break;
 			case 4:
 				cout << "You have selected 'Logout'" << endl;

@@ -14,6 +14,51 @@ class FavouritesController {
 	favUniList favouritesobj;
 
 	public:
+
+		favUniList readFavUniDatabase() {
+		favUniList* list = new favUniList();
+		ifstream file("C:/Users/Acer/source/repos/Kuon-dev/assignment-dstr/Database/FavUni.csv"); // get user database
+		// validate file open
+		if (!file.is_open()) {
+			cout << "\033[31m"
+					 << "Error: could not open file "
+					 << "\033[0m" << endl;
+			return *list;
+		}
+		// define database haeder and line
+		string header, line;
+		getline(file, header);
+		while (getline(file, line)) {
+			stringstream iss(line);
+			favUniNode* node = new favUniNode();
+			string FavUniId;
+			string UserId;
+			string UniId;
+			string UserName;
+			string UniName;
+			string token; // to get value
+			getline(iss, token, ',');
+			FavUniId = token;
+			getline(iss, token, ',');
+			UserId = token;
+			getline(iss, token, ',');
+			UserName = token;
+			getline(iss, token, ',');
+			UniId = token;
+			getline(iss, token, ',');
+			UniName = token;
+			node->FavUniId = FavUniId;
+			node->UserId = UserId;
+			node->UserName = UserName;
+			node->UserName = UserName;
+			node->UniId = UniId;
+			node->UniName = UniName;
+			list->addFavUniNode(node);
+		};
+		file.close();
+		return *list;
+	};
+
 	favUniNode* readFavDatabase(string UserId) {
 		// read from csv
 
@@ -179,27 +224,30 @@ class FavouritesController {
 		}
 	}
 
-	void createUserFavUni(string input) {
-		UniversityContoller* uniObject;
+	void createUserFavUni(string input, string testname, string testmemberid) {
+		UniversityContoller uniObject;
 
-		universityList* uniCurrentList = uniObject->readUniversityDatabase();
+		universityList uniCurrentList = uniObject.readUniversityDatabaseLinkedList();
 
 		universitySearcher searcher;
 
-		universityNode* searched = searcher.binarySearch(uniCurrentList->getHead(), "Rank", stoi(input));
+		universityNode* searched = searcher.binarySearch(uniCurrentList.getHead(), "Rank", stoi(input));
 
 		string ID, Name;
-		cout << "enter user id as temporary name for fav uni" << endl;
+		/*cout << "enter user id as temporary member id for fav uni" << endl;
 		cin >> ID;
-		cout << "enter user name as temporary name for fav uni" << endl;
-		cin >> Name;
+		cout << "enter user name as temporary member name for fav uni" << endl;
+		cin >> Name;*/
 
+		ID = testmemberid;
+		Name = testname;
 		favUniHead = currentFavUni = favUniTail = NULL;
 
 		favouritesobj.InsertFavUni(
 			to_string(stoi(favouritesobj.getTail()->FavUniId) + 1), ID, Name, to_string(searched->Rank), searched->Name);
 		favouritesobj.overwriteFavUniData(getHead());
 	}
+
 
 	favUniNode* getHead() { return favouritesobj.getHead(); }
 
