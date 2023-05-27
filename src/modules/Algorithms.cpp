@@ -212,12 +212,25 @@ class universityMergeSort {
 
 class universityQuickSort {
 	public:
-	void quicksortInt(universityNode* head, universityNode* tail, string column) {
-		if (tail != nullptr && head != tail && head != tail->next) {
-			universityNode* p = partition(head, tail, column);
-			quicksortInt(head, p->prev, column);
-			quicksortInt(p->next, tail, column);
+	universityNode* quicksortInt(universityNode* head, universityNode* tail, string column) {
+		if (head == nullptr || head == tail) {
+			return head;
 		}
+
+		universityNode* pivot = partition(head, tail, column);
+		if (pivot != head) {
+			universityNode* prev = head;
+			while (prev->next != pivot) {
+				prev = prev->next;
+			}
+			prev->next = nullptr;
+			head = quicksortInt(head, prev, column);
+			prev = getTail(head);
+			prev->next = pivot;
+		}
+		pivot->next = quicksortInt(pivot->next, tail, column);
+
+		return head;
 	}
 
 	universityNode* quicksortString(universityNode* head, universityNode* tail, string column) {
@@ -227,7 +240,6 @@ class universityQuickSort {
 
 		// Partition the list and get the pivot node
 		universityNode* pivot = partitionString(head, tail, column);
-
 		// Recursively sort the two sublists
 		if (pivot != head) {
 			universityNode* prev = head;
