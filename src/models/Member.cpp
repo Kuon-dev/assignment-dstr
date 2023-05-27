@@ -179,13 +179,13 @@ class userList {
 		}
 		cout << "=========================================================================================================="
 				 << endl;
-		cout << setw(6) << "UserId" << setw(15) << "Username" << setw(15) << "Name" << setw(10) << "Gender" << setw(20)
+		cout << setw(6) << "UserId" << setw(15) << "Username" << setw(15) << "Name" << setw(10) << "Gender" << setw(35)
 				 << "Email" << setw(12) << "Contact" << setw(6) << "Age" << setw(28) << "Last Login" << endl;
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 		while (current != nullptr) {
 			cout << setw(6) << current->UserId << setw(15) << current->userUserName << setw(15) << current->UserName
-					 << setw(10) << current->UserGender << setw(20) << current->UserEmail << setw(12) << current->UserContact
+					 << setw(10) << current->UserGender << setw(35) << current->UserEmail << setw(12) << current->UserContact
 					 << setw(6) << current->UserAge << setw(28) << current->UserLastLogin << endl;
 			current = current->NextAddress;
 		}
