@@ -6,6 +6,8 @@
 #include <iomanip>
 #include <typeinfo>
 
+#include "../modules/InputHandler.cpp"
+
 using namespace std;
 
 struct userNode {
@@ -91,14 +93,14 @@ class userList {
 		}
 	}
 
-		void readAllUserNode() {
-        userNode* current = head;
-        cout << "-----------------------------------------" << endl;
-        while (current != nullptr) {
-            current = current->NextAddress;
-        }
-        cout << "-----------------------------------------" << endl;
-    }
+	void readAllUserNode() {
+		userNode* current = head;
+		cout << "-----------------------------------------" << endl;
+		while (current != nullptr) {
+			current = current->NextAddress;
+		}
+		cout << "-----------------------------------------" << endl;
+	}
 
 	void updateUserNode(
 		string userId, string userName, string name, int age, string gender, string email, int contact, string lastLogin) {
@@ -175,17 +177,16 @@ class userList {
 			cout << "No user data available." << endl;
 			return;
 		}
-		cout
-				<< "=========================================================================================================="
-				<< endl;
+		cout << "=========================================================================================================="
+				 << endl;
 		cout << setw(6) << "UserId" << setw(15) << "Username" << setw(15) << "Name" << setw(10) << "Gender" << setw(20)
-				<< "Email" << setw(12) << "Contact" << setw(6) << "Age"<< setw(28) << "Last Login" << endl;
+				 << "Email" << setw(12) << "Contact" << setw(6) << "Age" << setw(28) << "Last Login" << endl;
 		cout << "----------------------------------------------------------------------------------------------------------"
-				<< endl;
+				 << endl;
 		while (current != nullptr) {
-			cout << setw(6) << current->UserId << setw(15) << current->userUserName << setw(15) << current->UserName << setw(10)
-					<< current->UserGender << setw(20) << current->UserEmail << setw(12)
-					<< current->UserContact << setw(6) << current->UserAge << setw(28) << current->UserLastLogin << endl;
+			cout << setw(6) << current->UserId << setw(15) << current->userUserName << setw(15) << current->UserName
+					 << setw(10) << current->UserGender << setw(20) << current->UserEmail << setw(12) << current->UserContact
+					 << setw(6) << current->UserAge << setw(28) << current->UserLastLogin << endl;
 			current = current->NextAddress;
 		}
 	}

@@ -65,3 +65,8 @@ add_custom_command(TARGET main POST_BUILD
 	   ${CMAKE_SOURCE_DIR}/Database/Users.csv
 	   $<TARGET_FILE_DIR:main>/Database/Users.csv)
 
+add_custom_command(TARGET main POST_BUILD
+   COMMAND ${CMAKE_COMMAND} -E copy
+	   ${CMAKE_SOURCE_DIR}/Database/FeedbackDatabase.csv
+	   $<TARGET_FILE_DIR:main>/Database/FeedbackDatabase.csv)
+
