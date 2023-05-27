@@ -21,6 +21,17 @@ class UserMenu {
 	userNode* currentUser;
 	feedbackList* userFeedback;
 	void userDashboard() {
+		string uniid, favid, testusername, testuserid;
+
+		// setUser(userNode * user);
+		// cout << currentUser->UserId << endl;
+		testuserid = currentUser->UserId;
+		testusername = currentUser->UserName;
+
+		FavouritesController favCont;
+		favCont.getFULinkListFromDB();
+		favUniNode* test = favCont.readFavDatabase(testuserid);
+
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -47,6 +58,10 @@ class UserMenu {
 			case 2:
 				cout << "You have selected 'View Favourite Universities'" << endl;
 				// TODO: Implement 'View Favourite Universities' functionality
+				// geberate report
+				// favCont.displayTopTenUniData();
+				// display uni list based on user id
+				favCont.displayFavUni(test);
 				break;
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
@@ -87,13 +102,19 @@ class UserMenu {
 
 	void profileMenu() {
 		// TODO: display profile
-		string uniid, userid, favid;
+		string uniid, favid, testusername, testuserid;
+
+		// setUser(userNode * user);
+		// cout << currentUser->UserId << endl;
+		testuserid = /*userListController.returnUserId(currentUser)*/ "987";
+		testusername = /*userListController.returnUserName(currentUser)*/ "Loong";
 
 		FavouritesController favCont;
 		favCont.getFULinkListFromDB();
+		favUniNode* test = favCont.readFavDatabase(testuserid);
 
-		cout << "User ID: ";
-		getline(cin, userid);
+		// cout << "User ID: ";
+		// getline(cin, testuserid);
 
 		while (true) {
 			cout
@@ -113,7 +134,7 @@ class UserMenu {
 			cout << "Enter your choice (1-5): ";
 			int choice = handleUserInput();
 
-			favUniNode* test = favCont.readFavDatabase(userid);
+			// favUniNode* test = favCont.readFavDatabase(userid);
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'View Profile'" << endl;
@@ -136,7 +157,7 @@ class UserMenu {
 				cin.ignore();
 				cout << "University ID: ";
 				getline(cin, uniid);
-				favCont.createUserFavUni(uniid);
+				favCont.createUserFavUni(uniid, testuserid, testusername);
 				break;
 			case 5:
 				cout << "You have selected 'Delete Favourite Universities'" << endl;
@@ -222,6 +243,7 @@ class UserMenu {
 class AdminMenu {
 	public:
 	userNode* currentUser;
+	FavouritesController favCont;
 
 	void displayAllMember() {
 		while (true) {
@@ -286,7 +308,9 @@ class AdminMenu {
 				break;
 			case 3:
 				cout << "You have selected 'Generate top 10 university'" << endl;
+				favCont.displayTopTenUniData();
 				// TODO: Implement 'top 10 uni' functionality
+
 				break;
 			case 4:
 				cout << "You have selected 'Logout'" << endl;
@@ -323,12 +347,11 @@ userNode* authenticateUser(string username, string password) {
 		temp->UserAge = 20;
 		temp->UserContact = 20;
 		return temp;
-	}
-	else {
+	} else {
 		userNode* current = userData->getHead();
 		// if the user account and password valid and authorized
 		while (current != nullptr) {
-			if(current->userUserName == username && current->UserPassword == password) {
+			if (current->userUserName == username && current->UserPassword == password) {
 				current->UserLastLogin = currentLoginTime;
 				return current;
 			}
@@ -400,9 +423,9 @@ void userRegister() {
 		int age, contact;
 		bool userRegister = true;
 		username = handleStringInput("Enter your username (Enter 1 to return)");
-		if(username != "1") {
+		if (username != "1") {
 			userRegister = userListController->validateUsername(username, *userData);
-			if(userRegister){
+			if (userRegister) {
 				name = handleStringInput("Enter your name");
 				password = handleStringInput("Enter your password");
 				age = handleIntInput("Enter your age");
@@ -410,11 +433,11 @@ void userRegister() {
 				email = handleStringInput("Enter your email");
 				userRegister = userListController->validateEmail(email);
 			}
-			if(userRegister){
+			if (userRegister) {
 				contact = handleIntInput("Enter your contact");
 				userRegister = userListController->validateContact(to_string(contact));
 			}
-			if(userRegister) {
+			if (userRegister) {
 				userListController->createNewMember(*userData, username, password, name, gender, email, age, contact);
 				break;
 			};
@@ -427,20 +450,17 @@ void displaySearchUniversityMenu() {
 	favouriteData.getFULinkListFromDB();
 	while (true) {
 		string input;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 		cout << "| Please select an option:" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 		cout << "| 1. Search University by name" << endl;
 		cout << "| 2. Search University by rank" << endl;
 		cout << "| 3. Search University by country" << endl;
 		cout << "| 4. Exit" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 
 		int choice = handleUserInput();
 
@@ -467,7 +487,7 @@ void displaySearchUniversityMenu() {
 			cout << "Invalid choice. Please enter a valid choice." << endl;
 		}
 	}
-	}
+}
 
 void displayMenu() {
 	while (true) {
@@ -525,5 +545,3 @@ void displayMenu() {
 		}
 	}
 }
-
-

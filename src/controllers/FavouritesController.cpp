@@ -14,6 +14,50 @@ class FavouritesController {
 	favUniList favouritesobj;
 
 	public:
+	favUniList readFavUniDatabase() {
+		favUniList* list = new favUniList();
+		ifstream file("Database/FavUni.csv"); // get user database
+		// validate file open
+		if (!file.is_open()) {
+			cout << "\033[31m"
+					 << "Error: could not open file "
+					 << "\033[0m" << endl;
+			return *list;
+		}
+		// define database haeder and line
+		string header, line;
+		getline(file, header);
+		while (getline(file, line)) {
+			stringstream iss(line);
+			favUniNode* node = new favUniNode();
+			string FavUniId;
+			string UserId;
+			string UniId;
+			string UserName;
+			string UniName;
+			string token; // to get value
+			getline(iss, token, ',');
+			FavUniId = token;
+			getline(iss, token, ',');
+			UserId = token;
+			getline(iss, token, ',');
+			UserName = token;
+			getline(iss, token, ',');
+			UniId = token;
+			getline(iss, token, ',');
+			UniName = token;
+			node->FavUniId = FavUniId;
+			node->UserId = UserId;
+			node->UserName = UserName;
+			node->UserName = UserName;
+			node->UniId = UniId;
+			node->UniName = UniName;
+			list->addFavUniNode(node);
+		};
+		file.close();
+		return *list;
+	};
+
 	favUniNode* readFavDatabase(string UserId) {
 		// read from csv
 
@@ -29,8 +73,6 @@ class FavouritesController {
 
 	void displayFavUni(favUniNode* head) {
 		favUniNode* current = head;
-
-		// favouritesobj.overwriteFavUniData();
 
 		while (current != NULL) {
 			cout << "Favourite University ID: " << current->FavUniId << endl;
@@ -68,7 +110,6 @@ class FavouritesController {
 	}
 
 	void add_newnode_to_end_of_list_history() {
-		// newnodeHist = new history_List;
 		newnodeFavUni->NextAddress = NULL;
 		newnodeFavUni->PrevAddress = NULL;
 		// situation 1: list empty
@@ -87,14 +128,11 @@ class FavouritesController {
 	{
 		struct favUniNode* current = favUniHead;
 
-		// bool exe = false;
-
 		// Iterating till end of list
 		for (int cnt = 1; current != NULL; cnt++) {
 			current = current->NextAddress;
 
 			if (current == NULL) {
-				// exe = true;
 				cout << cnt << endl;
 			}
 		};
@@ -179,21 +217,15 @@ class FavouritesController {
 		}
 	}
 
-	void createUserFavUni(string input) {
-		UniversityContoller* uniObject;
-
-		universityList* uniCurrentList = uniObject->readUniversityDatabase();
-
+	void createUserFavUni(string input, string testname, string testmemberid) {
+		UniversityContoller uniObject;
+		universityList uniCurrentList = uniObject.readUniversityDatabaseLinkedList();
 		universitySearcher searcher;
-
-		universityNode* searched = searcher.binarySearch(uniCurrentList->getHead(), "Rank", stoi(input));
+		universityNode* searched = searcher.binarySearch(uniCurrentList.getHead(), "Rank", stoi(input));
 
 		string ID, Name;
-		cout << "enter user id as temporary name for fav uni" << endl;
-		cin >> ID;
-		cout << "enter user name as temporary name for fav uni" << endl;
-		cin >> Name;
-
+		ID = testmemberid;
+		Name = testname;
 		favUniHead = currentFavUni = favUniTail = NULL;
 
 		favouritesobj.InsertFavUni(
