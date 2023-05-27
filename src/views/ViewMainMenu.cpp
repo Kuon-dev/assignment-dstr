@@ -271,11 +271,21 @@ class AdminMenu {
 		while (true) {
 			feedbackData->displayFeedbackPaginate(1);
 			string choice = handleStringInput("Press 0 to return, Press 'a' to reply feedback, Enter number to go to page");
-			int feedback;
+			string feedback;
+			string replyContent;
+			feedbackNode* getFeedback;
 			try {
 				if (choice == "0") return;
 				else if (choice == "a") {
-					feedback = handleIntInput("Enter feedback ID to reply");
+					feedback = handleStringInput("Enter feedback ID to reply, press 0 to return: ");
+					if (feedback == "0") return;
+					getFeedback = feedbackData->getFeedbackById(feedback);
+					if (getFeedback == nullptr) return;
+
+					feedbackData->displayFeedback(getFeedback);
+					replyContent = handleStringInput("Enter your reply, press 0 to return: ");
+					if (replyContent == "0") return;
+					feedbackData->updateFeedbackReply(getFeedback, replyContent);
 				}
 				else if (stoi(choice)){
 					feedbackData->displayFeedbackPaginate(stoi(choice));
