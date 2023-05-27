@@ -6,7 +6,8 @@ class UniversityContoller {
 	public:
 	universityList* readUniversityDatabase() {
 		universityList* list = new universityList();
-		ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/Universities.csv");
+		//ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/Universities.csv");
+		ifstream file("Database/Universities.csv");
 		if (!file.is_open()) {
 			cout << "\033[31m"
 					 << "Error: could not open uni file "
@@ -213,7 +214,8 @@ class UniversityContoller {
 
 	universityList readUniversityDatabaseLinkedList() {
 		universityList* list = new universityList();
-		ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/Universities.csv");
+		//ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/Universities.csv");
+		ifstream file("Database/Universities.csv");
 		if (!file.is_open()) {
 			cout << "\033[31m"
 					 << "Error: could not open file "

@@ -51,7 +51,8 @@ class favUniList {
 	TopTenUniNode* getSortedTopTenUniHead() { return SortedTopTenUniHead; }
 	void favUniData() {
 		string FavUniId, UserId, UserName, UniId, UniName, fline;
-		ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
+		//ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
+		ifstream file("Database/FavUni.csv");
 		getline(file, fline);
 		while (file.good()) {
 			newnodeFavUni = new favUniNode;
@@ -263,7 +264,8 @@ class favUniList {
 		favUniNode* current = saveFavUni;
 
 		ofstream tempFile("temp.csv");
-		ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
+		//ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
+		ifstream file("Database/FavUni.csv");
 		string line;
 		// bool found = false;
 		tempFile << "FavUniID"

@@ -62,7 +62,7 @@ class UserMenu {
 				//geberate report
 				//favCont.displayTopTenUniData();
 				// display uni list based on user id
-				//favCont.displayFavUni(test);
+				favCont.displayFavUni(test);
 				break;
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
