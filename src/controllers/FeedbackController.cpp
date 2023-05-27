@@ -132,6 +132,11 @@ class FeedbackController {
 	};
 
 	private:
-	string databaseFileName = "./Database/FeedbackDatabase.csv";
-	string tempFileName = "temp.csv";
+	int createFeedbackId(feedbackList data) {
+		feedbackNode* lastNode = data.getTail();
+		if (lastNode == nullptr) return 1;
+		else if (lastNode->FeedbackId == "") return 1;
+		else return (stoi(lastNode->FeedbackId) + 1);
+	}
+
 };

@@ -148,6 +148,50 @@ class feedbackList {
 		}
 	}
 
+	void displayFeedbackPaginate(int pageNumber) {
+		if (head == nullptr) {
+			cout << "The feedback list is empty." << endl;
+			return;
+		}
+
+		int count = 0;
+		int startIdx = (pageNumber - 1) * 20;
+		int endIdx = startIdx + 20;
+
+		feedbackNode* current = head;
+		printTableRow("Feedback ID", "Feedback Content", "Reply Content", "Time created");
+		while (current != nullptr && count < endIdx) {
+			if (count >= startIdx) {
+				tm timestamp_tm;
+				localtime_s(&timestamp_tm, &current->Timestamp);
+				string feedbackContent = current->FeedbackContent;
+				int width = 60; // Width limit for Feedback Content
+				int startPos = 0;
+
+				// Print the Feedback Content with wrapping
+				while (startPos < feedbackContent.length()) {
+					stringstream ss;
+					ss << put_time(&timestamp_tm, "%c %Z");
+					string formattedTimestamp = ss.str();
+					int remainingWidth = std::min(width, static_cast<int>(feedbackContent.length() - startPos));
+					printTableRow(
+						current->FeedbackId,
+						feedbackContent.substr(startPos, remainingWidth),
+						current->ReplyContent,
+						formattedTimestamp);
+					startPos += width;
+				}
+			}
+
+			current = current->NextAddress; // Move to the next node
+			count++;
+		}
+
+		if (count < startIdx) {
+			cout << "Invalid page number. There are fewer feedbacks than the requested page." << endl;
+		}
+	}
+
 	feedbackNode* getHead() { return head; }
 	feedbackNode* getTail() { return tail; }
 
