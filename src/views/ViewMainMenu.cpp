@@ -191,7 +191,7 @@ class UserMenu {
 			case 1:
 				cout << "You have selected 'View Profile'" << endl;
 				// TODO: Implement 'View Profile' functionality
-				FeedbackDisplayUser();
+				// FeedbackDisplayUser();
 				break;
 			case 2:
 				cout << "You have selected 'Edit Profile'" << endl;
@@ -233,63 +233,6 @@ class UserMenu {
 
 	private:
 	void setUser(userNode* user) { this->currentUser = user; }
-	void FeedbackDisplayUser() {
-		int choice;
-		while (true) {
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "Feedback Dashboard" << endl;
-			cout << "1. Select feedback" << endl;
-			cout << "2. Leave a new feedback" << endl;
-			cout << "3. Exit" << endl;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-
-			choice = handleUserInput();
-			switch (choice) {
-			case 1:
-				feedbackController->getFeedbacksByUser(feedbackData, currentUser);
-				return;
-			case 2:
-				// feedbackController->createFeedback(feedbackData->getTail(), currentUser);
-				break;
-			case 3:
-				cout << "Exiting..." << endl;
-				return;
-			default:
-				cout << "Invalid choice" << endl;
-				break;
-			}
-		}
-	}
-
-	void FeedbackCreateConfirm() {
-		int choice;
-		while (true) {
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "1. Confirm leave a new feedback?" << endl;
-			cout << "2. Return" << endl;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			choice = handleUserInput();
-			switch (choice) {
-			case 1:
-				// Handle leaving new feedback confirmation
-				// ...
-				return;
-			case 2:
-				return;
-			default:
-				cout << "Invalid choice" << endl;
-				break;
-			}
-		}
-	}
 };
 
 class AdminMenu {
@@ -357,7 +300,7 @@ class AdminMenu {
 				break;
 			case 2:
 				cout << "You have selected 'View all feedback'" << endl;
-				// TODO: Implement 'view all feedback' functionality
+				displayFeedback();
 				break;
 			case 3:
 				cout << "You have selected 'Generate top 10 university'" << endl;
@@ -375,6 +318,38 @@ class AdminMenu {
 			}
 		}
 	}
+
+	private:
+	void displayFeedback(){
+		while (true) {
+			feedbackData->displayFeedbackPaginate(1);
+			string choice = handleStringInput("Press 0 to return, Press 'a' to reply feedback, Enter number to go to page");
+			string feedback;
+			string replyContent;
+			feedbackNode* getFeedback;
+			try {
+				if (choice == "0") return;
+				else if (choice == "a") {
+					feedback = handleStringInput("Enter feedback ID to reply, press 0 to return: ");
+					if (feedback == "0") return;
+					getFeedback = feedbackData->getFeedbackById(feedback);
+					if (getFeedback == nullptr) return;
+
+					feedbackData->displayFeedback(getFeedback);
+					replyContent = handleStringInput("Enter your reply, press 0 to return: ");
+					if (replyContent == "0") return;
+					feedbackData->updateFeedbackReply(getFeedback, replyContent);
+				}
+				else if (stoi(choice)){
+					feedbackData->displayFeedbackPaginate(stoi(choice));
+				}
+
+			}
+			catch(const invalid_argument&) {
+				cout << "Invalid input";
+			};
+		}
+	};
 };
 
 userNode* authenticateUser(string username, string password) {
@@ -500,7 +475,7 @@ void userRegister() {
 
 void displaySearchUniversityMenu() {
 	FavouritesController favouriteData;
-	favouriteData.getFULinkListFromDB();
+	// favouriteData.getFULinkListFromDB();
 	while (true) {
 		string input;
 		cout << "----------------------------------------------------------------------------------------------------------"
