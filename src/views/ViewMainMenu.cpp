@@ -1,11 +1,11 @@
 #include "../controllers/FavouritesController.cpp"
-#include "../controllers/MemberController.cpp"
 #include <conio.h>
 #include <ctime>
 #include <iostream>
 #include <string>
 
 UniversityContoller* uniController = new UniversityContoller();
+universityMergeSort mergeSorter;
 universityQuickSort sorter;
 universityList* uniData = uniController->readUniversityDatabase();
 
@@ -14,25 +14,77 @@ feedbackList* feedbackData = feedbackController->readFeedbackDatabase();
 
 MemberController* userListController;
 userList* userData = userListController->readUserDatabase();
+
+FavouritesController* favUniController;
+favUniList* favUniData = favUniController->readFavUniDatabase();
+
 void displaySearchUniversityMenu();
+void displaySortUniversityMenu();
 class UserMenu {
 	public:
-	// feedbackList* feedbackData = feedbackController->readFeedbackDatabase();
 	userNode* currentUser;
 	feedbackList* userFeedback;
+	void universityMenu() {
+		while (true) {
+			string uniID;
+			int page;
+			bool exitPaginate = true;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "Please select an option:" << endl;
+			cout << "1. View the Top Score University" << endl;
+			cout << "2. Save University as Favourite" << endl;
+			cout << "3. Sort University" << endl;
+			cout << "4. Search University" << endl;
+			cout << "5. Return" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "Enter your choice (1-5): ";
+			int choice = handleUserInput();
+
+			switch (choice) {
+			case 1:
+				cout << "You have selected 'View the Top Score University'" << endl;
+				//quick sort algorithm so sort
+				sorter.quicksortInt(uniData->getHead(), uniData->getTail(), "ScoreScaled");
+				uniController->displayPaginated(*uniData, 1);
+				while (exitPaginate) {
+					page = handleIntInput("Enter page number to skip or enter 0 to return");
+					if (page == 0) exitPaginate = false;
+					else {
+						uniController->displayPaginated(*uniData, page);
+						continue;
+					}
+				}
+				break;
+			case 2:
+				cout << "You have selected 'Save University as Favourite'" << endl;
+				cin.ignore();
+				cout << "University ID to save: ";
+				getline(cin, uniID);
+				favUniController->createUserFavUni(uniID, currentUser->UserId, currentUser->userUserName);
+				break;
+			case 3:
+				displaySortUniversityMenu();
+				break;
+			case 4:
+				displaySearchUniversityMenu();
+				break;
+			case 5:
+				cout << "You have selected 'Logout'" << endl;
+				cout << "Goodbye!" << endl;
+				return;
+			default:
+				cout << "Invalid choice, please try again." << endl;
+				break;
+			}
+		}
+	}
+
 	void userDashboard() {
-
-		string uniid, favid, testusername, testuserid;
-
-		// setUser(userNode * user);
-		// cout << currentUser->UserId << endl;
-		testuserid = currentUser->UserId;
-		testusername = currentUser->UserName;
-
-		FavouritesController favCont;
-		favCont.getFULinkListFromDB();
-		favUniNode* test = favCont.readFavDatabase(testuserid);
-
+    favUniList* getUserFavUni;
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -54,15 +106,12 @@ class UserMenu {
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'View Universities'" << endl;
-				displaySearchUniversityMenu();
+				universityMenu();
 				break;
 			case 2:
+				getUserFavUni = favUniController->getUserFav(favUniData, currentUser);
 				cout << "You have selected 'View Favourite Universities'" << endl;
-				// TODO: Implement 'View Favourite Universities' functionality
-				//geberate report
-				//favCont.displayTopTenUniData();
-				// display uni list based on user id
-				//favCont.displayFavUni(test);
+				getUserFavUni->displayAll();
 				break;
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
@@ -73,11 +122,10 @@ class UserMenu {
 				cout << "You have selected 'View Submitted Feedback'" << endl;
 				userFeedback = feedbackController->getFeedbacksByUser(feedbackData, currentUser);
 				userFeedback->displayAllFeedback();
-				// TODO: Implement 'View Submitted Feedback' functionality
 				break;
 			case 5:
 				cout << "You have selected 'Profile'" << endl;
-				// TODO: Implement 'Profile' functionality
+				profileMenu();
 				break;
 			case 6:
 				cout << "You have selected 'Logout'" << endl;
@@ -126,27 +174,20 @@ void profileMenu() {
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
 			cout << "Welcome to Profile Dashboard" << endl;
+			userData->readSpecificUserNode(currentUser->UserId);
 			cout << "Please select an option:" << endl;
-			cout << "1. View Profile" << endl;
-			cout << "2. Edit Profile" << endl;
-			cout << "3. View Favourite Universities" << endl;
-			cout << "4. Add Favourite Universities" << endl;
-			cout << "5. Delete Favourite Universities" << endl;
-			cout << "6. Logout" << endl;
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
-			cout << "Enter your choice (1-5): ";
+			cout << "1. Edit Profile" << endl;
+			cout << "2. Return" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "Enter your choice (0-1): ";
 			int choice = handleUserInput();
-
-			//favUniNode* test = favCont.readFavDatabase(userid);
 			switch (choice) {
 			case 1:
-				cout << "You have selected 'View Profile'" << endl;
-				// TODO: Implement 'View Profile' functionality
-				FeedbackDisplayUser();
-				break;
-			case 2:
 				cout << "You have selected 'Edit Profile'" << endl;
 				// TODO: Implement 'Edit Profile' functionality
 				break;
@@ -187,70 +228,12 @@ void profileMenu() {
 
 	private:
 	void setUser(userNode* user) { this->currentUser = user; }
-	void FeedbackDisplayUser() {
-		int choice;
-		while (true) {
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "Feedback Dashboard" << endl;
-			cout << "1. Select feedback" << endl;
-			cout << "2. Leave a new feedback" << endl;
-			cout << "3. Exit" << endl;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-
-			choice = handleUserInput();
-			switch (choice) {
-			case 1:
-				feedbackController->getFeedbacksByUser(feedbackData, currentUser);
-				return;
-			case 2:
-				// feedbackController->createFeedback(feedbackData->getTail(), currentUser);
-				break;
-			case 3:
-				cout << "Exiting..." << endl;
-				return;
-			default:
-				cout << "Invalid choice" << endl;
-				break;
-			}
-		}
-	}
-
-	void FeedbackCreateConfirm() {
-		int choice;
-		while (true) {
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			cout << "1. Confirm leave a new feedback?" << endl;
-			cout << "2. Return" << endl;
-			cout
-				<< "----------------------------------------------------------------------------------------------------------"
-				<< endl;
-			choice = handleUserInput();
-			switch (choice) {
-			case 1:
-				// Handle leaving new feedback confirmation
-				// ...
-				return;
-			case 2:
-				return;
-			default:
-				cout << "Invalid choice" << endl;
-				break;
-			}
-		}
-	}
 };
 
 class AdminMenu {
 	public:
 	userNode* currentUser;
 	FavouritesController favCont;
-
 
 	void displayAllMember() {
 		while (true) {
@@ -266,7 +249,7 @@ class AdminMenu {
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
 			cout << "Enter your choice (1-3): ";
-			int choice = handleUserInput();
+			int input_id, choice = handleUserInput();
 
 			switch (choice) {
 			case 1:
@@ -274,8 +257,9 @@ class AdminMenu {
 				// TODO: Implement 'Modify Member' functionality
 				break;
 			case 2:
-				cout << "You have selected 'View all feedback'" << endl;
-				// TODO: Implement 'delete member account' functionality
+				cout << "You have selected 'Delete member account'" << endl;
+				input_id = handleIntInput("User ID to be deleted: ");
+				userData->deleteUserNode(to_string(input_id));
 				break;
 			case 3:
 				return;
@@ -311,7 +295,7 @@ class AdminMenu {
 				break;
 			case 2:
 				cout << "You have selected 'View all feedback'" << endl;
-				// TODO: Implement 'view all feedback' functionality
+				displayFeedback();
 				break;
 			case 3:
 				cout << "You have selected 'Generate top 10 university'" << endl;
@@ -329,6 +313,38 @@ class AdminMenu {
 			}
 		}
 	}
+
+	private:
+	void displayFeedback(){
+		while (true) {
+			feedbackData->displayFeedbackPaginate(1);
+			string choice = handleStringInput("Press 0 to return, Press 'a' to reply feedback, Enter number to go to page");
+			string feedback;
+			string replyContent;
+			feedbackNode* getFeedback;
+			try {
+				if (choice == "0") return;
+				else if (choice == "a") {
+					feedback = handleStringInput("Enter feedback ID to reply, press 0 to return: ");
+					if (feedback == "0") return;
+					getFeedback = feedbackData->getFeedbackById(feedback);
+					if (getFeedback == nullptr) return;
+
+					feedbackData->displayFeedback(getFeedback);
+					replyContent = handleStringInput("Enter your reply, press 0 to return: ");
+					if (replyContent == "0") return;
+					feedbackData->updateFeedbackReply(getFeedback, replyContent);
+				}
+				else if (stoi(choice)){
+					feedbackData->displayFeedbackPaginate(stoi(choice));
+				}
+
+			}
+			catch(const invalid_argument&) {
+				cout << "Invalid input";
+			};
+		}
+	};
 };
 
 userNode* authenticateUser(string username, string password) {
@@ -354,12 +370,11 @@ userNode* authenticateUser(string username, string password) {
 		temp->UserAge = 20;
 		temp->UserContact = 20;
 		return temp;
-	}
-	else {
+	} else {
 		userNode* current = userData->getHead();
 		// if the user account and password valid and authorized
 		while (current != nullptr) {
-			if(current->userUserName == username && current->UserPassword == password) {
+			if (current->userUserName == username && current->UserPassword == password) {
 				current->UserLastLogin = currentLoginTime;
 				return current;
 			}
@@ -432,9 +447,9 @@ void userRegister() {
 		int age, contact;
 		bool userRegister = true;
 		username = handleStringInput("Enter your username (Enter 1 to return)");
-		if(username != "1") {
+		if (username != "1") {
 			userRegister = userListController->validateUsername(username, *userData);
-			if(userRegister){
+			if (userRegister) {
 				name = handleStringInput("Enter your name");
 				password = handleStringInput("Enter your password");
 				age = handleIntInput("Enter your age");
@@ -442,11 +457,11 @@ void userRegister() {
 				email = handleStringInput("Enter your email");
 				userRegister = userListController->validateEmail(email);
 			}
-			if(userRegister){
+			if (userRegister) {
 				contact = handleIntInput("Enter your contact");
 				userRegister = userListController->validateContact(to_string(contact));
 			}
-			if(userRegister) {
+			if (userRegister) {
 				userListController->createNewMember(*userData, username, password, name, gender, email, age, contact);
 				break;
 			};
@@ -456,23 +471,20 @@ void userRegister() {
 
 void displaySearchUniversityMenu() {
 	FavouritesController favouriteData;
-	favouriteData.getFULinkListFromDB();
+	// favouriteData.getFULinkListFromDB();
 	while (true) {
 		string input;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 		cout << "| Please select an option:" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 		cout << "| 1. Search University by name" << endl;
 		cout << "| 2. Search University by rank" << endl;
 		cout << "| 3. Search University by country" << endl;
 		cout << "| 4. Exit" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 
 		int choice = handleUserInput();
 
@@ -499,7 +511,174 @@ void displaySearchUniversityMenu() {
 			cout << "Invalid choice. Please enter a valid choice." << endl;
 		}
 	}
+}
+
+void displayChoiceToSortString(string input) {
+	universityNode* head;
+	while (true) {
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << "| Please select a sort algorithm:" << endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << "| 1. Merge Sort" << endl;
+		cout << "| 2. Quick Sort" << endl;
+
+		int choice = handleUserInput();
+		int page;
+		bool exitPaginate = true;
+		switch (choice) {
+		case 1:
+			//call merge sort algorithm to sort string data
+			head = uniData->getHead();
+			uniData->setHead(mergeSorter.mergeSortUniversityString(&head, input));
+			uniController->displayPaginated(*uniData, 1);
+			while (exitPaginate) {
+				page = handleIntInput("Enter page number to skip or enter 0 to return");
+				if (page == 0) exitPaginate = false;
+				else {
+					uniController->displayPaginated(*uniData, page);
+					continue;
+				}
+			}
+			return;
+		case 2:
+			//call quick sort algorithm to sort string data
+			uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), input));
+			uniController->displayPaginated(*uniData, 1);
+			while (exitPaginate) {
+				page = handleIntInput("Enter page number to skip or enter 0 to return");
+				if (page == 0) exitPaginate = false;
+				else {
+					uniController->displayPaginated(*uniData, page);
+					continue;
+				}
+			}
+			return;
+		default:
+			cout << "Invalid choice. Please enter a valid choice." << endl;
+		}
 	}
+}
+
+void displayChoiceToSortInt(string input) {
+	universityNode* head;
+	while (true) {
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << "| Please select a sort algorithm:" << endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << "| 1. Merge Sort" << endl;
+		cout << "| 2. Quick Sort" << endl;
+
+		int choice = handleUserInput();
+		int page;
+		bool exitPaginate = true;
+		switch (choice) {
+		case 1:
+			//call merge sort algorithm to sort integer data
+			head = uniData->getHead();
+			uniData->setHead(mergeSorter.mergeSortUniversityInt(&head, input));
+			uniController->displayPaginated(*uniData, 1);
+			while (exitPaginate) {
+				page = handleIntInput("Enter page number to skip or enter 0 to return");
+				if (page == 0) exitPaginate = false;
+				else {
+					uniController->displayPaginated(*uniData, page);
+					continue;
+				}
+			}
+			return;
+		case 2:
+			//call quick sort algorithm to sort integer data
+			uniController->displayPaginated(*uniData, 1);
+			sorter.quicksortInt(uniData->getHead(), uniData->getTail(), input);
+			while (exitPaginate) {
+				page = handleIntInput("Enter page number to skip or enter 0 to return");
+				if (page == 0) exitPaginate = false;
+				else {
+					uniController->displayPaginated(*uniData, page);
+					continue;
+				}
+			}
+			return;
+		default:
+			cout << "Invalid choice. Please enter a valid choice." << endl;
+		}
+	}
+}
+
+void displaySortUniversityMenu() {
+	while (true) {
+		string input;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+		cout << "| Please select an option:" << endl;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+		cout << "| 1. Sort University by name" << endl;
+		cout << "| 2. Sort University by rank" << endl;
+		cout << "| 3. Sort University by location" << endl;
+		cout << "| 4. Sort University by Academic reputation score" << endl;
+		cout << "| 5. Sort University by Employer reputation score" << endl;
+		cout << "| 6. Sort University by Faculty/student ratio score" << endl;
+		cout << "| 7. Sort University by Citations per faculty" << endl;
+		cout << "| 8. Sort University by International faculty ratio" << endl;
+		cout << "| 9. Sort University by International student ratio" << endl;
+		cout << "| 10. Sort University by International research network" << endl;
+		cout << "| 11. Sort University by Employment outcome" << endl;
+		cout << "| 12. Return" << endl;
+		cout
+			<< "----------------------------------------------------------------------------------------------------------"
+			<< endl;
+
+		int choice = handleUserInput();
+
+		switch (choice) {
+		case 1:
+			displayChoiceToSortString("Name");
+			break;
+		case 2:
+			displayChoiceToSortInt("Rank");
+			break;
+		case 3:
+			displayChoiceToSortString("Location");
+			break;
+		case 4:
+			displayChoiceToSortInt("ArRank");
+			break;
+		case 5:
+			displayChoiceToSortInt("ErRank");
+			break;
+		case 6:
+			displayChoiceToSortInt("FsrRank");
+			break;
+		case 7:
+			displayChoiceToSortInt("CpfRank");
+			break;
+		case 8:
+			displayChoiceToSortInt("IfrRank");
+			break;
+		case 9:
+			displayChoiceToSortInt("IsrRank");
+			break;
+		case 10:
+			displayChoiceToSortInt("IrnRank");
+			break;
+		case 11:
+			displayChoiceToSortInt("GerRank");
+			break;
+		case 12:
+			return;
+			break;
+		default:
+			cout << "Invalid choice. Please enter a valid choice." << endl;
+		}
+	}
+}
 
 void displayMenu() {
 	while (true) {
@@ -557,5 +736,3 @@ void displayMenu() {
 		}
 	}
 }
-
-
