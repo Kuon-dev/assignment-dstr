@@ -86,7 +86,7 @@ class feedbackList {
 		}
 	}
 
-	void updateFeedbackReply(feedbackNode* node, string content){
+	void updateFeedbackReply(feedbackNode* node, string content) {
 		node->ReplyContent = content;
 		updateFeedback(node);
 	}
@@ -225,10 +225,9 @@ class feedbackList {
 	feedbackNode* head;
 	feedbackNode* tail;
 
-
-	feedbackNode* getFeedbackNodeById(feedbackList* data, string id){
+	feedbackNode* getFeedbackNodeById(feedbackList* data, string id) {
 		feedbackNode* current = data->getHead();
-		while (current != nullptr){
+		while (current != nullptr) {
 			if (current->FeedbackId == id) return current;
 			current = current->NextAddress;
 		};

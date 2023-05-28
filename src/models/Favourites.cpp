@@ -31,10 +31,10 @@ struct TopTenUniNode {
 } *TopTenUniHead, *TopTenUniTail, *currentTopTenUni, *newnodeTopTenUni, *SortedTopTenUniHead, *SortedTopTenUniTail;
 
 class favUniList {
-    favUniNode* favUniHead = nullptr;
-    favUniNode* favUniTail = nullptr;
-    favUniNode* filterUserFavUniHead = nullptr;
-    favUniNode* filterUserFavUniTail = nullptr;
+	favUniNode* favUniHead = nullptr;
+	favUniNode* favUniTail = nullptr;
+	favUniNode* filterUserFavUniHead = nullptr;
+	favUniNode* filterUserFavUniTail = nullptr;
 	string favoriteUni;
 
 	public:
@@ -65,7 +65,7 @@ class favUniList {
 		}
 	}
 
-	void displayAll(){
+	void displayAll() {
 		favUniNode* current = favUniHead;
 
 		// Print table header
@@ -293,22 +293,22 @@ class favUniList {
 			favUniTail = newFavUniNode;
 		};
 	}
+
 	private:
-	void printTableRow(const string& col1, const string& col2, const string& col3, const string& col4, const string& col5) {
+	void
+	printTableRow(const string& col1, const string& col2, const string& col3, const string& col4, const string& col5) {
 		int col1Width = 15;
 		int col2Width = 40;
 		int col3Width = 40;
 		int col4Width = 30;
 		int col5Width = 30;
 
-	   cout << left << setw(col1Width) << col1.substr(0, col1Width - 1) << " | "
-              << setw(col2Width) << col2.substr(0, col2Width - 1) << " | "
-              << setw(col3Width) << col3.substr(0, col3Width - 1) << " | "
-              << setw(col4Width) << col4.substr(0, col4Width - 1) << " | "
-              << setw(col5Width) << col5.substr(0, col5Width - 1) << endl;
+		cout << left << setw(col1Width) << col1.substr(0, col1Width - 1) << " | " << setw(col2Width)
+				 << col2.substr(0, col2Width - 1) << " | " << setw(col3Width) << col3.substr(0, col3Width - 1) << " | "
+				 << setw(col4Width) << col4.substr(0, col4Width - 1) << " | " << setw(col5Width)
+				 << col5.substr(0, col5Width - 1) << endl;
 
-		cout << setfill('-') << setw(col1Width + col2Width + col3Width + col4Width + col5Width + 13) << ""
-              << setfill(' ') << endl;
+		cout << setfill('-') << setw(col1Width + col2Width + col3Width + col4Width + col5Width + 13) << "" << setfill(' ')
+				 << endl;
 	}
-
 };

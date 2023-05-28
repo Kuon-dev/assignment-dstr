@@ -17,9 +17,11 @@ userList* userData = userListController->readUserDatabase();
 
 FavouritesController* favUniController;
 favUniList* favUniData = favUniController->readFavUniDatabase();
-
+//
+// foward declaration
 void displaySearchUniversityMenu();
 void displaySortUniversityMenu();
+
 class UserMenu {
 	public:
 	userNode* currentUser;
@@ -47,7 +49,7 @@ class UserMenu {
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'View the Top Score University'" << endl;
-				//quick sort algorithm so sort
+				// quick sort algorithm so sort
 				sorter.quicksortInt(uniData->getHead(), uniData->getTail(), "ScoreScaled");
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
@@ -61,9 +63,11 @@ class UserMenu {
 				break;
 			case 2:
 				cout << "You have selected 'Save University as Favourite'" << endl;
-				cin.ignore();
-				cout << "University ID to save: ";
-				getline(cin, uniID);
+				uniID = handleStringInput("Enter University ID to save as favourite, (Press '0' to return): ");
+				if (uniID == "0") {
+					cout << "Exitting..." << endl;
+					break;
+				};
 				favUniController->createUserFavUni(uniID, currentUser->UserId, currentUser->userUserName);
 				break;
 			case 3:
@@ -84,7 +88,7 @@ class UserMenu {
 	}
 
 	void userDashboard() {
-    favUniList* getUserFavUni;
+		favUniList* getUserFavUni;
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -138,37 +142,11 @@ class UserMenu {
 		}
 	}
 
-	void feedbackMenu() {
-		// TODO: leave a feedback
-		// TODO: look at feedback reply
-	}
 
-	void universityMenu() {
-		// TODO: search university
-		// TODO: list uni
-		// TODO: select uni as fav
-	}
-
-void profileMenu() {
+	void profileMenu() {
 		// TODO: display profile
-		string uniid, favid, testusername, testuserid;
-
-		// setUser(userNode * user);
-		// cout << currentUser->UserId << endl;
-		//testuserid = /*userListController.returnUserId(currentUser)*/ "987";
-		//testusername = /*userListController.returnUserName(currentUser)*/ "Loong";
-
-		testuserid = currentUser->UserId;
-		testusername = currentUser->userUserName;
-
-		FavouritesController favCont;
-		favCont.getFULinkListFromDB();
-		favUniNode* test = favCont.readFavDatabase(testuserid);
-
-		// cout << "User ID: ";
-		// getline(cin, testuserid);
-
-
+		string uniid, favid;
+		FavouritesController favController;
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -195,7 +173,6 @@ void profileMenu() {
 				cout << "You have selected 'View Favourite Universities'" << endl;
 				// TODO: Implement 'View Favourite Universities' functionality
 				// display uni list based on user id
-				favCont.displayFavUni(test);
 				break;
 			case 4:
 				cout << "You have selected 'Add Favourite Universities'" << endl;
@@ -204,16 +181,16 @@ void profileMenu() {
 				cout << endl;
 				cout << "Please enter the University ID to be saved as Fvaourite University: ";
 				getline(cin, uniid);
-				favCont.createUserFavUni(uniid, testuserid, testusername);
+				favController.createUserFavUni(uniid, currentUser->UserId, currentUser->UserName);
 				break;
 			case 5:
 				cout << "You have selected 'Delete Favourite Universities'" << endl;
 				// TODO: Implement 'Delete Favourite Universities' functionality
-				// favCont.displayFavUni(test);
+				// favController.displayFavUni(test);
 				cout << "Please enter the Record ID for Favourite University to be deleted: ";
 				cin >> favid;
-				favCont.deleteBasedOnFavUni(favid);
-				// favCont.displayFavUni(favCont.getHead());
+				favController.deleteBasedOnFavUni(favid);
+				// favController.displayFavUni(favController.getHead());
 				break;
 			case 6:
 				cout << "You have selected 'Logout'" << endl;
@@ -228,12 +205,176 @@ void profileMenu() {
 
 	private:
 	void setUser(userNode* user) { this->currentUser = user; }
+	void displayChoiceToSortInt(string input) {
+		universityNode* head;
+		while (true) {
+			cout << "----------------------------------------------------------------------------------------------------------"
+					 << endl;
+			cout << "| Please select a sort algorithm:" << endl;
+			cout << "----------------------------------------------------------------------------------------------------------"
+					 << endl;
+			cout << "| 1. Merge Sort" << endl;
+			cout << "| 2. Quick Sort" << endl;
+
+			int choice = handleUserInput();
+			int page;
+			bool exitPaginate = true;
+			switch (choice) {
+			case 1:
+				// call merge sort algorithm to sort integer data
+				head = uniData->getHead();
+				uniData->setHead(mergeSorter.mergeSortUniversityInt(&head, input));
+				uniController->displayPaginated(*uniData, 1);
+				while (exitPaginate) {
+					page = handleIntInput("Enter page number to skip or enter 0 to return");
+					if (page == 0) exitPaginate = false;
+					else {
+						uniController->displayPaginated(*uniData, page);
+						continue;
+					}
+				}
+				return;
+			case 2:
+				// call quick sort algorithm to sort integer data
+				uniController->displayPaginated(*uniData, 1);
+				sorter.quicksortInt(uniData->getHead(), uniData->getTail(), input);
+				while (exitPaginate) {
+					page = handleIntInput("Enter page number to skip or enter 0 to return");
+					if (page == 0) exitPaginate = false;
+					else {
+						uniController->displayPaginated(*uniData, page);
+						continue;
+					}
+				}
+				return;
+			default:
+				cout << "Invalid choice. Please enter a valid choice." << endl;
+			}
+		}
+	}
+
+	void displayChoiceToSortString(string input) {
+		universityNode* head;
+		while (true) {
+			cout << "----------------------------------------------------------------------------------------------------------"
+					 << endl;
+			cout << "| Please select a sort algorithm:" << endl;
+			cout << "----------------------------------------------------------------------------------------------------------"
+					 << endl;
+			cout << "| 1. Merge Sort" << endl;
+			cout << "| 2. Quick Sort" << endl;
+
+			int choice = handleUserInput();
+			int page;
+			bool exitPaginate = true;
+			switch (choice) {
+			case 1:
+				// call merge sort algorithm to sort string data
+				head = uniData->getHead();
+				uniData->setHead(mergeSorter.mergeSortUniversityString(&head, input));
+				uniController->displayPaginated(*uniData, 1);
+				while (exitPaginate) {
+					page = handleIntInput("Enter page number to skip or enter 0 to return");
+					if (page == 0) exitPaginate = false;
+					else {
+						uniController->displayPaginated(*uniData, page);
+						continue;
+					}
+				}
+				return;
+			case 2:
+				// call quick sort algorithm to sort string data
+				uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), input));
+				uniController->displayPaginated(*uniData, 1);
+				while (exitPaginate) {
+					page = handleIntInput("Enter page number to skip or enter 0 to return");
+					if (page == 0) exitPaginate = false;
+					else {
+						uniController->displayPaginated(*uniData, page);
+						continue;
+					}
+				}
+				return;
+			default:
+				cout << "Invalid choice. Please enter a valid choice." << endl;
+			}
+		}
+	}
+
+	void displaySortUniversityMenu() {
+		while (true) {
+			string input;
+			cout << "----------------------------------------------------------------------------------------------------------"
+					 << endl;
+			cout << "| Please select an option:" << endl;
+			cout << "----------------------------------------------------------------------------------------------------------"
+					 << endl;
+			cout << "| 1. Sort University by name" << endl;
+			cout << "| 2. Sort University by rank" << endl;
+			cout << "| 3. Sort University by location" << endl;
+			cout << "| 4. Sort University by Academic reputation score" << endl;
+			cout << "| 5. Sort University by Employer reputation score" << endl;
+			cout << "| 6. Sort University by Faculty/student ratio score" << endl;
+			cout << "| 7. Sort University by Citations per faculty" << endl;
+			cout << "| 8. Sort University by International faculty ratio" << endl;
+			cout << "| 9. Sort University by International student ratio" << endl;
+			cout << "| 10. Sort University by International research network" << endl;
+			cout << "| 11. Sort University by Employment outcome" << endl;
+			cout << "| 12. Return" << endl;
+			cout << "----------------------------------------------------------------------------------------------------------"
+					 << endl;
+
+			int choice = handleUserInput();
+
+			switch (choice) {
+			case 1:
+				displayChoiceToSortString("Name");
+				break;
+			case 2:
+				displayChoiceToSortInt("Rank");
+				break;
+			case 3:
+				displayChoiceToSortString("Location");
+				break;
+			case 4:
+				displayChoiceToSortInt("ArRank");
+				break;
+			case 5:
+				displayChoiceToSortInt("ErRank");
+				break;
+			case 6:
+				displayChoiceToSortInt("FsrRank");
+				break;
+			case 7:
+				displayChoiceToSortInt("CpfRank");
+				break;
+			case 8:
+				displayChoiceToSortInt("IfrRank");
+				break;
+			case 9:
+				displayChoiceToSortInt("IsrRank");
+				break;
+			case 10:
+				displayChoiceToSortInt("IrnRank");
+				break;
+			case 11:
+				displayChoiceToSortInt("GerRank");
+				break;
+			case 12:
+				return;
+				break;
+			default:
+				cout << "Invalid choice. Please enter a valid choice." << endl;
+			}
+		}
+	}
+
 };
 
 class AdminMenu {
 	public:
 	userNode* currentUser;
-	FavouritesController favCont;
+	FavouritesController favController;
 
 	void displayAllMember() {
 		while (true) {
@@ -299,7 +440,7 @@ class AdminMenu {
 				break;
 			case 3:
 				cout << "You have selected 'Generate top 10 university'" << endl;
-				favCont.displayTopTenUniData();
+				favController.displayTopTenUniData();
 				// TODO: Implement 'top 10 uni' functionality
 
 				break;
@@ -315,7 +456,7 @@ class AdminMenu {
 	}
 
 	private:
-	void displayFeedback(){
+	void displayFeedback() {
 		while (true) {
 			feedbackData->displayFeedbackPaginate(1);
 			string choice = handleStringInput("Press 0 to return, Press 'a' to reply feedback, Enter number to go to page");
@@ -334,13 +475,11 @@ class AdminMenu {
 					replyContent = handleStringInput("Enter your reply, press 0 to return: ");
 					if (replyContent == "0") return;
 					feedbackData->updateFeedbackReply(getFeedback, replyContent);
-				}
-				else if (stoi(choice)){
+				} else if (stoi(choice)) {
 					feedbackData->displayFeedbackPaginate(stoi(choice));
 				}
 
-			}
-			catch(const invalid_argument&) {
+			} catch (const invalid_argument&) {
 				cout << "Invalid input";
 			};
 		}
@@ -434,8 +573,7 @@ void displayLoginMenu() {
 			cout << endl << endl << "Logged in successfully!" << endl;
 			UserMenu menu;
 			menu.currentUser = authUser;
-			//menu.userDashboard();
-			menu.profileMenu();
+			menu.userDashboard();
 			return;
 		};
 	}
@@ -513,172 +651,8 @@ void displaySearchUniversityMenu() {
 	}
 }
 
-void displayChoiceToSortString(string input) {
-	universityNode* head;
-	while (true) {
-		cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
-		cout << "| Please select a sort algorithm:" << endl;
-		cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
-		cout << "| 1. Merge Sort" << endl;
-		cout << "| 2. Quick Sort" << endl;
 
-		int choice = handleUserInput();
-		int page;
-		bool exitPaginate = true;
-		switch (choice) {
-		case 1:
-			//call merge sort algorithm to sort string data
-			head = uniData->getHead();
-			uniData->setHead(mergeSorter.mergeSortUniversityString(&head, input));
-			uniController->displayPaginated(*uniData, 1);
-			while (exitPaginate) {
-				page = handleIntInput("Enter page number to skip or enter 0 to return");
-				if (page == 0) exitPaginate = false;
-				else {
-					uniController->displayPaginated(*uniData, page);
-					continue;
-				}
-			}
-			return;
-		case 2:
-			//call quick sort algorithm to sort string data
-			uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), input));
-			uniController->displayPaginated(*uniData, 1);
-			while (exitPaginate) {
-				page = handleIntInput("Enter page number to skip or enter 0 to return");
-				if (page == 0) exitPaginate = false;
-				else {
-					uniController->displayPaginated(*uniData, page);
-					continue;
-				}
-			}
-			return;
-		default:
-			cout << "Invalid choice. Please enter a valid choice." << endl;
-		}
-	}
-}
 
-void displayChoiceToSortInt(string input) {
-	universityNode* head;
-	while (true) {
-		cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
-		cout << "| Please select a sort algorithm:" << endl;
-		cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
-		cout << "| 1. Merge Sort" << endl;
-		cout << "| 2. Quick Sort" << endl;
-
-		int choice = handleUserInput();
-		int page;
-		bool exitPaginate = true;
-		switch (choice) {
-		case 1:
-			//call merge sort algorithm to sort integer data
-			head = uniData->getHead();
-			uniData->setHead(mergeSorter.mergeSortUniversityInt(&head, input));
-			uniController->displayPaginated(*uniData, 1);
-			while (exitPaginate) {
-				page = handleIntInput("Enter page number to skip or enter 0 to return");
-				if (page == 0) exitPaginate = false;
-				else {
-					uniController->displayPaginated(*uniData, page);
-					continue;
-				}
-			}
-			return;
-		case 2:
-			//call quick sort algorithm to sort integer data
-			uniController->displayPaginated(*uniData, 1);
-			sorter.quicksortInt(uniData->getHead(), uniData->getTail(), input);
-			while (exitPaginate) {
-				page = handleIntInput("Enter page number to skip or enter 0 to return");
-				if (page == 0) exitPaginate = false;
-				else {
-					uniController->displayPaginated(*uniData, page);
-					continue;
-				}
-			}
-			return;
-		default:
-			cout << "Invalid choice. Please enter a valid choice." << endl;
-		}
-	}
-}
-
-void displaySortUniversityMenu() {
-	while (true) {
-		string input;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
-		cout << "| Please select an option:" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
-		cout << "| 1. Sort University by name" << endl;
-		cout << "| 2. Sort University by rank" << endl;
-		cout << "| 3. Sort University by location" << endl;
-		cout << "| 4. Sort University by Academic reputation score" << endl;
-		cout << "| 5. Sort University by Employer reputation score" << endl;
-		cout << "| 6. Sort University by Faculty/student ratio score" << endl;
-		cout << "| 7. Sort University by Citations per faculty" << endl;
-		cout << "| 8. Sort University by International faculty ratio" << endl;
-		cout << "| 9. Sort University by International student ratio" << endl;
-		cout << "| 10. Sort University by International research network" << endl;
-		cout << "| 11. Sort University by Employment outcome" << endl;
-		cout << "| 12. Return" << endl;
-		cout
-			<< "----------------------------------------------------------------------------------------------------------"
-			<< endl;
-
-		int choice = handleUserInput();
-
-		switch (choice) {
-		case 1:
-			displayChoiceToSortString("Name");
-			break;
-		case 2:
-			displayChoiceToSortInt("Rank");
-			break;
-		case 3:
-			displayChoiceToSortString("Location");
-			break;
-		case 4:
-			displayChoiceToSortInt("ArRank");
-			break;
-		case 5:
-			displayChoiceToSortInt("ErRank");
-			break;
-		case 6:
-			displayChoiceToSortInt("FsrRank");
-			break;
-		case 7:
-			displayChoiceToSortInt("CpfRank");
-			break;
-		case 8:
-			displayChoiceToSortInt("IfrRank");
-			break;
-		case 9:
-			displayChoiceToSortInt("IsrRank");
-			break;
-		case 10:
-			displayChoiceToSortInt("IrnRank");
-			break;
-		case 11:
-			displayChoiceToSortInt("GerRank");
-			break;
-		case 12:
-			return;
-			break;
-		default:
-			cout << "Invalid choice. Please enter a valid choice." << endl;
-		}
-	}
-}
 
 void displayMenu() {
 	while (true) {
@@ -716,7 +690,6 @@ void displayMenu() {
 			break;
 		case 2:
 			uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
-			// sort uni by name
 			break;
 		case 3:
 			displaySearchUniversityMenu();
