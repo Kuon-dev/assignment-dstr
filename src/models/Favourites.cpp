@@ -31,10 +31,10 @@ struct TopTenUniNode {
 } *TopTenUniHead, *TopTenUniTail, *currentTopTenUni, *newnodeTopTenUni, *SortedTopTenUniHead, *SortedTopTenUniTail;
 
 class favUniList {
-	favUniNode* favUniHead = NULL;
-	favUniNode* favUniTail = NULL;
-	favUniNode* filterUserFavUniHead = NULL;
-	favUniNode* filterUserFavUniTail = NULL;
+	favUniNode* favUniHead = nullptr;
+	favUniNode* favUniTail = nullptr;
+	favUniNode* filterUserFavUniHead = nullptr;
+	favUniNode* filterUserFavUniTail = nullptr;
 	string favoriteUni;
 
 	public:
@@ -45,33 +45,12 @@ class favUniList {
 
 	favUniNode* getTail() { return favUniTail; }
 	void setTail(favUniNode* tail) { favUniTail = tail; }
+
 	favUniNode* getFilteredHead() { return filterUserFavUniHead; }
 
 	favUniList(string favoriteUni) { this->favoriteUni = favoriteUni; }
 	TopTenUniNode* getSortedTopTenUniHead() { return SortedTopTenUniHead; }
-	void favUniData() {
-		string FavUniId, UserId, UserName, UniId, UniName, fline;
-		// ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
-		ifstream file("Database/FavUni.csv");
-		getline(file, fline);
-		while (file.good()) {
-			newnodeFavUni = new favUniNode;
 
-			getline(file, FavUniId, ',');
-			getline(file, UserId, ',');
-			getline(file, UserName, ',');
-			getline(file, UniId, ',');
-			getline(file, UniName);
-
-			if (FavUniId == "") {
-				break;
-			} else if (FavUniId == "FavUniId") {
-				continue;
-			}
-
-			InsertFavUni(FavUniId, UserId, UserName, UniId, UniName);
-		}
-	}
 	void InsertTopTenUni(favUniNode* curr) {
 		TopTenUniNode* keyNode = createNewTopTenUni(curr->UniId, curr->UniName);
 
@@ -87,13 +66,33 @@ class favUniList {
 		}
 	}
 
+	void addFavUniNode(favUniNode* newNode) {
+		if (favUniHead == nullptr) {
+			favUniHead = favUniTail = newNode;
+		} else {
+			favUniTail->NextAddress = newNode;
+			newNode->PrevAddress = favUniTail;
+			favUniTail = newNode;
+		};
+	}
+
+	void displayAll() {
+		favUniNode* current = favUniHead;
+		// Print table header
+		printTableRow("FavUniID", "UserID", "UserName", "UniID", "UniName");
+		while (current != nullptr) {
+			// Print information for each node
+			printTableRow(current->FavUniId, current->UserId, current->UserName, current->UniId, current->UniName);
+			current = current->NextAddress; // Move to the next node
+		}
+	}
+
 	void getTopTenUniData() {
 		favUniNode* current = favUniHead;
 		deleteTopTenUni();
 
 		while (current != NULL) {
 			filterTopTenUni(current);
-
 			current = current->NextAddress;
 		}
 
@@ -260,46 +259,54 @@ class favUniList {
 		}
 	}
 
-	void overwriteFavUniData(favUniNode* saveFavUni) {
-		favUniNode* current = saveFavUni;
+	// void overwriteFavUniData(favUniNode* saveFavUni) {
+	// 	favUniNode* current = saveFavUni;
+	//
+	// 	ofstream tempFile("temp.csv");
+	// 	// ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
+	// 	ifstream file("Database/FavUni.csv");
+	// 	string line;
+	// 	// bool found = false;
+	// 	tempFile << "FavUniID"
+	// 					 << ","
+	// 					 << "UserID"
+	// 					 << ","
+	// 					 << "UserName"
+	// 					 << ","
+	// 					 << "UniID"
+	// 					 << ","
+	// 					 << "UniName" << endl;
+	// 	while (current != NULL) {
+	// 		istringstream iss(line);
+	//
+	// 		tempFile << current->FavUniId << "," << current->UserId << "," << current->UserName << "," << current->UniId
+	// 						 << "," << current->UniName << endl;
+	// 		current = current->NextAddress;
+	// 	}
+	//
+	// 	file.close();
+	// 	tempFile.close();
+	//
+	// 	remove("Database/FavUni.csv");
+	// 	rename("temp.csv", "Database/FavUni.csv");
+	// 	cout << "Favourite Univerity is updated." << endl;
+	// }
 
-		ofstream tempFile("temp.csv");
-		// ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
-		ifstream file("Database/FavUni.csv");
-		string line;
-		// bool found = false;
-		tempFile << "FavUniID"
-						 << ","
-						 << "UserID"
-						 << ","
-						 << "UserName"
-						 << ","
-						 << "UniID"
-						 << ","
-						 << "UniName" << endl;
-		while (current != NULL) {
-			istringstream iss(line);
+	private:
+	void
+	printTableRow(const string& col1, const string& col2, const string& col3, const string& col4, const string& col5) {
+		int col1Width = 15;
+		int col2Width = 40;
+		int col3Width = 40;
+		int col4Width = 30;
+		int col5Width = 30;
 
-			tempFile << current->FavUniId << "," << current->UserId << "," << current->UserName << "," << current->UniId
-							 << "," << current->UniName << endl;
-			current = current->NextAddress;
-		}
+		cout << left << setw(col1Width) << col1.substr(0, col1Width - 1) << " | " << setw(col2Width)
+				 << col2.substr(0, col2Width - 1) << " | " << setw(col3Width) << col3.substr(0, col3Width - 1) << " | "
+				 << setw(col4Width) << col4.substr(0, col4Width - 1) << " | " << setw(col5Width)
+				 << col5.substr(0, col5Width - 1) << endl;
 
-		file.close();
-		tempFile.close();
-
-		remove("Database/FavUni.csv");
-		rename("temp.csv", "Database/FavUni.csv");
-		cout << "Favourite Univerity is updated." << endl;
-	}
-
-	void addFavUniNode(favUniNode* newFavUniNode) {
-		if (favUniHead == nullptr) {
-			favUniHead = favUniTail = newFavUniNode;
-		} else {
-			favUniTail->NextAddress = newFavUniNode;
-			newFavUniNode->PrevAddress = favUniTail;
-			favUniTail = newFavUniNode;
-		};
+		cout << setfill('-') << setw(col1Width + col2Width + col3Width + col4Width + col5Width + 13) << "" << setfill(' ')
+				 << endl;
 	}
 };
