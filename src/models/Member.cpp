@@ -103,7 +103,15 @@ class userList {
 	}
 
 	void updateUserNode(
-		string userId, string userName, string name, int age, string password, string gender, string email, string contact, string lastLogin) {
+		string userId,
+		string userName,
+		string name,
+		int age,
+		string password,
+		string gender,
+		string email,
+		string contact,
+		string lastLogin) {
 		userNode* currentNode = head;
 		while (currentNode != nullptr && currentNode->UserId != userId) {
 			currentNode = currentNode->NextAddress;
@@ -203,7 +211,7 @@ class userList {
 		}
 		cout << "User details not found" << endl;
 		// Return a specific value indicating that no user is found
-    return nullptr;
+		return nullptr;
 	}
 
 	private:

@@ -141,10 +141,11 @@ class UserMenu {
 		}
 	}
 
-	void editProfile(){
+	void editProfile() {
 		while (true) {
-			cout << "----------------------------------------------------------------------------------------------------------"
-					<< endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| Select the option to modify" << endl;
 			cout << "| 1. Username" << endl;
 			cout << "| 2. Name" << endl;
@@ -154,8 +155,9 @@ class UserMenu {
 			cout << "| 6. Contact" << endl;
 			cout << "| 7. Password" << endl;
 			cout << "| 8. Return" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					<< endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			string inputString;
 			int inputInt, choice = handleUserInput();
 			bool modify = true;
@@ -166,59 +168,84 @@ class UserMenu {
 				if (inputString != "1") {
 					modify = userListController->validateUsername(inputString, *userData);
 					if (modify) {
-						//update user username only
+						// update user username only
 						userData->updateUserNode(
-							currentUser->UserId, inputString ,currentUser->UserName, currentUser->UserAge,
-							currentUser->UserPassword, currentUser->UserGender, currentUser->UserEmail, 
-							currentUser->UserContact,currentUser->UserLastLogin
-						);
+							currentUser->UserId,
+							inputString,
+							currentUser->UserName,
+							currentUser->UserAge,
+							currentUser->UserPassword,
+							currentUser->UserGender,
+							currentUser->UserEmail,
+							currentUser->UserContact,
+							currentUser->UserLastLogin);
 					}
 				}
 				return;
 			case 2:
 				inputString = handleStringInput("Enter your new name (Enter 1 to return)");
 				if (inputString != "1") {
-					//update user name only
+					// update user name only
 					userData->updateUserNode(
-						currentUser->UserId, currentUser->userUserName ,inputString, currentUser->UserAge,
-						currentUser->UserPassword, currentUser->UserGender, currentUser->UserEmail, 
-						currentUser->UserContact, currentUser->UserLastLogin
-					);
+						currentUser->UserId,
+						currentUser->userUserName,
+						inputString,
+						currentUser->UserAge,
+						currentUser->UserPassword,
+						currentUser->UserGender,
+						currentUser->UserEmail,
+						currentUser->UserContact,
+						currentUser->UserLastLogin);
 				}
 				return;
 			case 3:
 				inputInt = handleIntInput("Enter your new age (Enter 1 to return)");
 				if (inputInt != 1) {
-					//update user age only
+					// update user age only
 					userData->updateUserNode(
-						currentUser->UserId, currentUser->userUserName ,currentUser->UserName, inputInt,
-						currentUser->UserPassword, currentUser->UserGender, currentUser->UserEmail, 
-						currentUser->UserContact, currentUser->UserLastLogin
-					);
+						currentUser->UserId,
+						currentUser->userUserName,
+						currentUser->UserName,
+						inputInt,
+						currentUser->UserPassword,
+						currentUser->UserGender,
+						currentUser->UserEmail,
+						currentUser->UserContact,
+						currentUser->UserLastLogin);
 				}
 				return;
 			case 4:
 				inputString = handleStringInput("Enter your new gender (Enter 1 to return)");
 				if (inputString != "1") {
-					//update user gender only
+					// update user gender only
 					userData->updateUserNode(
-						currentUser->UserId, currentUser->userUserName ,currentUser->UserName, currentUser->UserAge,
-						currentUser->UserPassword, inputString, currentUser->UserEmail, 
-						currentUser->UserContact, currentUser->UserLastLogin
-					);
+						currentUser->UserId,
+						currentUser->userUserName,
+						currentUser->UserName,
+						currentUser->UserAge,
+						currentUser->UserPassword,
+						inputString,
+						currentUser->UserEmail,
+						currentUser->UserContact,
+						currentUser->UserLastLogin);
 				}
 				return;
 			case 5:
 				inputString = handleStringInput("Enter your new email (Enter 1 to return)");
-				if (inputString != "1") {					
+				if (inputString != "1") {
 					modify = userListController->validateEmail(inputString);
-						if (modify) {
-						//update user email only
+					if (modify) {
+						// update user email only
 						userData->updateUserNode(
-							currentUser->UserId, currentUser->userUserName ,currentUser->UserName, currentUser->UserAge,
-							currentUser->UserPassword, currentUser->UserGender, inputString, 
-							currentUser->UserContact, currentUser->UserLastLogin
-						);
+							currentUser->UserId,
+							currentUser->userUserName,
+							currentUser->UserName,
+							currentUser->UserAge,
+							currentUser->UserPassword,
+							currentUser->UserGender,
+							inputString,
+							currentUser->UserContact,
+							currentUser->UserLastLogin);
 					}
 				}
 				return;
@@ -226,22 +253,31 @@ class UserMenu {
 				inputString = handleStringInput("Enter your new contact (Enter 1 to return)");
 				if (inputString != "1") {
 					userData->updateUserNode(
-						currentUser->UserId, currentUser->userUserName ,currentUser->UserName, currentUser->UserAge,
-						currentUser->UserPassword, currentUser->UserGender, currentUser->UserEmail, 
-						inputString, currentUser->UserLastLogin
-						);
-					
+						currentUser->UserId,
+						currentUser->userUserName,
+						currentUser->UserName,
+						currentUser->UserAge,
+						currentUser->UserPassword,
+						currentUser->UserGender,
+						currentUser->UserEmail,
+						inputString,
+						currentUser->UserLastLogin);
 				}
 				return;
 			case 7:
 				inputString = handleStringInput("Enter your new password (Enter 1 to return)");
 				if (inputString != "1") {
-					//update user password only
+					// update user password only
 					userData->updateUserNode(
-						currentUser->UserId, currentUser->userUserName ,currentUser->UserName, currentUser->UserAge,
-						inputString, currentUser->UserGender, currentUser->UserEmail, 
-						currentUser->UserContact, currentUser->UserLastLogin
-					);
+						currentUser->UserId,
+						currentUser->userUserName,
+						currentUser->UserName,
+						currentUser->UserAge,
+						inputString,
+						currentUser->UserGender,
+						currentUser->UserEmail,
+						currentUser->UserContact,
+						currentUser->UserLastLogin);
 				}
 				return;
 			case 8:
@@ -470,8 +506,9 @@ class AdminMenu {
 		while (true) {
 			targetUser = userData->getSpecificUserNode(userID);
 			userData->readSpecificUserNode(userID);
-			cout << "----------------------------------------------------------------------------------------------------------"
-					<< endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| Select the option to modify" << endl;
 			cout << "| 1. Username" << endl;
 			cout << "| 2. Name" << endl;
@@ -481,8 +518,9 @@ class AdminMenu {
 			cout << "| 6. Contact" << endl;
 			cout << "| 7. Password" << endl;
 			cout << "| 8. Return" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					<< endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			string inputString;
 			int inputInt, choice = handleUserInput();
 			bool modify = true;
@@ -493,82 +531,117 @@ class AdminMenu {
 				if (inputString != "1") {
 					modify = userListController->validateUsername(inputString, *userData);
 					if (modify) {
-						//update user username only
+						// update user username only
 						userData->updateUserNode(
-							targetUser->UserId, inputString ,targetUser->UserName, targetUser->UserAge,
-							targetUser->UserPassword, targetUser->UserGender, targetUser->UserEmail, 
-							targetUser->UserContact,targetUser->UserLastLogin
-						);
+							targetUser->UserId,
+							inputString,
+							targetUser->UserName,
+							targetUser->UserAge,
+							targetUser->UserPassword,
+							targetUser->UserGender,
+							targetUser->UserEmail,
+							targetUser->UserContact,
+							targetUser->UserLastLogin);
 					}
 				}
 				return;
 			case 2:
 				inputString = handleStringInput("Enter the new name (Enter 1 to return)");
 				if (inputString != "1") {
-					//update user name only
+					// update user name only
 					userData->updateUserNode(
-						targetUser->UserId, targetUser->userUserName ,inputString, targetUser->UserAge,
-						targetUser->UserPassword, targetUser->UserGender, targetUser->UserEmail, 
-						targetUser->UserContact, targetUser->UserLastLogin
-					);
+						targetUser->UserId,
+						targetUser->userUserName,
+						inputString,
+						targetUser->UserAge,
+						targetUser->UserPassword,
+						targetUser->UserGender,
+						targetUser->UserEmail,
+						targetUser->UserContact,
+						targetUser->UserLastLogin);
 				}
 				return;
 			case 3:
 				inputInt = handleIntInput("Enter the new age (Enter 1 to return)");
 				if (inputInt != 1) {
-					//update user age only
+					// update user age only
 					userData->updateUserNode(
-						targetUser->UserId, targetUser->userUserName ,targetUser->UserName, inputInt,
-						targetUser->UserPassword, targetUser->UserGender, targetUser->UserEmail, 
-						targetUser->UserContact, targetUser->UserLastLogin
-					);
+						targetUser->UserId,
+						targetUser->userUserName,
+						targetUser->UserName,
+						inputInt,
+						targetUser->UserPassword,
+						targetUser->UserGender,
+						targetUser->UserEmail,
+						targetUser->UserContact,
+						targetUser->UserLastLogin);
 				}
 				return;
 			case 4:
 				inputString = handleStringInput("Enter the new gender (Enter 1 to return)");
 				if (inputString != "1") {
-					//update user gender only
+					// update user gender only
 					userData->updateUserNode(
-						targetUser->UserId, targetUser->userUserName ,targetUser->UserName, targetUser->UserAge,
-						targetUser->UserPassword, inputString, targetUser->UserEmail, 
-						targetUser->UserContact, targetUser->UserLastLogin
-					);
+						targetUser->UserId,
+						targetUser->userUserName,
+						targetUser->UserName,
+						targetUser->UserAge,
+						targetUser->UserPassword,
+						inputString,
+						targetUser->UserEmail,
+						targetUser->UserContact,
+						targetUser->UserLastLogin);
 				}
 				return;
 			case 5:
 				inputString = handleStringInput("Enter the new email (Enter 1 to return)");
-				if (inputString != "1") {					
+				if (inputString != "1") {
 					modify = userListController->validateEmail(inputString);
-						if (modify) {
-						//update user email only
+					if (modify) {
+						// update user email only
 						userData->updateUserNode(
-							targetUser->UserId, targetUser->userUserName ,targetUser->UserName, targetUser->UserAge,
-							targetUser->UserPassword, targetUser->UserGender, inputString, 
-							targetUser->UserContact, targetUser->UserLastLogin
-						);
+							targetUser->UserId,
+							targetUser->userUserName,
+							targetUser->UserName,
+							targetUser->UserAge,
+							targetUser->UserPassword,
+							targetUser->UserGender,
+							inputString,
+							targetUser->UserContact,
+							targetUser->UserLastLogin);
 					}
 				}
 				return;
 			case 6:
 				inputString = handleStringInput("Enter the new contact (Enter 1 to return)");
 				if (inputString != "1") {
-					//update user contact only
+					// update user contact only
 					userData->updateUserNode(
-						targetUser->UserId, targetUser->userUserName ,targetUser->UserName, targetUser->UserAge,
-						targetUser->UserPassword, targetUser->UserGender, targetUser->UserEmail, 
-						inputString, targetUser->UserLastLogin
-					);
+						targetUser->UserId,
+						targetUser->userUserName,
+						targetUser->UserName,
+						targetUser->UserAge,
+						targetUser->UserPassword,
+						targetUser->UserGender,
+						targetUser->UserEmail,
+						inputString,
+						targetUser->UserLastLogin);
 				}
 				return;
 			case 7:
 				inputString = handleStringInput("Enter the new password (Enter 1 to return)");
 				if (inputString != "1") {
-					//update user password only
+					// update user password only
 					userData->updateUserNode(
-						targetUser->UserId, targetUser->userUserName ,targetUser->UserName, targetUser->UserAge,
-						inputString, targetUser->UserGender, targetUser->UserEmail, 
-						targetUser->UserContact, targetUser->UserLastLogin
-					);
+						targetUser->UserId,
+						targetUser->userUserName,
+						targetUser->UserName,
+						targetUser->UserAge,
+						inputString,
+						targetUser->UserGender,
+						targetUser->UserEmail,
+						targetUser->UserContact,
+						targetUser->UserLastLogin);
 				}
 				return;
 			case 8:
@@ -727,7 +800,6 @@ userNode* authenticateUser(string username, string password) {
 	};
 }
 
-
 void displayLoginMenu() {
 	string username, password;
 	char ch;
@@ -797,10 +869,10 @@ void userRegister() {
 				password = handleStringInput("Enter your password");
 				age = handleIntInput("Enter your age");
 				gender = handleStringInput("Enter your gender");
-				while (true){
+				while (true) {
 					email = handleStringInput("Enter your email");
 					userRegister = userListController->validateEmail(email);
-					if(userRegister) break;
+					if (userRegister) break;
 					else continue;
 				}
 				contact = handleStringInput("Enter your contact");

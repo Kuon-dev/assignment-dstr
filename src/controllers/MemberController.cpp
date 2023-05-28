@@ -84,7 +84,7 @@ class MemberController {
 	}
 
 	// check username special characters and unique
-	bool validateUsername(string username, userList &users) {
+	bool validateUsername(string username, userList& users) {
 		// Regular expression pattern for username without special characters
 		regex pattern("^[a-zA-Z0-9_]+$");
 		userNode* current = users.getHead();
@@ -122,7 +122,14 @@ class MemberController {
 
 	// create a new user node and append to csv
 	void createNewMember(
-		userList data, string username, string password, string name, string gender, string email, int age, string contact) {
+		userList data,
+		string username,
+		string password,
+		string name,
+		string gender,
+		string email,
+		int age,
+		string contact) {
 		userNode* newUser = new userNode();
 		userList* list = new userList();
 		newUser->UserId = to_string(createUserId(data));
@@ -139,8 +146,7 @@ class MemberController {
 		if (outfile) {
 			outfile << newUser->UserId << "," << newUser->userUserName << "," << newUser->UserPassword << ","
 							<< newUser->UserName << "," << newUser->UserGender << "," << newUser->UserEmail << ","
-							<< newUser->UserLastLogin << "," << to_string(newUser->UserAge) << "," << newUser->UserContact
-							<< endl;
+							<< newUser->UserLastLogin << "," << to_string(newUser->UserAge) << "," << newUser->UserContact << endl;
 			outfile.close();
 			data.addUserNode(newUser);
 			cout << "User acccount created." << endl;
