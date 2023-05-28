@@ -241,20 +241,20 @@ class FavouritesController {
 		}
 	}
 
-	void createUserFavUni(string input, string testmemberid, string testname) {
+	void createUserFavUni(universityList* uniData, string input, string memberid, string name) {
 		UniversityContoller uniObject;
 		universitySearcher searcher;
 		universityNode* searched = searcher.binarySearch(uniData->getHead(), "Rank", stoi(input));
 
 		string ID, Name;
-		ID = testmemberid;
-		Name = testname;
+		ID = memberid;
+		Name = name;
 		favUniHead = currentFavUni = favUniTail = NULL;
 
 		favouriteList.InsertFavUni(
 			to_string(stoi(favouriteList.getTail()->FavUniId) + 1),
-			testmemberid,
-			testname,
+			memberid,
+			name,
 			to_string(searched->Rank),
 			searched->Name);
 		writeToDatabase(getHead());

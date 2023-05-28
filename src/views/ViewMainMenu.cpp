@@ -68,7 +68,7 @@ class UserMenu {
 					cout << "Exitting..." << endl;
 					break;
 				};
-				favUniController->createUserFavUni(uniID, currentUser->UserId, currentUser->userUserName);
+				favUniController->createUserFavUni(uniData, uniID, currentUser->UserId, currentUser->userUserName);
 				break;
 			case 3:
 				displaySortUniversityMenu();
@@ -146,7 +146,6 @@ class UserMenu {
 	void profileMenu() {
 		// TODO: display profile
 		string uniid, favid;
-		FavouritesController favController;
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -169,33 +168,36 @@ class UserMenu {
 				cout << "You have selected 'Edit Profile'" << endl;
 				// TODO: Implement 'Edit Profile' functionality
 				break;
-			case 3:
-				cout << "You have selected 'View Favourite Universities'" << endl;
-				// TODO: Implement 'View Favourite Universities' functionality
-				// display uni list based on user id
-				break;
-			case 4:
-				cout << "You have selected 'Add Favourite Universities'" << endl;
-				// TODO: Implement 'Add Favourite Universities' functionality
-				cin.ignore();
-				cout << endl;
-				cout << "Please enter the University ID to be saved as Fvaourite University: ";
-				getline(cin, uniid);
-				favController.createUserFavUni(uniid, currentUser->UserId, currentUser->UserName);
-				break;
-			case 5:
-				cout << "You have selected 'Delete Favourite Universities'" << endl;
-				// TODO: Implement 'Delete Favourite Universities' functionality
-				// favController.displayFavUni(test);
-				cout << "Please enter the Record ID for Favourite University to be deleted: ";
-				cin >> favid;
-				favController.deleteBasedOnFavUni(favid);
-				// favController.displayFavUni(favController.getHead());
-				break;
-			case 6:
-				cout << "You have selected 'Logout'" << endl;
-				cout << "Goodbye!" << endl;
+			case 2:
 				return;
+				break;
+			// case 3:
+			// 	cout << "You have selected 'View Favourite Universities'" << endl;
+			// 	// TODO: Implement 'View Favourite Universities' functionality
+			// 	// display uni list based on user id
+			// 	break;
+			// case 4:
+			// 	cout << "You have selected 'Add Favourite Universities'" << endl;
+			// 	// TODO: Implement 'Add Favourite Universities' functionality
+			// 	cin.ignore();
+			// 	cout << endl;
+			// 	cout << "Please enter the University ID to be saved as Fvaourite University: ";
+			// 	getline(cin, uniid);
+			// 	favController.createUserFavUni(uniData, uniid, currentUser->UserId, currentUser->UserName);
+			// 	break;
+			// case 5:
+			// 	cout << "You have selected 'Delete Favourite Universities'" << endl;
+			// 	// TODO: Implement 'Delete Favourite Universities' functionality
+			// 	// favController.displayFavUni(test);
+			// 	cout << "Please enter the Record ID for Favourite University to be deleted: ";
+			// 	cin >> favid;
+			// 	favController.deleteBasedOnFavUni(favid);
+			// 	// favController.displayFavUni(favController.getHead());
+			// 	break;
+			// case 6:
+			// 	cout << "You have selected 'Logout'" << endl;
+			// 	cout << "Goodbye!" << endl;
+			// 	return;
 			default:
 				cout << "Invalid choice, please try again." << endl;
 				break;
@@ -301,6 +303,7 @@ class UserMenu {
 		}
 	}
 
+
 	void displaySortUniversityMenu() {
 		while (true) {
 			string input;
@@ -374,7 +377,6 @@ class UserMenu {
 class AdminMenu {
 	public:
 	userNode* currentUser;
-	FavouritesController favController;
 
 	void displayAllMember() {
 		while (true) {
@@ -440,7 +442,7 @@ class AdminMenu {
 				break;
 			case 3:
 				cout << "You have selected 'Generate top 10 university'" << endl;
-				favController.displayTopTenUniData();
+				favUniController->displayTopTenUniData();
 				// TODO: Implement 'top 10 uni' functionality
 
 				break;
