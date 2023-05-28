@@ -141,6 +141,153 @@ class UserMenu {
 		}
 	}
 
+	void editProfile() {
+		while (true) {
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "| Select the option to modify" << endl;
+			cout << "| 1. Username" << endl;
+			cout << "| 2. Name" << endl;
+			cout << "| 3. Age" << endl;
+			cout << "| 4. Gender" << endl;
+			cout << "| 5. Email" << endl;
+			cout << "| 6. Contact" << endl;
+			cout << "| 7. Password" << endl;
+			cout << "| 8. Return" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			string inputString;
+			int inputInt, choice = handleUserInput();
+			bool modify = true;
+
+			switch (choice) {
+			case 1:
+				inputString = handleStringInput("Enter your new username (Enter 1 to return)");
+				if (inputString != "1") {
+					modify = userListController->validateUsername(inputString, *userData);
+					if (modify) {
+						// update user username only
+						userData->updateUserNode(
+							currentUser->UserId,
+							inputString,
+							currentUser->UserName,
+							currentUser->UserAge,
+							currentUser->UserPassword,
+							currentUser->UserGender,
+							currentUser->UserEmail,
+							currentUser->UserContact,
+							currentUser->UserLastLogin);
+					}
+				}
+				return;
+			case 2:
+				inputString = handleStringInput("Enter your new name (Enter 1 to return)");
+				if (inputString != "1") {
+					// update user name only
+					userData->updateUserNode(
+						currentUser->UserId,
+						currentUser->userUserName,
+						inputString,
+						currentUser->UserAge,
+						currentUser->UserPassword,
+						currentUser->UserGender,
+						currentUser->UserEmail,
+						currentUser->UserContact,
+						currentUser->UserLastLogin);
+				}
+				return;
+			case 3:
+				inputInt = handleIntInput("Enter your new age (Enter 1 to return)");
+				if (inputInt != 1) {
+					// update user age only
+					userData->updateUserNode(
+						currentUser->UserId,
+						currentUser->userUserName,
+						currentUser->UserName,
+						inputInt,
+						currentUser->UserPassword,
+						currentUser->UserGender,
+						currentUser->UserEmail,
+						currentUser->UserContact,
+						currentUser->UserLastLogin);
+				}
+				return;
+			case 4:
+				inputString = handleStringInput("Enter your new gender (Enter 1 to return)");
+				if (inputString != "1") {
+					// update user gender only
+					userData->updateUserNode(
+						currentUser->UserId,
+						currentUser->userUserName,
+						currentUser->UserName,
+						currentUser->UserAge,
+						currentUser->UserPassword,
+						inputString,
+						currentUser->UserEmail,
+						currentUser->UserContact,
+						currentUser->UserLastLogin);
+				}
+				return;
+			case 5:
+				inputString = handleStringInput("Enter your new email (Enter 1 to return)");
+				if (inputString != "1") {
+					modify = userListController->validateEmail(inputString);
+					if (modify) {
+						// update user email only
+						userData->updateUserNode(
+							currentUser->UserId,
+							currentUser->userUserName,
+							currentUser->UserName,
+							currentUser->UserAge,
+							currentUser->UserPassword,
+							currentUser->UserGender,
+							inputString,
+							currentUser->UserContact,
+							currentUser->UserLastLogin);
+					}
+				}
+				return;
+			case 6:
+				inputString = handleStringInput("Enter your new contact (Enter 1 to return)");
+				if (inputString != "1") {
+					userData->updateUserNode(
+						currentUser->UserId,
+						currentUser->userUserName,
+						currentUser->UserName,
+						currentUser->UserAge,
+						currentUser->UserPassword,
+						currentUser->UserGender,
+						currentUser->UserEmail,
+						inputString,
+						currentUser->UserLastLogin);
+				}
+				return;
+			case 7:
+				inputString = handleStringInput("Enter your new password (Enter 1 to return)");
+				if (inputString != "1") {
+					// update user password only
+					userData->updateUserNode(
+						currentUser->UserId,
+						currentUser->userUserName,
+						currentUser->UserName,
+						currentUser->UserAge,
+						inputString,
+						currentUser->UserGender,
+						currentUser->UserEmail,
+						currentUser->UserContact,
+						currentUser->UserLastLogin);
+				}
+				return;
+			case 8:
+				return;
+			default:
+				cout << "Invalid choice. Please enter a valid choice." << endl;
+			}
+		}
+	}
+
 	void profileMenu() {
 		// TODO: display profile
 		string uniid, favid;
@@ -159,43 +306,16 @@ class UserMenu {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
-			cout << "Enter your choice (0-1): ";
+			cout << "Enter your choice (1-2): ";
 			int choice = handleUserInput();
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'Edit Profile'" << endl;
-				// TODO: Implement 'Edit Profile' functionality
+				editProfile();
 				break;
 			case 2:
 				return;
 				break;
-			// case 3:
-			// 	cout << "You have selected 'View Favourite Universities'" << endl;
-			// 	// TODO: Implement 'View Favourite Universities' functionality
-			// 	// display uni list based on user id
-			// 	break;
-			// case 4:
-			// 	cout << "You have selected 'Add Favourite Universities'" << endl;
-			// 	// TODO: Implement 'Add Favourite Universities' functionality
-			// 	cin.ignore();
-			// 	cout << endl;
-			// 	cout << "Please enter the University ID to be saved as Fvaourite University: ";
-			// 	getline(cin, uniid);
-			// 	favController.createUserFavUni(uniData, uniid, currentUser->UserId, currentUser->UserName);
-			// 	break;
-			// case 5:
-			// 	cout << "You have selected 'Delete Favourite Universities'" << endl;
-			// 	// TODO: Implement 'Delete Favourite Universities' functionality
-			// 	// favController.displayFavUni(test);
-			// 	cout << "Please enter the Record ID for Favourite University to be deleted: ";
-			// 	cin >> favid;
-			// 	favController.deleteBasedOnFavUni(favid);
-			// 	// favController.displayFavUni(favController.getHead());
-			// 	break;
-			// case 6:
-			// 	cout << "You have selected 'Logout'" << endl;
-			// 	cout << "Goodbye!" << endl;
-			// 	return;
 			default:
 				cout << "Invalid choice, please try again." << endl;
 				break;
@@ -380,6 +500,157 @@ class UserMenu {
 class AdminMenu {
 	public:
 	userNode* currentUser;
+	userNode* targetUser;
+
+	void editUserDetails(string userID) {
+		while (true) {
+			targetUser = userData->getSpecificUserNode(userID);
+			userData->readSpecificUserNode(userID);
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "| Select the option to modify" << endl;
+			cout << "| 1. Username" << endl;
+			cout << "| 2. Name" << endl;
+			cout << "| 3. Age" << endl;
+			cout << "| 4. Gender" << endl;
+			cout << "| 5. Email" << endl;
+			cout << "| 6. Contact" << endl;
+			cout << "| 7. Password" << endl;
+			cout << "| 8. Return" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			string inputString;
+			int inputInt, choice = handleUserInput();
+			bool modify = true;
+
+			switch (choice) {
+			case 1:
+				inputString = handleStringInput("Enter the new username (Enter 1 to return)");
+				if (inputString != "1") {
+					modify = userListController->validateUsername(inputString, *userData);
+					if (modify) {
+						// update user username only
+						userData->updateUserNode(
+							targetUser->UserId,
+							inputString,
+							targetUser->UserName,
+							targetUser->UserAge,
+							targetUser->UserPassword,
+							targetUser->UserGender,
+							targetUser->UserEmail,
+							targetUser->UserContact,
+							targetUser->UserLastLogin);
+					}
+				}
+				return;
+			case 2:
+				inputString = handleStringInput("Enter the new name (Enter 1 to return)");
+				if (inputString != "1") {
+					// update user name only
+					userData->updateUserNode(
+						targetUser->UserId,
+						targetUser->userUserName,
+						inputString,
+						targetUser->UserAge,
+						targetUser->UserPassword,
+						targetUser->UserGender,
+						targetUser->UserEmail,
+						targetUser->UserContact,
+						targetUser->UserLastLogin);
+				}
+				return;
+			case 3:
+				inputInt = handleIntInput("Enter the new age (Enter 1 to return)");
+				if (inputInt != 1) {
+					// update user age only
+					userData->updateUserNode(
+						targetUser->UserId,
+						targetUser->userUserName,
+						targetUser->UserName,
+						inputInt,
+						targetUser->UserPassword,
+						targetUser->UserGender,
+						targetUser->UserEmail,
+						targetUser->UserContact,
+						targetUser->UserLastLogin);
+				}
+				return;
+			case 4:
+				inputString = handleStringInput("Enter the new gender (Enter 1 to return)");
+				if (inputString != "1") {
+					// update user gender only
+					userData->updateUserNode(
+						targetUser->UserId,
+						targetUser->userUserName,
+						targetUser->UserName,
+						targetUser->UserAge,
+						targetUser->UserPassword,
+						inputString,
+						targetUser->UserEmail,
+						targetUser->UserContact,
+						targetUser->UserLastLogin);
+				}
+				return;
+			case 5:
+				inputString = handleStringInput("Enter the new email (Enter 1 to return)");
+				if (inputString != "1") {
+					modify = userListController->validateEmail(inputString);
+					if (modify) {
+						// update user email only
+						userData->updateUserNode(
+							targetUser->UserId,
+							targetUser->userUserName,
+							targetUser->UserName,
+							targetUser->UserAge,
+							targetUser->UserPassword,
+							targetUser->UserGender,
+							inputString,
+							targetUser->UserContact,
+							targetUser->UserLastLogin);
+					}
+				}
+				return;
+			case 6:
+				inputString = handleStringInput("Enter the new contact (Enter 1 to return)");
+				if (inputString != "1") {
+					// update user contact only
+					userData->updateUserNode(
+						targetUser->UserId,
+						targetUser->userUserName,
+						targetUser->UserName,
+						targetUser->UserAge,
+						targetUser->UserPassword,
+						targetUser->UserGender,
+						targetUser->UserEmail,
+						inputString,
+						targetUser->UserLastLogin);
+				}
+				return;
+			case 7:
+				inputString = handleStringInput("Enter the new password (Enter 1 to return)");
+				if (inputString != "1") {
+					// update user password only
+					userData->updateUserNode(
+						targetUser->UserId,
+						targetUser->userUserName,
+						targetUser->UserName,
+						targetUser->UserAge,
+						inputString,
+						targetUser->UserGender,
+						targetUser->UserEmail,
+						targetUser->UserContact,
+						targetUser->UserLastLogin);
+				}
+				return;
+			case 8:
+				return;
+			default:
+				cout << "Invalid choice. Please enter a valid choice." << endl;
+			}
+		}
+	}
 
 	void displayAllMember() {
 		while (true) {
@@ -400,7 +671,8 @@ class AdminMenu {
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'Modify member'" << endl;
-				// TODO: Implement 'Modify Member' functionality
+				input_id = handleIntInput("User ID to be modify: ");
+				editUserDetails(to_string(input_id));
 				break;
 			case 2:
 				cout << "You have selected 'Delete member account'" << endl;
@@ -586,8 +858,8 @@ void displayLoginMenu() {
 
 void userRegister() {
 	while (true) {
-		string name, username, email, password, gender, input;
-		int age, contact;
+		string name, username, email, password, gender, contact, input;
+		int age;
 		bool userRegister = true;
 		username = handleStringInput("Enter your username (Enter 1 to return)");
 		if (username != "1") {
@@ -597,12 +869,13 @@ void userRegister() {
 				password = handleStringInput("Enter your password");
 				age = handleIntInput("Enter your age");
 				gender = handleStringInput("Enter your gender");
-				email = handleStringInput("Enter your email");
-				userRegister = userListController->validateEmail(email);
-			}
-			if (userRegister) {
-				contact = handleIntInput("Enter your contact");
-				userRegister = userListController->validateContact(to_string(contact));
+				while (true) {
+					email = handleStringInput("Enter your email");
+					userRegister = userListController->validateEmail(email);
+					if (userRegister) break;
+					else continue;
+				}
+				contact = handleStringInput("Enter your contact");
 			}
 			if (userRegister) {
 				userListController->createNewMember(*userData, username, password, name, gender, email, age, contact);

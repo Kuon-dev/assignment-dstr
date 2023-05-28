@@ -20,7 +20,7 @@ struct userNode {
 	int UserAge;
 	string UserGender;
 	string UserEmail;
-	int UserContact;
+	string UserContact;
 	string UserLastLogin;
 };
 
@@ -40,7 +40,7 @@ class userList {
 		int age,
 		string gender,
 		string email,
-		int contact,
+		string contact,
 		string lastLogin) {
 		userNode* newUserNode = new userNode;
 		newUserNode->UserId = userId;
@@ -103,7 +103,15 @@ class userList {
 	}
 
 	void updateUserNode(
-		string userId, string userName, string name, int age, string gender, string email, int contact, string lastLogin) {
+		string userId,
+		string userName,
+		string name,
+		int age,
+		string password,
+		string gender,
+		string email,
+		string contact,
+		string lastLogin) {
 		userNode* currentNode = head;
 		while (currentNode != nullptr && currentNode->UserId != userId) {
 			currentNode = currentNode->NextAddress;
@@ -114,6 +122,7 @@ class userList {
 			currentNode->userUserName = userName;
 			currentNode->UserName = name;
 			currentNode->UserAge = age;
+			currentNode->UserPassword = password;
 			currentNode->UserGender = gender;
 			currentNode->UserEmail = email;
 			currentNode->UserContact = contact;
@@ -189,6 +198,20 @@ class userList {
 					 << setw(6) << current->UserAge << setw(28) << current->UserLastLogin << endl;
 			current = current->NextAddress;
 		}
+	}
+
+	userNode* getSpecificUserNode(string userId) {
+		// userNode* target = new userNode;
+		userNode* current = head;
+		while (current != nullptr) {
+			if (current->UserId == userId) {
+				return current;
+			}
+			current = current->NextAddress;
+		}
+		cout << "User details not found" << endl;
+		// Return a specific value indicating that no user is found
+		return nullptr;
 	}
 
 	private:

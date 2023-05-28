@@ -29,8 +29,8 @@ class MemberController {
 			stringstream iss(line);
 			userNode* node = new userNode();
 
-			string UserId, userUserName, UserPassword, UserName, UserGender, UserEmail, UserLastLogin;
-			int UserAge, UserContact;
+			string UserId, userUserName, UserPassword, UserName, UserGender, UserEmail, UserContact, UserLastLogin;
+			int UserAge;
 
 			string token; // to get value
 
@@ -59,7 +59,7 @@ class MemberController {
 			UserAge = stoi(token);
 
 			getline(iss, token, ',');
-			UserContact = stoi(token);
+			UserContact = token;
 
 			node->UserId = UserId;
 			node->userUserName = userUserName;
@@ -120,19 +120,16 @@ class MemberController {
 		return true;
 	}
 
-	bool validateContact(string contact) {
-		// Check the length of the contact number
-		int length = contact.length();
-		if (length < 10 || length > 12) {
-			cout << "Invalid contact number length. Number should be between 10 and 12 digits." << std::endl;
-			return false;
-		}
-		return true;
-	}
-
 	// create a new user node and append to csv
 	void createNewMember(
-		userList data, string username, string password, string name, string gender, string email, int age, int contact) {
+		userList data,
+		string username,
+		string password,
+		string name,
+		string gender,
+		string email,
+		int age,
+		string contact) {
 		userNode* newUser = new userNode();
 		userList* list = new userList();
 		newUser->UserId = to_string(createUserId(data));
@@ -149,8 +146,7 @@ class MemberController {
 		if (outfile) {
 			outfile << newUser->UserId << "," << newUser->userUserName << "," << newUser->UserPassword << ","
 							<< newUser->UserName << "," << newUser->UserGender << "," << newUser->UserEmail << ","
-							<< newUser->UserLastLogin << "," << to_string(newUser->UserAge) << "," << to_string(newUser->UserContact)
-							<< endl;
+							<< newUser->UserLastLogin << "," << to_string(newUser->UserAge) << "," << newUser->UserContact << endl;
 			outfile.close();
 			data.addUserNode(newUser);
 			cout << "User acccount created." << endl;
