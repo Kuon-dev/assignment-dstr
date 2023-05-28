@@ -243,9 +243,8 @@ class FavouritesController {
 
 	void createUserFavUni(string input, string testmemberid, string testname) {
 		UniversityContoller uniObject;
-		universityList uniCurrentList = uniObject.readUniversityDatabaseLinkedList();
 		universitySearcher searcher;
-		universityNode* searched = searcher.binarySearch(uniCurrentList.getHead(), "Rank", stoi(input));
+		universityNode* searched = searcher.binarySearch(uniData->getHead(), "Rank", stoi(input));
 
 		string ID, Name;
 		ID = testmemberid;
