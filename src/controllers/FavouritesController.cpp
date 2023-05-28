@@ -106,7 +106,6 @@ class FavouritesController {
 		favouritesobj.getTopTenUniData();
 		TopTenUniNode* current = favouritesobj.getSortedTopTenUniHead();
 		cout << endl;
-
 		// favouritesobj.overwriteFavUniData();
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
