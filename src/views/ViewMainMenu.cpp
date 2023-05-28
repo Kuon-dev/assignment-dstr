@@ -107,18 +107,25 @@ void profileMenu() {
 
 		// setUser(userNode * user);
 		// cout << currentUser->UserId << endl;
-		testuserid = /*userListController.returnUserId(currentUser)*/ "987";
-		testusername = /*userListController.returnUserName(currentUser)*/ "Loong";
+		//testuserid = /*userListController.returnUserId(currentUser)*/ "987";
+		//testusername = /*userListController.returnUserName(currentUser)*/ "Loong";
+
+		testuserid = currentUser->UserId;
+		testusername = currentUser->userUserName;
 
 		FavouritesController favCont;
-		favCont.getFULinkListFromDB();
-		favUniNode* test = favCont.readFavDatabase(testuserid);
+		favUniList favUniobj;
+		/*favCont.getFULinkListFromDB();
+		favUniNode* test = favCont.readFavDatabase(testuserid);*/
 
 		// cout << "User ID: ";
 		// getline(cin, testuserid);
 
 
 		while (true) {
+			
+			favCont.getFULinkListFromDB();
+			favUniNode* test = favCont.readFavDatabase(testuserid);
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
@@ -157,7 +164,8 @@ void profileMenu() {
 				cout << "You have selected 'Add Favourite Universities'" << endl;
 				// TODO: Implement 'Add Favourite Universities' functionality
 				cin.ignore();
-				cout << "University ID: ";
+				cout << endl;
+				cout << "Please enter the University ID to be saved as Favourite University: ";
 				getline(cin, uniid);
 				favCont.createUserFavUni(uniid, testuserid, testusername);
 				break;
@@ -165,9 +173,12 @@ void profileMenu() {
 				cout << "You have selected 'Delete Favourite Universities'" << endl;
 				// TODO: Implement 'Delete Favourite Universities' functionality
 				// favCont.displayFavUni(test);
-				cout << "Input the University You want to Delete: ";
+				cout << endl;
+				cout << "Please enter the Record ID for Favourite University to be deleted: ";
 				cin >> favid;
+				cout << endl;
 				favCont.deleteBasedOnFavUni(favid);
+				cout << endl;
 				// favCont.displayFavUni(favCont.getHead());
 				break;
 			case 6:
@@ -415,7 +426,8 @@ void displayLoginMenu() {
 			cout << endl << endl << "Logged in successfully!" << endl;
 			UserMenu menu;
 			menu.currentUser = authUser;
-			menu.userDashboard();
+			//menu.userDashboard();
+			menu.profileMenu();
 			return;
 		};
 	}

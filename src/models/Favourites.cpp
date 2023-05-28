@@ -51,7 +51,8 @@ class favUniList {
 	TopTenUniNode* getSortedTopTenUniHead() { return SortedTopTenUniHead; }
 	void favUniData() {
 		string FavUniId, UserId, UserName, UniId, UniName, fline;
-		ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
+		//ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv"); // get user database
+		ifstream file("Database/FavUni.csv");
 		getline(file, fline);
 		while (file.good()) {
 			newnodeFavUni = new favUniNode;
@@ -107,7 +108,6 @@ class favUniList {
 	}
 
 	void filterFavUniData(string userid) {
-		deleteFilteredFUL();
 		favUniNode* current = favUniHead;
 
 		while (current != NULL) {
@@ -143,6 +143,16 @@ class favUniList {
 			delete temp;
 		}
 		filterUserFavUniHead = NULL;
+	}
+
+	void deleteFUL() {
+		favUniNode* current = favUniHead;
+		while (current != NULL) {
+			favUniNode* temp = current;
+			current = current->NextAddress;
+			delete temp;
+		}
+		favUniHead = NULL;
 	}
 
 	void deleteTopTenUni() {
@@ -263,7 +273,8 @@ class favUniList {
 		favUniNode* current = saveFavUni;
 
 		ofstream tempFile("temp.csv");
-		ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
+		//ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv"); // get user database
+		ifstream file("Database/FavUni.csv");
 		string line;
 		// bool found = false;
 		tempFile << "FavUniID"
@@ -286,8 +297,10 @@ class favUniList {
 		file.close();
 		tempFile.close();
 
-		remove("Database/FavUni.csv");
-		rename("temp.csv", "Database/FavUni.csv");
+		remove("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
+		//remove("Database/FavUni.csv");
+		rename("temp.csv", "C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
+		//rename("temp.csv", "Database/FavUni.csv");
 		cout << "Favourite Univerity is updated." << endl;
 	}
 
