@@ -1,5 +1,4 @@
 #include "../controllers/FavouritesController.cpp"
-#include "../controllers/MemberController.cpp"
 #include <conio.h>
 #include <ctime>
 #include <iostream>
@@ -48,7 +47,7 @@ class UserMenu {
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'View the Top Score University'" << endl;
-				//quick sort algorithm so sort 
+				//quick sort algorithm so sort
 				sorter.quicksortInt(uniData->getHead(), uniData->getTail(), "ScoreScaled");
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
@@ -85,7 +84,7 @@ class UserMenu {
 	}
 
 	void userDashboard() {
-    favUniNode* getUserFavUni;
+    favUniList* getUserFavUni;
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -110,9 +109,9 @@ class UserMenu {
 				universityMenu();
 				break;
 			case 2:
-				getUserFavUni = favUniController->readFavDatabase(currentUser->UserId);
+				getUserFavUni = favUniController->getUserFav(favUniData, currentUser);
 				cout << "You have selected 'View Favourite Universities'" << endl;
-				favUniController->displayFavUni(getUserFavUni);
+				getUserFavUni->displayAll();
 				break;
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
@@ -146,7 +145,7 @@ class UserMenu {
 				<< endl;
 			cout << "Welcome to Profile Dashboard" << endl;
 			userData->readSpecificUserNode(currentUser->UserId);
-			cout << "Please select an option:" << endl;			
+			cout << "Please select an option:" << endl;
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
@@ -473,7 +472,7 @@ void displayChoiceToSortString(string input) {
 		bool exitPaginate = true;
 		switch (choice) {
 		case 1:
-			//call merge sort algorithm to sort string data			
+			//call merge sort algorithm to sort string data
 			head = uniData->getHead();
 			uniData->setHead(mergeSorter.mergeSortUniversityString(&head, input));
 			uniController->displayPaginated(*uniData, 1);
