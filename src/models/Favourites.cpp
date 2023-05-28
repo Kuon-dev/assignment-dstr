@@ -50,6 +50,7 @@ class favUniList {
 
 	favUniList(string favoriteUni) { this->favoriteUni = favoriteUni; }
 	TopTenUniNode* getSortedTopTenUniHead() { return SortedTopTenUniHead; }
+
 	void InsertTopTenUni(favUniNode* curr) {
 		TopTenUniNode* keyNode = createNewTopTenUni(curr->UniId, curr->UniName);
 
@@ -65,16 +66,23 @@ class favUniList {
 		}
 	}
 
+	void addFavUniNode(favUniNode* newNode) {
+		if (favUniHead == nullptr) {
+			favUniHead = favUniTail = newNode;
+		} else {
+			favUniTail->NextAddress = newNode;
+			newNode->PrevAddress = favUniTail;
+			favUniTail = newNode;
+		};
+	}
+
 	void displayAll() {
 		favUniNode* current = favUniHead;
-
 		// Print table header
 		printTableRow("FavUniID", "UserID", "UserName", "UniID", "UniName");
-
 		while (current != nullptr) {
 			// Print information for each node
 			printTableRow(current->FavUniId, current->UserId, current->UserName, current->UniId, current->UniName);
-
 			current = current->NextAddress; // Move to the next node
 		}
 	}
@@ -283,16 +291,6 @@ class favUniList {
 	// 	rename("temp.csv", "Database/FavUni.csv");
 	// 	cout << "Favourite Univerity is updated." << endl;
 	// }
-
-	void addFavUniNode(favUniNode* newFavUniNode) {
-		if (favUniHead == nullptr) {
-			favUniHead = favUniTail = newFavUniNode;
-		} else {
-			favUniTail->NextAddress = newFavUniNode;
-			newFavUniNode->PrevAddress = favUniTail;
-			favUniTail = newFavUniNode;
-		};
-	}
 
 	private:
 	void

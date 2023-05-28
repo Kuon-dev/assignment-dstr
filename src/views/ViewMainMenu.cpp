@@ -28,7 +28,7 @@ class UserMenu {
 	feedbackList* userFeedback;
 	void universityMenu() {
 		while (true) {
-			string uniID;
+			int uniID;
 			int page;
 			bool exitPaginate = true;
 			cout
@@ -63,12 +63,12 @@ class UserMenu {
 				break;
 			case 2:
 				cout << "You have selected 'Save University as Favourite'" << endl;
-				uniID = handleStringInput("Enter University ID to save as favourite, (Press '0' to return): ");
-				if (uniID == "0") {
+				uniID = handleIntInput("Enter University ID to save as favourite, (Press '0' to return): ");
+				if (uniID == 0) {
 					cout << "Exitting..." << endl;
 					break;
 				};
-				favUniController->createUserFavUni(uniID, currentUser->UserId, currentUser->userUserName);
+				favUniController->createUserFavUni(uniData, favUniData, uniID, currentUser->UserId, currentUser->userUserName);
 				break;
 			case 3:
 				displaySortUniversityMenu();
@@ -120,7 +120,6 @@ class UserMenu {
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
 				feedbackController->createFeedback(feedbackData, currentUser);
-				;
 				break;
 			case 4:
 				cout << "You have selected 'View Submitted Feedback'" << endl;
@@ -142,11 +141,9 @@ class UserMenu {
 		}
 	}
 
-
 	void profileMenu() {
 		// TODO: display profile
 		string uniid, favid;
-		FavouritesController favController;
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -169,33 +166,36 @@ class UserMenu {
 				cout << "You have selected 'Edit Profile'" << endl;
 				// TODO: Implement 'Edit Profile' functionality
 				break;
-			case 3:
-				cout << "You have selected 'View Favourite Universities'" << endl;
-				// TODO: Implement 'View Favourite Universities' functionality
-				// display uni list based on user id
-				break;
-			case 4:
-				cout << "You have selected 'Add Favourite Universities'" << endl;
-				// TODO: Implement 'Add Favourite Universities' functionality
-				cin.ignore();
-				cout << endl;
-				cout << "Please enter the University ID to be saved as Fvaourite University: ";
-				getline(cin, uniid);
-				favController.createUserFavUni(uniid, currentUser->UserId, currentUser->UserName);
-				break;
-			case 5:
-				cout << "You have selected 'Delete Favourite Universities'" << endl;
-				// TODO: Implement 'Delete Favourite Universities' functionality
-				// favController.displayFavUni(test);
-				cout << "Please enter the Record ID for Favourite University to be deleted: ";
-				cin >> favid;
-				favController.deleteBasedOnFavUni(favid);
-				// favController.displayFavUni(favController.getHead());
-				break;
-			case 6:
-				cout << "You have selected 'Logout'" << endl;
-				cout << "Goodbye!" << endl;
+			case 2:
 				return;
+				break;
+			// case 3:
+			// 	cout << "You have selected 'View Favourite Universities'" << endl;
+			// 	// TODO: Implement 'View Favourite Universities' functionality
+			// 	// display uni list based on user id
+			// 	break;
+			// case 4:
+			// 	cout << "You have selected 'Add Favourite Universities'" << endl;
+			// 	// TODO: Implement 'Add Favourite Universities' functionality
+			// 	cin.ignore();
+			// 	cout << endl;
+			// 	cout << "Please enter the University ID to be saved as Fvaourite University: ";
+			// 	getline(cin, uniid);
+			// 	favController.createUserFavUni(uniData, uniid, currentUser->UserId, currentUser->UserName);
+			// 	break;
+			// case 5:
+			// 	cout << "You have selected 'Delete Favourite Universities'" << endl;
+			// 	// TODO: Implement 'Delete Favourite Universities' functionality
+			// 	// favController.displayFavUni(test);
+			// 	cout << "Please enter the Record ID for Favourite University to be deleted: ";
+			// 	cin >> favid;
+			// 	favController.deleteBasedOnFavUni(favid);
+			// 	// favController.displayFavUni(favController.getHead());
+			// 	break;
+			// case 6:
+			// 	cout << "You have selected 'Logout'" << endl;
+			// 	cout << "Goodbye!" << endl;
+			// 	return;
 			default:
 				cout << "Invalid choice, please try again." << endl;
 				break;
@@ -208,11 +208,13 @@ class UserMenu {
 	void displayChoiceToSortInt(string input) {
 		universityNode* head;
 		while (true) {
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| Please select a sort algorithm:" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| 1. Merge Sort" << endl;
 			cout << "| 2. Quick Sort" << endl;
 
@@ -256,11 +258,13 @@ class UserMenu {
 	void displayChoiceToSortString(string input) {
 		universityNode* head;
 		while (true) {
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| Please select a sort algorithm:" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| 1. Merge Sort" << endl;
 			cout << "| 2. Quick Sort" << endl;
 
@@ -304,11 +308,13 @@ class UserMenu {
 	void displaySortUniversityMenu() {
 		while (true) {
 			string input;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| Please select an option:" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| 1. Sort University by name" << endl;
 			cout << "| 2. Sort University by rank" << endl;
 			cout << "| 3. Sort University by location" << endl;
@@ -321,8 +327,9 @@ class UserMenu {
 			cout << "| 10. Sort University by International research network" << endl;
 			cout << "| 11. Sort University by Employment outcome" << endl;
 			cout << "| 12. Return" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 
 			int choice = handleUserInput();
 
@@ -368,13 +375,11 @@ class UserMenu {
 			}
 		}
 	}
-
 };
 
 class AdminMenu {
 	public:
 	userNode* currentUser;
-	FavouritesController favController;
 
 	void displayAllMember() {
 		while (true) {
@@ -440,7 +445,7 @@ class AdminMenu {
 				break;
 			case 3:
 				cout << "You have selected 'Generate top 10 university'" << endl;
-				favController.displayTopTenUniData();
+				favUniController->displayTopTenUniData();
 				// TODO: Implement 'top 10 uni' functionality
 
 				break;
@@ -650,9 +655,6 @@ void displaySearchUniversityMenu() {
 		}
 	}
 }
-
-
-
 
 void displayMenu() {
 	while (true) {
