@@ -14,7 +14,7 @@ class FavouritesController {
 	favUniList favouritesobj;
 
 	public:
-	favUniList readFavUniDatabase() {
+	favUniList* readFavUniDatabase() {
 		favUniList* list = new favUniList();
 		ifstream file("Database/FavUni.csv"); // get user database
 		// validate file open
@@ -22,7 +22,7 @@ class FavouritesController {
 			cout << "\033[31m"
 					 << "Error: could not open file "
 					 << "\033[0m" << endl;
-			return *list;
+			return list;
 		}
 		// define database haeder and line
 		string header, line;
@@ -55,7 +55,7 @@ class FavouritesController {
 			list->addFavUniNode(node);
 		};
 		file.close();
-		return *list;
+		return list;
 	};
 
 	favUniNode* readFavDatabase(string UserId) {

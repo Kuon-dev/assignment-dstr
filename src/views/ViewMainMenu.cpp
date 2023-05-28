@@ -15,16 +15,19 @@ feedbackList* feedbackData = feedbackController->readFeedbackDatabase();
 
 MemberController* userListController;
 userList* userData = userListController->readUserDatabase();
+
+FavouritesController* favUniController;
+favUniList* favUniData = favUniController->readFavUniDatabase();
+
 void displaySearchUniversityMenu();
 void displaySortUniversityMenu();
 class UserMenu {
 	public:
-	// feedbackList* feedbackData = feedbackController->readFeedbackDatabase();
 	userNode* currentUser;
 	feedbackList* userFeedback;
-	
 	void universityMenu() {
 		while (true) {
+			string uniID;
 			int page;
 			bool exitPaginate = true;
 			cout
@@ -59,7 +62,10 @@ class UserMenu {
 				break;
 			case 2:
 				cout << "You have selected 'Save University as Favourite'" << endl;
-				// TODO: Implement 'Save University as Favourite' functionality
+				cin.ignore();
+				cout << "University ID to save: ";
+				getline(cin, uniID);
+				favUniController->createUserFavUni(uniID, currentUser->UserId, currentUser->userUserName);
 				break;
 			case 3:
 				displaySortUniversityMenu();
@@ -79,17 +85,7 @@ class UserMenu {
 	}
 
 	void userDashboard() {
-		string uniid, favid, testusername, testuserid;
-
-		// setUser(userNode * user);
-		// cout << currentUser->UserId << endl;
-		testuserid = currentUser->UserId;
-		testusername = currentUser->UserName;
-
-		FavouritesController favCont;
-		favCont.getFULinkListFromDB();
-		favUniNode* test = favCont.readFavDatabase(testuserid);
-
+    favUniNode* getUserFavUni;
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -114,12 +110,9 @@ class UserMenu {
 				universityMenu();
 				break;
 			case 2:
+				getUserFavUni = favUniController->readFavDatabase(currentUser->UserId);
 				cout << "You have selected 'View Favourite Universities'" << endl;
-				// TODO: Implement 'View Favourite Universities' functionality
-				// geberate report
-				// favCont.displayTopTenUniData();
-				// display uni list based on user id
-				favCont.displayFavUni(test);
+				favUniController->displayFavUni(getUserFavUni);
 				break;
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
@@ -130,11 +123,10 @@ class UserMenu {
 				cout << "You have selected 'View Submitted Feedback'" << endl;
 				userFeedback = feedbackController->getFeedbacksByUser(feedbackData, currentUser);
 				userFeedback->displayAllFeedback();
-				// TODO: Implement 'View Submitted Feedback' functionality
 				break;
 			case 5:
 				cout << "You have selected 'Profile'" << endl;
-				// TODO: Implement 'Profile' functionality
+				profileMenu();
 				break;
 			case 6:
 				cout << "You have selected 'Logout'" << endl;
@@ -147,82 +139,30 @@ class UserMenu {
 		}
 	}
 
-	void feedbackMenu() {
-		// TODO: leave a feedback
-		// TODO: look at feedback reply
-	}
-
 	void profileMenu() {
-		// TODO: display profile
-		string uniid, favid, testusername, testuserid;
-
-		// setUser(userNode * user);
-		// cout << currentUser->UserId << endl;
-		testuserid = /*userListController.returnUserId(currentUser)*/ "987";
-		testusername = /*userListController.returnUserName(currentUser)*/ "Loong";
-
-		FavouritesController favCont;
-		favCont.getFULinkListFromDB();
-		favUniNode* test = favCont.readFavDatabase(testuserid);
-
-		// cout << "User ID: ";
-		// getline(cin, testuserid);
-
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
 			cout << "Welcome to Profile Dashboard" << endl;
-			cout << "Please select an option:" << endl;
-			cout << "1. View Profile" << endl;
-			cout << "2. Edit Profile" << endl;
-			cout << "3. View Favourite Universities" << endl;
-			cout << "4. Add Favourite Universities" << endl;
-			cout << "5. Delete Favourite Universities" << endl;
-			cout << "6. Logout" << endl;
+			userData->readSpecificUserNode(currentUser->UserId);
+			cout << "Please select an option:" << endl;			
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
-			cout << "Enter your choice (1-5): ";
+			cout << "1. Edit Profile" << endl;
+			cout << "2. Return" << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
+			cout << "Enter your choice (0-1): ";
 			int choice = handleUserInput();
-
-			// favUniNode* test = favCont.readFavDatabase(userid);
 			switch (choice) {
 			case 1:
-				cout << "You have selected 'View Profile'" << endl;
-				// TODO: Implement 'View Profile' functionality
-				// FeedbackDisplayUser();
-				break;
-			case 2:
 				cout << "You have selected 'Edit Profile'" << endl;
 				// TODO: Implement 'Edit Profile' functionality
 				break;
-			case 3:
-				cout << "You have selected 'View Favourite Universities'" << endl;
-				// TODO: Implement 'View Favourite Universities' functionality
-				// display uni list based on user id
-				favCont.displayFavUni(test);
-				break;
-			case 4:
-				cout << "You have selected 'Add Favourite Universities'" << endl;
-				// TODO: Implement 'Add Favourite Universities' functionality
-				cin.ignore();
-				cout << "University ID: ";
-				getline(cin, uniid);
-				favCont.createUserFavUni(uniid, testuserid, testusername);
-				break;
-			case 5:
-				cout << "You have selected 'Delete Favourite Universities'" << endl;
-				// TODO: Implement 'Delete Favourite Universities' functionality
-				// favCont.displayFavUni(test);
-				cout << "Input the University You want to Delete: ";
-				cin >> favid;
-				favCont.deleteBasedOnFavUni(favid);
-				// favCont.displayFavUni(favCont.getHead());
-				break;
-			case 6:
-				cout << "You have selected 'Logout'" << endl;
-				cout << "Goodbye!" << endl;
+			case 2:
 				return;
 			default:
 				cout << "Invalid choice, please try again." << endl;
