@@ -138,5 +138,4 @@ class FeedbackController {
 		else if (lastNode->FeedbackId == "") return 1;
 		else return (stoi(lastNode->FeedbackId) + 1);
 	}
-
 };

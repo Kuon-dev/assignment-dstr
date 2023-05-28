@@ -1,6 +1,6 @@
 #include "../Models/Favourites.cpp"
-#include "../controllers/UniversityController.cpp"
 #include "../controllers/MemberController.cpp"
+#include "../controllers/UniversityController.cpp"
 // #include "../Models/Member.cpp"
 
 #include <fstream>
@@ -13,6 +13,7 @@ using namespace std;
 class FavouritesController {
 	private:
 	favUniList favouriteList;
+	favUniNode* getHead() { return favouriteList.getHead(); }
 
 	public:
 	favUniList* readFavUniDatabase() {
@@ -21,8 +22,8 @@ class FavouritesController {
 		// validate file open
 		if (!file.is_open()) {
 			cout << "\033[31m"
-				<< "Error: could not open file "
-				<< "\033[0m" << endl;
+					 << "Error: could not open file "
+					 << "\033[0m" << endl;
 			return list;
 		}
 		// define database header and line
@@ -53,7 +54,37 @@ class FavouritesController {
 		return list;
 	}
 
-	favUniList* getUserFav(favUniList* data, userNode* user){
+	void writeToDatabase(favUniNode* saveFavUni) {
+		favUniNode* current = saveFavUni;
+		ofstream tempFile("temp.csv");
+		ifstream file("Database/FavUni.csv");
+		string line;
+		tempFile << "FavUniID"
+						 << ","
+						 << "UserID"
+						 << ","
+						 << "UserName"
+						 << ","
+						 << "UniID"
+						 << ","
+						 << "UniName" << endl;
+		while (current != NULL) {
+			istringstream iss(line);
+
+			tempFile << current->FavUniId << "," << current->UserId << "," << current->UserName << "," << current->UniId
+							 << "," << current->UniName << endl;
+			current = current->NextAddress;
+		}
+
+		file.close();
+		tempFile.close();
+
+		remove("Database/FavUni.csv");
+		rename("temp.csv", "Database/FavUni.csv");
+		cout << "Favourite Univerity is updated." << endl;
+	}
+
+	favUniList* getUserFav(favUniList* data, userNode* user) {
 		favUniList* favUni = new favUniList;
 		favUniNode* current = data->getHead();
 		while (current != nullptr) {
@@ -84,7 +115,7 @@ class FavouritesController {
 		TopTenUniNode* current = favouriteList.getSortedTopTenUniHead();
 		cout << endl;
 
-		// favouriteList.overwriteFavUniData();
+		// writeToDatabase();
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 		cout << "Top 10 university added as favourite university by members:" << endl;
@@ -173,7 +204,7 @@ class FavouritesController {
 			cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
 			cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
 			delete currentFavUni;
-			favouriteList.overwriteFavUniData(getHead());
+			writeToDatabase(getHead());
 
 		} else if (searchNode->FavUniId == favouriteList.getTail()->FavUniId) {
 			favUniNode* currentFavUni = favouriteList.getTail();
@@ -188,7 +219,7 @@ class FavouritesController {
 			cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
 			cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
 			delete currentFavUni;
-			favouriteList.overwriteFavUniData(getHead());
+			writeToDatabase(getHead());
 		} else {
 			favUniNode* PrevAddress = unfilteredHead;
 			favUniNode* currentFavUni = unfilteredHead->NextAddress;
@@ -199,7 +230,7 @@ class FavouritesController {
 					cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
 					cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
 					delete currentFavUni;
-					favouritesobj.overwriteFavUniData(getHead());
+					writeToDatabase(getHead());
 					return;
 				}
 				PrevAddress = currentFavUni;
@@ -221,16 +252,14 @@ class FavouritesController {
 		Name = testname;
 		favUniHead = currentFavUni = favUniTail = NULL;
 
-		favouritesobj.InsertFavUni(
-			to_string(stoi(favouritesobj.getTail()->FavUniId) + 1),
+		favouriteList.InsertFavUni(
+			to_string(stoi(favouriteList.getTail()->FavUniId) + 1),
 			testmemberid,
 			testname,
 			to_string(searched->Rank),
 			searched->Name);
-		favouritesobj.overwriteFavUniData(getHead());
+		writeToDatabase(getHead());
 	}
-
-	favUniNode* getHead() { return favouriteList.getHead(); }
 
 	favUniNode* getFilteredHead() { return favouriteList.getFilteredHead(); }
 };
