@@ -28,7 +28,7 @@ class UserMenu {
 	feedbackList* userFeedback;
 	void universityMenu() {
 		while (true) {
-			string uniID;
+			int uniID;
 			int page;
 			bool exitPaginate = true;
 			cout
@@ -63,12 +63,12 @@ class UserMenu {
 				break;
 			case 2:
 				cout << "You have selected 'Save University as Favourite'" << endl;
-				uniID = handleStringInput("Enter University ID to save as favourite, (Press '0' to return): ");
-				if (uniID == "0") {
+				uniID = handleIntInput("Enter University ID to save as favourite, (Press '0' to return): ");
+				if (uniID == 0) {
 					cout << "Exitting..." << endl;
 					break;
 				};
-				favUniController->createUserFavUni(uniData, uniID, currentUser->UserId, currentUser->userUserName);
+				favUniController->createUserFavUni(uniData, favUniData, uniID, currentUser->UserId, currentUser->userUserName);
 				break;
 			case 3:
 				displaySortUniversityMenu();
@@ -120,7 +120,6 @@ class UserMenu {
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
 				feedbackController->createFeedback(feedbackData, currentUser);
-				;
 				break;
 			case 4:
 				cout << "You have selected 'View Submitted Feedback'" << endl;
@@ -141,7 +140,6 @@ class UserMenu {
 			}
 		}
 	}
-
 
 	void profileMenu() {
 		// TODO: display profile
@@ -210,11 +208,13 @@ class UserMenu {
 	void displayChoiceToSortInt(string input) {
 		universityNode* head;
 		while (true) {
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| Please select a sort algorithm:" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| 1. Merge Sort" << endl;
 			cout << "| 2. Quick Sort" << endl;
 
@@ -258,11 +258,13 @@ class UserMenu {
 	void displayChoiceToSortString(string input) {
 		universityNode* head;
 		while (true) {
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| Please select a sort algorithm:" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| 1. Merge Sort" << endl;
 			cout << "| 2. Quick Sort" << endl;
 
@@ -303,15 +305,16 @@ class UserMenu {
 		}
 	}
 
-
 	void displaySortUniversityMenu() {
 		while (true) {
 			string input;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| Please select an option:" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			cout << "| 1. Sort University by name" << endl;
 			cout << "| 2. Sort University by rank" << endl;
 			cout << "| 3. Sort University by location" << endl;
@@ -324,8 +327,9 @@ class UserMenu {
 			cout << "| 10. Sort University by International research network" << endl;
 			cout << "| 11. Sort University by Employment outcome" << endl;
 			cout << "| 12. Return" << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-					 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 
 			int choice = handleUserInput();
 
@@ -371,7 +375,6 @@ class UserMenu {
 			}
 		}
 	}
-
 };
 
 class AdminMenu {
@@ -652,9 +655,6 @@ void displaySearchUniversityMenu() {
 		}
 	}
 }
-
-
-
 
 void displayMenu() {
 	while (true) {
