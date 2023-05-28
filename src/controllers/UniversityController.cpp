@@ -339,7 +339,6 @@ class UniversityContoller {
 
 			list->addUniversityNode(node);
 		};
-
 		file.close();
 		return *list;
 	}
