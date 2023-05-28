@@ -138,7 +138,37 @@ class UserMenu {
 		}
 	}
 
-	void profileMenu() {
+	void feedbackMenu() {
+		// TODO: leave a feedback
+		// TODO: look at feedback reply
+	}
+
+	void universityMenu() {
+		// TODO: search university
+		// TODO: list uni
+		// TODO: select uni as fav
+	}
+
+void profileMenu() {
+		// TODO: display profile
+		string uniid, favid, testusername, testuserid;
+
+		// setUser(userNode * user);
+		// cout << currentUser->UserId << endl;
+		//testuserid = /*userListController.returnUserId(currentUser)*/ "987";
+		//testusername = /*userListController.returnUserName(currentUser)*/ "Loong";
+
+		testuserid = currentUser->UserId;
+		testusername = currentUser->userUserName;
+
+		FavouritesController favCont;
+		favCont.getFULinkListFromDB();
+		favUniNode* test = favCont.readFavDatabase(testuserid);
+
+		// cout << "User ID: ";
+		// getline(cin, testuserid);
+
+
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -161,7 +191,33 @@ class UserMenu {
 				cout << "You have selected 'Edit Profile'" << endl;
 				// TODO: Implement 'Edit Profile' functionality
 				break;
-			case 2:
+			case 3:
+				cout << "You have selected 'View Favourite Universities'" << endl;
+				// TODO: Implement 'View Favourite Universities' functionality
+				// display uni list based on user id
+				favCont.displayFavUni(test);
+				break;
+			case 4:
+				cout << "You have selected 'Add Favourite Universities'" << endl;
+				// TODO: Implement 'Add Favourite Universities' functionality
+				cin.ignore();
+				cout << endl;
+				cout << "Please enter the University ID to be saved as Fvaourite University: ";
+				getline(cin, uniid);
+				favCont.createUserFavUni(uniid, testuserid, testusername);
+				break;
+			case 5:
+				cout << "You have selected 'Delete Favourite Universities'" << endl;
+				// TODO: Implement 'Delete Favourite Universities' functionality
+				// favCont.displayFavUni(test);
+				cout << "Please enter the Record ID for Favourite University to be deleted: ";
+				cin >> favid;
+				favCont.deleteBasedOnFavUni(favid);
+				// favCont.displayFavUni(favCont.getHead());
+				break;
+			case 6:
+				cout << "You have selected 'Logout'" << endl;
+				cout << "Goodbye!" << endl;
 				return;
 			default:
 				cout << "Invalid choice, please try again." << endl;
@@ -378,7 +434,8 @@ void displayLoginMenu() {
 			cout << endl << endl << "Logged in successfully!" << endl;
 			UserMenu menu;
 			menu.currentUser = authUser;
-			menu.userDashboard();
+			//menu.userDashboard();
+			menu.profileMenu();
 			return;
 		};
 	}

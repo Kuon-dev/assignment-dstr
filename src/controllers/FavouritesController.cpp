@@ -65,7 +65,6 @@ class FavouritesController {
 
 	void displayFavUni(favUniNode* head) {
 		favUniNode* current = head;
-
 		while (current != NULL) {
 			cout << "Favourite University ID: " << current->FavUniId << endl;
 			cout << "Account ID: " << current->UserId << endl;
@@ -76,6 +75,8 @@ class FavouritesController {
 			current = current->NextAddress;
 		}
 		cout << "list ended at here." << endl;
+		cout << endl;
+		cout << endl;
 	}
 
 	void displayTopTenUniData() {
@@ -198,7 +199,7 @@ class FavouritesController {
 					cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
 					cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
 					delete currentFavUni;
-					favouriteList.overwriteFavUniData(getHead());
+					favouritesobj.overwriteFavUniData(getHead());
 					return;
 				}
 				PrevAddress = currentFavUni;
@@ -209,7 +210,7 @@ class FavouritesController {
 		}
 	}
 
-	void createUserFavUni(string input, string testname, string testmemberid) {
+	void createUserFavUni(string input, string testmemberid, string testname) {
 		UniversityContoller uniObject;
 		universityList uniCurrentList = uniObject.readUniversityDatabaseLinkedList();
 		universitySearcher searcher;
@@ -220,9 +221,13 @@ class FavouritesController {
 		Name = testname;
 		favUniHead = currentFavUni = favUniTail = NULL;
 
-		favouriteList.InsertFavUni(
-			to_string(stoi(favouriteList.getTail()->FavUniId) + 1), ID, Name, to_string(searched->Rank), searched->Name);
-		favouriteList.overwriteFavUniData(getHead());
+		favouritesobj.InsertFavUni(
+			to_string(stoi(favouritesobj.getTail()->FavUniId) + 1),
+			testmemberid,
+			testname,
+			to_string(searched->Rank),
+			searched->Name);
+		favouritesobj.overwriteFavUniData(getHead());
 	}
 
 	favUniNode* getHead() { return favouriteList.getHead(); }
