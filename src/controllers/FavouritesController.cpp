@@ -15,7 +15,7 @@ class FavouritesController {
 
 	public:
 
-		favUniList readFavUniDatabase() {
+		favUniList* readFavUniDatabase() {
 		favUniList* list = new favUniList();
 		//ifstream file("C:/Users/Acer/source/repos/Kuon-dev/assignment-dstr/Database/FavUni.csv"); // get user database
 		ifstream file("Database/FavUni.csv");
@@ -24,7 +24,7 @@ class FavouritesController {
 			cout << "\033[31m"
 					 << "Error: could not open file "
 					 << "\033[0m" << endl;
-			return *list;
+			return list;
 		}
 		// define database haeder and line
 		string header, line;
@@ -57,7 +57,7 @@ class FavouritesController {
 			list->addFavUniNode(node);
 		};
 		file.close();
-		return *list;
+		return list;
 	};
 
 	favUniNode* readFavDatabase(string UserId) {
@@ -75,9 +75,16 @@ class FavouritesController {
 
 	void displayFavUni(favUniNode* head) {
 		favUniNode* current = head;
-
 		// favouritesobj.overwriteFavUniData();
+		cout << endl;
+		cout << endl;
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << "List of University saved as Favourite" << endl;
 
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << endl;
 		while (current != NULL) {
 			cout << "Favourite University ID: " << current->FavUniId << endl;
 			cout << "Account ID: " << current->UserId << endl;
@@ -88,6 +95,8 @@ class FavouritesController {
 			current = current->NextAddress;
 		}
 		cout << "list ended at here." << endl;
+		cout << endl;
+		cout << endl;
 	}
 
 	void displayTopTenUniData() {
@@ -225,7 +234,7 @@ class FavouritesController {
 		}
 	}
 
-	void createUserFavUni(string input, string testname, string testmemberid) {
+	void createUserFavUni(string input, string testmemberid, string testname) {
 		UniversityContoller uniObject;
 
 		universityList uniCurrentList = uniObject.readUniversityDatabaseLinkedList();
@@ -245,7 +254,11 @@ class FavouritesController {
 		favUniHead = currentFavUni = favUniTail = NULL;
 
 		favouritesobj.InsertFavUni(
-			to_string(stoi(favouritesobj.getTail()->FavUniId) + 1), ID, Name, to_string(searched->Rank), searched->Name);
+			to_string(stoi(favouritesobj.getTail()->FavUniId) + 1),
+			testmemberid,
+			testname,
+			to_string(searched->Rank),
+			searched->Name);
 		favouritesobj.overwriteFavUniData(getHead());
 	}
 
