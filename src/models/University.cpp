@@ -234,7 +234,7 @@ class universityList {
 	}
 
 	void displayPaginated(int pageNumber) {
-		const int universitiesPerPage = 20;
+		const int universitiesPerPage = 5;
 		int count = 0;
 		int startIdx = (pageNumber - 1) * universitiesPerPage;
 		int endIdx = startIdx + universitiesPerPage;
