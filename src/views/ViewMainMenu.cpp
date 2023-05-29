@@ -3,10 +3,11 @@
 #include <ctime>
 #include <iostream>
 #include <string>
+#include <chrono>
 
 UniversityContoller* uniController = new UniversityContoller();
 newMergeSort mergeSorter;
-newQuickSort sorter;
+newQuickSort quickSorter;
 universityList* uniData = uniController->readUniversityDatabase();
 
 FeedbackController* feedbackController;
@@ -50,7 +51,7 @@ class UserMenu {
 			case 1:
 				cout << "You have selected 'View the Top Score University'" << endl;
 				// quick sort algorithm so sort
-				sorter.quicksortInt(*uniData, "ScoreScaled", "dsc");
+				quickSorter.quicksortInt(*uniData, "ScoreScaled", "dsc");
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
 					page = handleIntInput("Enter page number to skip or enter 0 to return");
@@ -710,9 +711,9 @@ userNode* authenticateUser(string username, string password) {
 	temp->UserId = "";
 
 	// Get the current time
-	std::time_t currentTime = std::time(nullptr);
+	time_t currentTime = time(nullptr);
 	// Convert the current time to string format
-	std::string currentLoginTime = std::ctime(&currentTime);
+	string currentLoginTime = ctime(&currentTime);
 	if (!currentLoginTime.empty() && currentLoginTime.back() == '\n') {
 		currentLoginTime.erase(currentLoginTime.length() - 1);
 	}
@@ -866,6 +867,9 @@ void displaySearchUniversityMenu() {
 
 		case 4:
 			//to do implement comparison for search name
+				//
+
+			uniController->searchUniQuick("Name", input, uniData);
 			break;
 
 		case 5:
@@ -894,6 +898,9 @@ void sortUniversityMenu() {
 		int choice = handleUserInput();
 		int page;
 		bool exitPaginate = true;
+		chrono::high_resolution_clock::time_point startMerge, endMerge;
+		chrono::high_resolution_clock::time_point startQuick, endQuick;
+		chrono::microseconds durationMerge, durationQuick;
 
 		switch (choice) {
 		case 1:
@@ -921,6 +928,37 @@ void sortUniversityMenu() {
 			break;
 		case 3:
 			//To do implement comparison for quick sort and merge sort
+			// Measure execution time for mergeSortString
+				//
+			cout << "\033[94m";
+			cout << "Sorting based on University's alphabet order" << endl;
+			cout << "Resetting sort for a fair comparison" << endl;
+			mergeSorter.mergeSortInt(*uniData, "Rank", "asc");
+			cout << "Starting merge sort" << endl;
+			// calculate
+			startMerge = chrono::high_resolution_clock::now();
+			mergeSorter.mergeSortString(*uniData, "Name");
+			endMerge = chrono::high_resolution_clock::now();
+
+			durationMerge = chrono::duration_cast<chrono::microseconds>(endMerge - startMerge);
+			// resetting the sort
+			cout << "Merge sort done" << endl;
+			cout << "Resetting sort" << endl;
+			mergeSorter.mergeSortInt(*uniData, "Rank", "asc");
+			endMerge = chrono::high_resolution_clock::now();
+			cout << "Starting quick sort" << endl;
+
+			// calculate
+			startQuick = chrono::high_resolution_clock::now();
+			quickSorter.quicksortString(*uniData, "Name");
+			endQuick = chrono::high_resolution_clock::now();
+
+			durationQuick = chrono::duration_cast<chrono::microseconds>(endQuick - startQuick);
+
+			// Print the results in light blue
+			cout << "merge sort execution time: " << durationMerge.count() << " microseconds" << endl;
+			cout << "quick sort execution time: " << durationQuick.count() << " microseconds" << endl;
+			cout << "\033[0m";
 			break;
 		case 4:
 			return;

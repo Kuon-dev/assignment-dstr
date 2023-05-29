@@ -11,12 +11,8 @@ void exitProgram() {
 int handleUserInput() {
 	string userInput;
 	while (true) {
-		cout << "\033[1;32mSelect an option (or 'q' to quit)\033[0m: ";
+		cout << "\033[1;32mSelect an option \033[0m: ";
 		cin >> userInput;
-
-		if (userInput == "q") {
-			exitProgram();
-		}
 
 		try {
 			int number = stoi(userInput);
@@ -34,10 +30,6 @@ string handleStringInput(string title) {
 		cout << title << endl;
 		getline(cin >> ws, userInput);
 
-		if (userInput == "q") {
-			exitProgram();
-		}
-
 		if (userInput.length() > 60) {
 			cout << "Error: input exceeds 60 characters" << endl;
 			continue;
@@ -54,9 +46,6 @@ int handleIntInput(string title) {
 		cin >> userInput;
 		cin.ignore();
 
-		if (userInput == "q") {
-			exitProgram();
-		}
 		if (userInput.length() > 60) {
 			cout << "Error: input exceeds 60 characters" << endl;
 			return -1;

@@ -137,8 +137,7 @@ void setColumn(universityNode* node, string column, string value) {
 
 
 class newMergeSort {
-public:
-
+	private:
 	universityNode* SortedMerge(universityNode* a, universityNode* b, string column)
 	{
 		universityNode* result = nullptr;
@@ -195,17 +194,6 @@ public:
 		return SortedMerge(head, second, column);
 	}
 
-	void mergeSortString(universityList& uList, string column) {
-		universityNode* newHead = MergeSort(uList.getHead(), column);
-		uList.setHead(newHead);
-
-		// Reset tail of the list.
-		universityNode* newTail = newHead;
-		while(newTail && newTail->next) {
-			newTail = newTail->next;
-		}
-		uList.setTail(newTail);
-	}
 
     // SortedMerge function specialized for integers.
     universityNode* SortedMergeInt(universityNode* a, universityNode* b, string column, string order) {
@@ -257,6 +245,7 @@ public:
         return SortedMergeInt(head, second, column, order);
     }
 
+	public:
     void mergeSortInt(universityList& uList, string column, string order) {
         universityNode* newHead = MergeSortInt(uList.getHead(), column, order);
         uList.setHead(newHead);
@@ -268,13 +257,25 @@ public:
         }
         uList.setTail(newTail);
     }
+
+	void mergeSortString(universityList& uList, string column) {
+		universityNode* newHead = MergeSort(uList.getHead(), column);
+		uList.setHead(newHead);
+
+		// Reset tail of the list.
+		universityNode* newTail = newHead;
+		while(newTail && newTail->next) {
+			newTail = newTail->next;
+		}
+		uList.setTail(newTail);
+	}
+
 };
 
 
 
 class newQuickSort {
-public:
-
+	private:
     // The function to find the partition position
     universityNode* partitionString(universityNode* low, universityNode* high, string column, string order) {
         // set rightmost element as pivot
@@ -307,10 +308,6 @@ public:
         }
     }
 
-    void quicksortString(universityList& uList, string column) {
-        quickSortString(uList.getHead(), uList.getTail(), column, "asc");
-    }
-
     universityNode* partitionInt(universityNode* low, universityNode* high, string column, string order) {
         // set rightmost element as pivot
         int pivot = stoi(getColumn(high, column));
@@ -341,14 +338,6 @@ public:
             quickSortInt(p->next, high, column, order);
         }
     }
-
-    // Function to call quickSort for strings
-    // Function to call quickSort for integers
-    void quicksortInt(universityList& uList, string column, string order) {
-        quickSortInt(uList.getHead(), uList.getTail(), column, order);
-    }
-
-    // Function to swap nodes a and b in the linked list
 
 	void swapNodes(universityNode* a, universityNode* b) {
 		if(a == nullptr || b == nullptr) {
@@ -404,6 +393,13 @@ public:
 		b->GerRank = temp.GerRank;
 		b->ScoreScaled = temp.ScoreScaled;
 	}
+	public:
+    void quicksortInt(universityList& uList, string column, string order) {
+        quickSortInt(uList.getHead(), uList.getTail(), column, order);
+    }
+    void quicksortString(universityList& uList, string column) {
+        quickSortString(uList.getHead(), uList.getTail(), column, "asc");
+    }
 
 
 };
