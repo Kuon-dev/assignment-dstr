@@ -94,113 +94,124 @@ string getColumn(universityNode* node, string column) {
 |
 */
 
+
 class newMergeSort {
-	public:
-	universityNode* mergeSortString(universityNode* head, string column) {
-		if (head == nullptr || head->next == nullptr) {
-			return head;
-		}
+public:
+    universityNode* mergeSortString(universityNode* head, string column) {
+        if (head == nullptr || head->next == nullptr) {
+            return head;
+        }
 
-		universityNode* middle = getMiddleNode(head);
-		universityNode* nextToMiddle = middle->next;
-		middle->next = nullptr;
+        universityNode* middle = getMiddleNode(head);
+        universityNode* nextToMiddle = middle->next;
+        middle->next = nullptr;
 
-		universityNode* left = mergeSortString(head, column);
-		universityNode* right = mergeSortString(nextToMiddle, column);
+        universityNode* left = mergeSortString(head, column);
+        universityNode* right = mergeSortString(nextToMiddle, column);
 
-		return mergeString(left, right, column);
-	}
+        return mergeString(left, right, column);
+    }
 
-	universityNode* mergeString(universityNode* left, universityNode* right, string column) {
-		if (left == nullptr) {
-			return right;
-		}
-		if (right == nullptr) {
-			return left;
-		}
+    universityNode* mergeString(universityNode* left, universityNode* right, string column) {
+        if (left == nullptr) {
+            return right;
+        }
+        if (right == nullptr) {
+            return left;
+        }
 
-		universityNode* result = nullptr;
+        universityNode* result = nullptr;
 
-		if (getColumn(left, column) <= getColumn(right, column)) {
-			result = left;
-			result->next = mergeString(left->next, right, column);
-		} else {
-			result = right;
-			result->next = mergeString(left, right->next, column);
-		}
+        if (getColumn(left, column) <= getColumn(right, column)) {
+            result = left;
+            result->next = mergeString(left->next, right, column);
+        } else {
+            result = right;
+            result->next = mergeString(left, right->next, column);
+        }
 
-		return result;
-	}
+        // Update the prev pointer of the next node
+        if (result->next != nullptr) {
+            result->next->prev = result;
+        }
 
-	universityNode* mergeSortInt(universityNode* head, string column) {
-		if (head == nullptr || head->next == nullptr) {
-			return head;
-		}
+        return result;
+    }
 
-		universityNode* middle = getMiddleNode(head);
-		universityNode* nextToMiddle = middle->next;
-		middle->next = nullptr;
+    universityNode* mergeSortInt(universityNode* head, string column) {
+        if (head == nullptr || head->next == nullptr) {
+            return head;
+        }
 
-		universityNode* left = mergeSortInt(head, column);
-		universityNode* right = mergeSortInt(nextToMiddle, column);
+        universityNode* middle = getMiddleNode(head);
+        universityNode* nextToMiddle = middle->next;
+        middle->next = nullptr;
 
-		return mergeInt(left, right, column);
-	}
+        universityNode* left = mergeSortInt(head, column);
+        universityNode* right = mergeSortInt(nextToMiddle, column);
 
-	universityNode* mergeInt(universityNode* left, universityNode* right, string column) {
-		if (left == nullptr) {
-			return right;
-		}
-		if (right == nullptr) {
-			return left;
-		}
+        return mergeInt(left, right, column);
+    }
 
-		universityNode* result = nullptr;
+    universityNode* mergeInt(universityNode* left, universityNode* right, string column) {
+        if (left == nullptr) {
+            return right;
+        }
+        if (right == nullptr) {
+            return left;
+        }
 
-		if (stringToInt(getColumn(left, column)) <= stringToInt(getColumn(right, column))) {
-			result = left;
-			result->next = mergeInt(left->next, right, column);
-		} else {
-			result = right;
-			result->next = mergeInt(left, right->next, column);
-		}
+        universityNode* result = nullptr;
 
-		return result;
-	}
+        if (stringToInt(getColumn(left, column)) <= stringToInt(getColumn(right, column))) {
+            result = left;
+            result->next = mergeInt(left->next, right, column);
+        } else {
+            result = right;
+            result->next = mergeInt(left, right->next, column);
+        }
 
-	universityNode* getMiddleNode(universityNode* head) {
-		if (head == nullptr) {
-			return nullptr;
-		}
+        // Update the prev pointer of the next node
+        if (result->next != nullptr) {
+            result->next->prev = result;
+        }
 
-		universityNode* slow = head;
-		universityNode* fast = head->next;
+        return result;
+    }
 
-		while (fast != nullptr && fast->next != nullptr) {
-			slow = slow->next;
-			fast = fast->next->next;
-		}
+    universityNode* getMiddleNode(universityNode* head) {
+        if (head == nullptr || head->next == nullptr) {
+            return head;
+        }
 
-		return slow;
-	}
+        universityNode* slow = head;
+        universityNode* fast = head->next;
 
-	int stringToInt(const string& str) {
-		int result = 0;
-		int sign = 1;
-		int i = 0;
+        while (fast != nullptr && fast->next != nullptr) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
 
-		if (str[i] == '-') {
-			sign = -1;
-			i++;
-		}
+        return slow;
+    }
 
-		while (i < str.length()) {
-			result = result * 10 + (str[i] - '0');
-			i++;
-		}
+    int stringToInt(const string& str) {
+        int result = 0;
+        int sign = 1;
+        int i = 0;
 
-		return result * sign;
-	}
+        if (str[i] == '-') {
+            sign = -1;
+            i++;
+        }
+
+        while (i < str.length()) {
+            result = result * 10 + (str[i] - '0');
+            i++;
+        }
+
+        return result * sign;
+    }
 };
 
 class newQuickSort {
@@ -236,40 +247,37 @@ class newQuickSort {
         return head;
     }
 
-	universityNode* quicksortInt(universityNode* head, universityNode* tail, string column) {
-		if (head == nullptr || head == tail || tail == nullptr) {
-			return head;
-		}
+    universityNode* quicksortInt(universityNode* head, universityNode* tail, string column) {
+        if (head == nullptr || head == tail || tail == nullptr) {
+            return head;
+        }
 
-		universityNode* pivot = partitionInt(head, tail, column);
+        universityNode* pivot = partitionInt(head, tail, column);
 
-		if (pivot != head) {
-			universityNode* prev = nullptr;
-			universityNode* curr = head;
+        if (pivot != head) {
+            universityNode* prev = nullptr;
+            universityNode* curr = head;
 
-			while (curr != pivot) {
-				prev = curr;
-				curr = curr->next;
-			}
+            while (curr != pivot) {
+                prev = curr;
+                curr = curr->next;
+            }
 
-			if (prev != nullptr) {
-				prev->next = nullptr;
-				if (head != nullptr) {  // Add this check
-					head = quicksortInt(head, prev, column);
-					prev = getTail(head);
-					prev->next = pivot;
-				}
-			} else {
-				head = quicksortInt(head, pivot, column);
-			}
-		}
+            if (prev != nullptr) {
+                prev->next = nullptr;
+                head = quicksortInt(head, prev, column);
+                prev = getTail(head);
+                prev->next = pivot;
+            } else {
+                head = quicksortInt(head, pivot, column);
+            }
+        }
 
-		if (pivot != nullptr) {  // Add this check
-			pivot->next = quicksortInt(pivot->next, tail, column);
-		}
+        pivot->next = quicksortInt(pivot->next, tail, column);
 
-		return head;
-	}
+        return head;
+    }
+
 	private:
     universityNode* partitionString(universityNode* head, universityNode* tail, string column) {
         string pivot = getColumn(tail, column);
