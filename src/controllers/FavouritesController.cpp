@@ -242,11 +242,10 @@ class FavouritesController {
 	}
 
 	void createUserFavUni(universityList* uniData, favUniList* favData, int index, string memberId, string name) {
-		universitySearcher* searcher;
-		universityNode* searched = searcher->binarySearch(uniData->getHead(), "Rank", index);
-
-		favData->InsertFavUni(
-			to_string(stoi(favData->getTail()->FavUniId) + 1), memberId, name, to_string(searched->Rank), searched->Name);
+		// universitySearcher* searcher;
+		//
+		// favData->InsertFavUni(
+		// 	to_string(stoi(favData->getTail()->FavUniId) + 1), memberId, name, to_string(searched->Rank), searched->Name);
 	}
 
 	favUniNode* getFilteredHead() { return favouriteList.getFilteredHead(); }
