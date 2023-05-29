@@ -129,6 +129,9 @@ class UniversityContoller {
 			node->IrnRank = (IrnRank);
 			node->GerScore = (GerScore);
 			node->GerRank = (GerRank);
+			if(ScoreScaled == "-") {
+				ScoreScaled = "0";
+			}
 			node->ScoreScaled = ScoreScaled;
 
 			list->addUniversityNode(node);

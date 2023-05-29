@@ -439,14 +439,9 @@ class UserMenu {
 			cout << "| 2. Sort University by rank" << endl;
 			cout << "| 3. Sort University by location" << endl;
 			cout << "| 4. Sort University by Academic reputation score" << endl;
-			cout << "| 5. Sort University by Employer reputation score" << endl;
-			cout << "| 6. Sort University by Faculty/student ratio score" << endl;
-			cout << "| 7. Sort University by Citations per faculty" << endl;
-			cout << "| 8. Sort University by International faculty ratio" << endl;
-			cout << "| 9. Sort University by International student ratio" << endl;
-			cout << "| 10. Sort University by International research network" << endl;
-			cout << "| 11. Sort University by Employment outcome" << endl;
-			cout << "| 12. Return" << endl;
+			cout << "| 5. Sort University by Faculty/student ratio score" << endl;
+			cout << "| 6. Sort University by Employer reputation score" << endl;
+			cout << "| 7. Return" << endl;
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
@@ -464,30 +459,15 @@ class UserMenu {
 				displayChoiceToSortString("Location");
 				break;
 			case 4:
-				displayChoiceToSortInt("ArRank");
+				displayChoiceToSortInt("ArScore");
 				break;
 			case 5:
-				displayChoiceToSortInt("ErRank");
+				displayChoiceToSortInt("FsrScore");
 				break;
 			case 6:
-				displayChoiceToSortInt("FsrRank");
+				displayChoiceToSortInt("ErScore");
 				break;
 			case 7:
-				displayChoiceToSortInt("CpfRank");
-				break;
-			case 8:
-				displayChoiceToSortInt("IfrRank");
-				break;
-			case 9:
-				displayChoiceToSortInt("IsrRank");
-				break;
-			case 10:
-				displayChoiceToSortInt("IrnRank");
-				break;
-			case 11:
-				displayChoiceToSortInt("GerRank");
-				break;
-			case 12:
 				return;
 				break;
 			default:
