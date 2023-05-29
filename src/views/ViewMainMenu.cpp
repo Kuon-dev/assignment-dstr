@@ -27,6 +27,7 @@ class UserMenu {
 	public:
 	userNode* currentUser;
 	feedbackList* userFeedback;
+	favUniList* getUserFavUni;
 	void universityMenu() {
 		while (true) {
 			int uniID;
@@ -38,14 +39,16 @@ class UserMenu {
 			cout << "Please select an option:" << endl;
 			cout << "1. View the Top Score University" << endl;
 			cout << "2. Save University as Favourite" << endl;
-			cout << "3. Sort University" << endl;
-			cout << "4. Search University" << endl;
-			cout << "5. Return" << endl;
+			cout << "3. Delete Favourites" << endl;
+			cout << "4. Sort University" << endl;
+			cout << "5. Search University" << endl;
+			cout << "6. Return" << endl;
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
 			cout << "Enter your choice (1-5): ";
 			int choice = handleUserInput();
+			string favId;
 			bool success;
 
 			switch (choice) {
@@ -76,12 +79,22 @@ class UserMenu {
 
 				break;
 			case 3:
-				displaySortUniversityMenu();
+				getUserFavUni = favUniController->getFavouritesByUser(favUniData, currentUser);
+				cout << "You have selected 'View Favourite Universities'" << endl;
+				getUserFavUni->displayAll();
+
+				favId = handleStringInput("Enter Favourite ID to delete favourites");
+				success = favUniController->deleteFavoriteByID(favUniData, currentUser, favId);
+				if (success) cout << "Successfully added new favourite" << endl;
+				else cout << "Successfully added new favourite" << endl;
 				break;
 			case 4:
-				displaySearchUniversityMenu();
+				displaySortUniversityMenu();
 				break;
 			case 5:
+				displaySearchUniversityMenu();
+				break;
+			case 6:
 				cout << "You have selected 'Logout'" << endl;
 				cout << "Goodbye!" << endl;
 				return;
@@ -93,7 +106,6 @@ class UserMenu {
 	}
 
 	void userDashboard() {
-		favUniList* getUserFavUni;
 		while (true) {
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -638,6 +650,7 @@ class AdminMenu {
 
 	void adminDashboard() {
 		while (true) {
+			universityList* topFav = new universityList();
 			// system("cls");
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
@@ -664,8 +677,8 @@ class AdminMenu {
 				break;
 			case 3:
 				cout << "You have selected 'Generate top 10 university'" << endl;
-				// favUniController->displayTopTenUniData();
-				// TODO: Implement 'top 10 uni' functionality
+				topFav = favUniController->getTopFavouritedUniversities(uniData, favUniData->getHead());
+				topFav->displayAll();
 
 				break;
 			case 4:
