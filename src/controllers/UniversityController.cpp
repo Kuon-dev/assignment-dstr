@@ -129,7 +129,7 @@ class UniversityContoller {
 			node->IrnRank = (IrnRank);
 			node->GerScore = (GerScore);
 			node->GerRank = (GerRank);
-			if(ScoreScaled == "-") {
+			if (ScoreScaled == "-") {
 				ScoreScaled = "0";
 			}
 			node->ScoreScaled = ScoreScaled;
@@ -151,7 +151,7 @@ class UniversityContoller {
 		universitySearcher searcher;
 
 		mergeSorter.mergeSortString(*currentList, column);
-		queryList = searcher.binarySearch(currentList,(input));
+		queryList = searcher.binarySearch(currentList, (input));
 		queryList->displayPaginated(1);
 	}
 

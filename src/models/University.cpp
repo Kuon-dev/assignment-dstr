@@ -42,20 +42,19 @@ class universityList {
 	public:
 	universityNode* getHead() { return head; }
 	universityNode* getTail() { return tail; }
-    void setHead(universityNode* newHead) {
-        head = newHead;
-        if (head != nullptr) {
-            head->prev = nullptr;
-        }
-    }
+	void setHead(universityNode* newHead) {
+		head = newHead;
+		if (head != nullptr) {
+			head->prev = nullptr;
+		}
+	}
 
-    void setTail(universityNode* newTail) {
-        tail = newTail;
-        if (tail != nullptr) {
-            tail->next = nullptr;
-        }
-    }
-
+	void setTail(universityNode* newTail) {
+		tail = newTail;
+		if (tail != nullptr) {
+			tail->next = nullptr;
+		}
+	}
 
 	// create a new node to the linekd list
 	void createUniversity(
@@ -224,8 +223,9 @@ class universityList {
 			cout << "| GerScore: " << current->GerScore << endl;
 			cout << "| GerRank: " << current->GerRank << endl;
 			cout << "| ScoreScaled: " << current->ScoreScaled << endl;
-			cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
+			cout
+				<< "----------------------------------------------------------------------------------------------------------"
+				<< endl;
 			current = current->next;
 			count++;
 		}

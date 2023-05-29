@@ -1,9 +1,9 @@
 #include "../controllers/FavouritesController.cpp"
+#include <chrono>
 #include <conio.h>
 #include <ctime>
 #include <iostream>
 #include <string>
-#include <chrono>
 
 UniversityContoller* uniController = new UniversityContoller();
 newMergeSort mergeSorter;
@@ -364,7 +364,7 @@ class UserMenu {
 				}
 				break;
 			case 2:
-			//acs or dsc
+				// acs or dsc
 				mergeSorter.mergeSortInt(*uniData, "Rank", "asc");
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
@@ -425,7 +425,7 @@ class UserMenu {
 				}
 				break;
 			case 7:
-				//to do implementation on quick merge comparison
+				// to do implementation on quick merge comparison
 				break;
 			case 8:
 				return;
@@ -866,8 +866,8 @@ void displaySearchUniversityMenu() {
 			break;
 
 		case 4:
-			//to do implement comparison for search name
-				//
+			// to do implement comparison for search name
+			//
 
 			uniController->searchUniQuick("Name", input, uniData);
 			break;
@@ -916,20 +916,20 @@ void sortUniversityMenu() {
 			break;
 		case 2:
 			mergeSorter.mergeSortString(*uniData, "Name");
-				uniController->displayPaginated(*uniData, 1);
-				while (exitPaginate) {
-					page = handleIntInput("Enter page number to skip or enter 0 to return");
-					if (page == 0) exitPaginate = false;
-					else {
-						uniController->displayPaginated(*uniData, page);
-						continue;
-					}
+			uniController->displayPaginated(*uniData, 1);
+			while (exitPaginate) {
+				page = handleIntInput("Enter page number to skip or enter 0 to return");
+				if (page == 0) exitPaginate = false;
+				else {
+					uniController->displayPaginated(*uniData, page);
+					continue;
 				}
+			}
 			break;
 		case 3:
-			//To do implement comparison for quick sort and merge sort
-			// Measure execution time for mergeSortString
-				//
+			// To do implement comparison for quick sort and merge sort
+			//  Measure execution time for mergeSortString
+			//
 			cout << "\033[94m";
 			cout << "Sorting based on University's alphabet order" << endl;
 			cout << "Resetting sort for a fair comparison" << endl;

@@ -232,11 +232,9 @@ class userList {
 
 			if (current->UserId == userId) {
 				return current;
-			}
-			else if (current->UserId < userId) {
+			} else if (current->UserId < userId) {
 				low = mid + 1;
-			}
-			else {
+			} else {
 				high = mid - 1;
 			}
 		}
