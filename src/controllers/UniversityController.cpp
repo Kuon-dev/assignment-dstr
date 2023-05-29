@@ -172,7 +172,8 @@ class UniversityContoller {
 		cout << "\033[94mUsing Merge sort...\033[0m" << endl;
 		auto sortStartTime = high_resolution_clock::now();
 		universityNode* head = currentList->getHead();
-		currentList->setHead(newMerge.mergeSortString(head, "Name"));
+		// currentList->setHead(newMerge.mergeSortString(head, "Name"));
+		newMerge.mergeSortString(*currentList, column);
 		auto sortEndTime = high_resolution_clock::now();
 		auto sortDuration = duration_cast<milliseconds>(sortEndTime - sortStartTime);
 		cout << "\033[94mTime taken to sort: " << sortDuration.count() << " milliseconds\033[0m" << endl;

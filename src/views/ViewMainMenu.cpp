@@ -345,7 +345,8 @@ class UserMenu {
 			case 1:
 				// call merge sort algorithm to sort integer data
 				head = uniData->getHead();
-				uniData->setHead(mergeSorter.mergeSortInt(head, input));
+				// uniData->setHead(mergeSorter.mergeSortInt(head, input));
+				mergeSorter.mergeSortInt(*uniData, input, "asc");
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
 					page = handleIntInput("Enter page number to skip or enter 0 to return");
@@ -395,7 +396,8 @@ class UserMenu {
 			case 1:
 				// call merge sort algorithm to sort string data
 				head = uniData->getHead();
-				uniData->setHead(mergeSorter.mergeSortString(head, input));
+				// uniData->setHead(mergeSorter.mergeSortString(head, input));
+				mergeSorter.mergeSortString(*uniData, input);
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
 					page = handleIntInput("Enter page number to skip or enter 0 to return");
@@ -963,7 +965,8 @@ void displayMenu() {
 			break;
 		case 2:
 			//uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
-			uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
+			// uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
+			mergeSorter.mergeSortString(*uniData, "Name");
 			break;
 		case 3:
 			displaySearchUniversityMenu();
