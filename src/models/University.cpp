@@ -154,10 +154,29 @@ class universityList {
 	}
 
 	void displaySpecific(universityNode* node) {
-		universityNode* current = node;
-		cout << setw(6) << current->Rank << setw(70) << current->Name << setw(30) << current->Location << setw(12)
-				 << current->ArScore << setw(12) << current->ArRank << setw(12) << current->ErScore << setw(12)
-				 << current->IsrScore << endl;
+		universityNode* current = node;		
+		cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
+		cout << "| Rank: " << current->Rank << endl;
+		cout << "| Name: " << current->Name << endl;
+		cout << "| Location: " << current->Location << endl;
+		cout << "| ArScore: " << current->ArScore << endl;
+		cout << "| ArRank: " << current->ArRank << endl;
+		cout << "| ErScore: " << current->ErScore << endl;
+		cout << "| ErRank: " << current->ErRank << endl;
+		cout << "| FsrScore: " << current->FsrScore << endl;
+		cout << "| FsrRank: " << current->FsrRank << endl;
+		cout << "| CpfScore: " << current->CpfScore << endl;
+		cout << "| CpfRank: " << current->CpfRank << endl;
+		cout << "| IfrScore: " << current->IfrScore << endl;
+		cout << "| IfrRank: " << current->IfrRank << endl;
+		cout << "| IsrScore: " << current->IsrScore << endl;
+		cout << "| IsrRank: " << current->IsrRank << endl;
+		cout << "| IrnScore: " << current->IrnScore << endl;
+		cout << "| IrnRank: " << current->IrnRank << endl;
+		cout << "| GerScore: " << current->GerScore << endl;
+		cout << "| GerRank: " << current->GerRank << endl;
+		cout << "| ScoreScaled: " << current->ScoreScaled << endl;
 		current = current->next;
 	}
 
@@ -170,21 +189,34 @@ class universityList {
 
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
-		cout << setw(6) << "Rank" << setw(70) << "Name" << setw(30) << "Location" << setw(12) << "AR Score" << setw(12)
-				 << "AR Rank" << setw(12) << "ER Score" << setw(12) << "IrsScore" << endl;
-		cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
-
 		int count = 0;
 		while (current != nullptr) {
-			cout << setw(6) << current->Rank << setw(70) << current->Name << setw(30) << current->Location << setw(12)
-					 << current->ArScore << setw(12) << current->ArRank << setw(12) << current->ErScore << setw(12)
-					 << current->IsrScore << endl;
+			cout << "| Rank: " << current->Rank << endl;
+			cout << "| Name: " << current->Name << endl;
+			cout << "| Location: " << current->Location << endl;
+			cout << "| ArScore: " << current->ArScore << endl;
+			cout << "| ArRank: " << current->ArRank << endl;
+			cout << "| ErScore: " << current->ErScore << endl;
+			cout << "| ErRank: " << current->ErRank << endl;
+			cout << "| FsrScore: " << current->FsrScore << endl;
+			cout << "| FsrRank: " << current->FsrRank << endl;
+			cout << "| CpfScore: " << current->CpfScore << endl;
+			cout << "| CpfRank: " << current->CpfRank << endl;
+			cout << "| IfrScore: " << current->IfrScore << endl;
+			cout << "| IfrRank: " << current->IfrRank << endl;
+			cout << "| IsrScore: " << current->IsrScore << endl;
+			cout << "| IsrRank: " << current->IsrRank << endl;
+			cout << "| IrnScore: " << current->IrnScore << endl;
+			cout << "| IrnRank: " << current->IrnRank << endl;
+			cout << "| GerScore: " << current->GerScore << endl;
+			cout << "| GerRank: " << current->GerRank << endl;
+			cout << "| ScoreScaled: " << current->ScoreScaled << endl;		
+			cout << "----------------------------------------------------------------------------------------------------------"
+				 << endl;
 			current = current->next;
 			count++;
 		}
-		cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
+
 		cout << "End of list" << endl;
 	}
 
@@ -195,11 +227,7 @@ class universityList {
 		int endIdx = startIdx + universitiesPerPage;
 
 		universityNode* currentNode = head;
-		cout << "------------------------------------------------------------------------------------------------------"
-				 << endl;
-		cout << setw(6) << "Rank" << setw(70) << "Name" << setw(30) << "Location" << setw(12) << "AR Score" << setw(12)
-				 << "AR Rank" << setw(12) << "ER Score" << setw(12) << "IrsScore" << endl;
-		cout << "------------------------------------------------------------------------------------------------------"
+		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 
 		while (currentNode != nullptr && count < endIdx) {

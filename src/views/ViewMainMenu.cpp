@@ -784,7 +784,7 @@ userNode* authenticateUser(string username, string password) {
 		temp->UserEmail = "none";
 		temp->UserLastLogin = "none";
 		temp->UserAge = 20;
-		temp->UserContact = 20;
+		temp->UserContact = '0';
 		return temp;
 	} else {
 		userNode* current = userData->getHead();
@@ -808,7 +808,7 @@ void displayLoginMenu() {
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 		cout << "| LOGIN MENU" << endl;
-		cout << "| Press 0 to exit" << endl;
+		cout << "| Press 0 to return" << endl;
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 		cout << "Username: ";
@@ -898,7 +898,7 @@ void displaySearchUniversityMenu() {
 		cout << "| 1. Search University by name" << endl;
 		cout << "| 2. Search University by rank" << endl;
 		cout << "| 3. Search University by country" << endl;
-		cout << "| 4. Exit" << endl;
+		cout << "| 4. Return" << endl;
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 
@@ -947,8 +947,6 @@ void displayMenu() {
 
 		int choice = handleUserInput();
 		int page;
-		string name, username, email, password, gender, input;
-		int age, contact;
 		bool exitPaginate = true;
 
 		switch (choice) {
