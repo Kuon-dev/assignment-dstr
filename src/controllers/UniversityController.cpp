@@ -145,7 +145,7 @@ class UniversityContoller {
 	void searchUniversityColumn(string column, int input, universityList* currentList) {
 		cout << "\033[94mFetching database...\033[0m" << endl;
 		universityList queryList;
-		universityQuickSort sorter;
+		newQuickSort sorter;
 		universitySearcher searcher;
 		auto startTime = high_resolution_clock::now();
 
@@ -164,6 +164,7 @@ class UniversityContoller {
 
 	void searchUniMerge(string column, string input, universityList* currentList) {
 		universityMergeSort mergeSorter;
+		newUniMerge newMerge;
 		universitySearcher searcher;
 
 		cout << "\033[94mFetching database...\033[0m" << endl;
@@ -172,7 +173,7 @@ class UniversityContoller {
 		cout << "\033[94mUsing Merge sort...\033[0m" << endl;
 		auto sortStartTime = high_resolution_clock::now();
 		universityNode* head = currentList->getHead();
-		currentList->setHead(mergeSorter.mergeSortUniversityString(&head, "Name"));
+		currentList->setHead(newMerge.mergeSortString(head, "Name"));
 		auto sortEndTime = high_resolution_clock::now();
 		auto sortDuration = duration_cast<milliseconds>(sortEndTime - sortStartTime);
 		cout << "\033[94mTime taken to sort: " << sortDuration.count() << " milliseconds\033[0m" << endl;
@@ -187,6 +188,7 @@ class UniversityContoller {
 
 	void searchUniQuick(string column, string input, universityList* currentList) {
 		universityQuickSort sorter;
+		newQuickSort quickSort;
 		universitySearcher searcher;
 
 		cout << "\033[94mFetching database...\033[0m" << endl;
@@ -197,7 +199,7 @@ class UniversityContoller {
 		auto sortStartTime = high_resolution_clock::now();
 		universityNode* head = currentList->getHead();
 		universityNode* tail = currentList->getTail();
-		currentList->setHead(sorter.quicksortString(head, tail, column));
+		(quickSort.quicksortString(head, tail, column));
 		auto sortEndTime = high_resolution_clock::now();
 		auto sortDuration = duration_cast<milliseconds>(sortEndTime - sortStartTime);
 		cout << "\033[94mTime taken to sort: " << sortDuration.count() << " milliseconds\033[0m" << endl;

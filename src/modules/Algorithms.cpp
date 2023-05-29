@@ -109,7 +109,7 @@ class universityMergeSort {
 		splitList(current, &left, &right);
 		left = mergeSortUniversityInt(&left, column);
 		right = mergeSortUniversityInt(&right, column);
-		return mergeByColumn(left, right, column);
+		return mergeByIntColumn(left, right, column);
 	}
 
 	universityNode* mergeSortUniversityString(universityNode** head, string column) {
@@ -164,7 +164,7 @@ class universityMergeSort {
 		slow->next = nullptr;
 	}
 
-	universityNode* mergeByColumn(universityNode* left, universityNode* right, string column) {
+	universityNode* mergeByIntColumn(universityNode* left, universityNode* right, string column) {
 		if (left == nullptr) {
 			return right;
 		}
@@ -174,12 +174,15 @@ class universityMergeSort {
 
 		universityNode* result = nullptr;
 
-		if (getColumn(left, column) <= getColumn(right, column)) {
+		int leftValue = stoi(getColumn(left, column));
+		int rightValue = stoi(getColumn(right, column));
+
+		if (leftValue <= rightValue) {
 			result = left;
-			result->next = mergeByColumn(left->next, right, column);
+			result->next = mergeByIntColumn(left->next, right, column);
 		} else {
 			result = right;
-			result->next = mergeByColumn(left, right->next, column);
+			result->next = mergeByIntColumn(left, right->next, column);
 		}
 
 		return result;
@@ -234,23 +237,31 @@ class universityQuickSort {
 	}
 
 	universityNode* quicksortString(universityNode* head, universityNode* tail, string column) {
-		if (head == nullptr || head == tail) {
+		if (head == nullptr || head == tail || tail == nullptr) {
 			return head;
 		}
 
-		// Partition the list and get the pivot node
 		universityNode* pivot = partitionString(head, tail, column);
-		// Recursively sort the two sublists
+
 		if (pivot != head) {
-			universityNode* prev = head;
-			while (prev->next != pivot) {
-				prev = prev->next;
+			universityNode* prev = nullptr;
+			universityNode* curr = head;
+
+			while (curr != pivot) {
+				prev = curr;
+				curr = curr->next;
 			}
-			prev->next = nullptr;
-			head = quicksortString(head, prev, column);
-			prev = getTail(head);
-			prev->next = pivot;
+
+			if (prev != nullptr) {
+				prev->next = nullptr;
+				head = quicksortString(head, prev, column);
+				prev = getTail(head);
+				prev->next = pivot;
+			} else {
+				head = quicksortString(head, pivot, column);
+			}
 		}
+
 		pivot->next = quicksortString(pivot->next, tail, column);
 
 		return head;
@@ -293,28 +304,28 @@ class universityQuickSort {
 	void swapNodes(universityNode* node1, universityNode* node2) {
 		if (node1 == nullptr || node2 == nullptr) return;
 
-		universityNode tempNode;
+		universityNode* tempNode = new universityNode();
 
-		tempNode.Name = node1->Name;
-		tempNode.LocationCode = node1->LocationCode;
-		tempNode.Location = node1->Location;
-		tempNode.ArScore = node1->ArScore;
-		tempNode.ArRank = node1->ArRank;
-		tempNode.ErScore = node1->ErScore;
-		tempNode.ErRank = node1->ErRank;
-		tempNode.FsrScore = node1->FsrScore;
-		tempNode.FsrRank = node1->FsrRank;
-		tempNode.CpfScore = node1->CpfScore;
-		tempNode.CpfRank = node1->CpfRank;
-		tempNode.IfrScore = node1->IfrScore;
-		tempNode.IfrRank = node1->IfrRank;
-		tempNode.IsrScore = node1->IsrScore;
-		tempNode.IsrRank = node1->IsrRank;
-		tempNode.IrnScore = node1->IrnScore;
-		tempNode.IrnRank = node1->IrnRank;
-		tempNode.GerScore = node1->GerScore;
-		tempNode.GerRank = node1->GerRank;
-		tempNode.ScoreScaled = node1->ScoreScaled;
+		tempNode->Name = node1->Name;
+		tempNode->LocationCode = node1->LocationCode;
+		tempNode->Location = node1->Location;
+		tempNode->ArScore = node1->ArScore;
+		tempNode->ArRank = node1->ArRank;
+		tempNode->ErScore = node1->ErScore;
+		tempNode->ErRank = node1->ErRank;
+		tempNode->FsrScore = node1->FsrScore;
+		tempNode->FsrRank = node1->FsrRank;
+		tempNode->CpfScore = node1->CpfScore;
+		tempNode->CpfRank = node1->CpfRank;
+		tempNode->IfrScore = node1->IfrScore;
+		tempNode->IfrRank = node1->IfrRank;
+		tempNode->IsrScore = node1->IsrScore;
+		tempNode->IsrRank = node1->IsrRank;
+		tempNode->IrnScore = node1->IrnScore;
+		tempNode->IrnRank = node1->IrnRank;
+		tempNode->GerScore = node1->GerScore;
+		tempNode->GerRank = node1->GerRank;
+		tempNode->ScoreScaled = node1->ScoreScaled;
 
 		node1->Name = node2->Name;
 		node1->LocationCode = node2->LocationCode;
@@ -337,26 +348,26 @@ class universityQuickSort {
 		node1->GerRank = node2->GerRank;
 		node1->ScoreScaled = node2->ScoreScaled;
 
-		node2->Name = tempNode.Name;
-		node2->LocationCode = tempNode.LocationCode;
-		node2->Location = tempNode.Location;
-		node2->ArScore = tempNode.ArScore;
-		node2->ArRank = tempNode.ArRank;
-		node2->ErScore = tempNode.ErScore;
-		node2->ErRank = tempNode.ErRank;
-		node2->FsrScore = tempNode.FsrScore;
-		node2->FsrRank = tempNode.FsrRank;
-		node2->CpfScore = tempNode.CpfScore;
-		node2->CpfRank = tempNode.CpfRank;
-		node2->IfrScore = tempNode.IfrScore;
-		node2->IfrRank = tempNode.IfrRank;
-		node2->IsrScore = tempNode.IsrScore;
-		node2->IsrRank = tempNode.IsrRank;
-		node2->IrnScore = tempNode.IrnScore;
-		node2->IrnRank = tempNode.IrnRank;
-		node2->GerScore = tempNode.GerScore;
-		node2->GerRank = tempNode.GerRank;
-		node2->ScoreScaled = tempNode.ScoreScaled;
+		node2->Name = tempNode->Name;
+		node2->LocationCode = tempNode->LocationCode;
+		node2->Location = tempNode->Location;
+		node2->ArScore = tempNode->ArScore;
+		node2->ArRank = tempNode->ArRank;
+		node2->ErScore = tempNode->ErScore;
+		node2->ErRank = tempNode->ErRank;
+		node2->FsrScore = tempNode->FsrScore;
+		node2->FsrRank = tempNode->FsrRank;
+		node2->CpfScore = tempNode->CpfScore;
+		node2->CpfRank = tempNode->CpfRank;
+		node2->IfrScore = tempNode->IfrScore;
+		node2->IfrRank = tempNode->IfrRank;
+		node2->IsrScore = tempNode->IsrScore;
+		node2->IsrRank = tempNode->IsrRank;
+		node2->IrnScore = tempNode->IrnScore;
+		node2->IrnRank = tempNode->IrnRank;
+		node2->GerScore = tempNode->GerScore;
+		node2->GerRank = tempNode->GerRank;
+		node2->ScoreScaled = tempNode->ScoreScaled;
 	}
 
 	universityNode* getTail(universityNode* head) {
@@ -450,4 +461,268 @@ class universitySearcher {
 
 		return (j == queryLen);
 	}
+};
+
+class newUniMerge {
+	public:
+	universityNode* mergeSortString(universityNode* head, string column) {
+		if (head == nullptr || head->next == nullptr) {
+			return head;
+		}
+
+		universityNode* middle = getMiddleNode(head);
+		universityNode* nextToMiddle = middle->next;
+		middle->next = nullptr;
+
+		universityNode* left = mergeSortString(head, column);
+		universityNode* right = mergeSortString(nextToMiddle, column);
+
+		return mergeString(left, right, column);
+	}
+
+	universityNode* mergeString(universityNode* left, universityNode* right, string column) {
+		if (left == nullptr) {
+			return right;
+		}
+		if (right == nullptr) {
+			return left;
+		}
+
+		universityNode* result = nullptr;
+
+		if (getColumn(left, column) <= getColumn(right, column)) {
+			result = left;
+			result->next = mergeString(left->next, right, column);
+		} else {
+			result = right;
+			result->next = mergeString(left, right->next, column);
+		}
+
+		return result;
+	}
+
+	universityNode* mergeSortInt(universityNode* head, string column) {
+		if (head == nullptr || head->next == nullptr) {
+			return head;
+		}
+
+		universityNode* middle = getMiddleNode(head);
+		universityNode* nextToMiddle = middle->next;
+		middle->next = nullptr;
+
+		universityNode* left = mergeSortInt(head, column);
+		universityNode* right = mergeSortInt(nextToMiddle, column);
+
+		return mergeInt(left, right, column);
+	}
+
+	universityNode* mergeInt(universityNode* left, universityNode* right, string column) {
+		if (left == nullptr) {
+			return right;
+		}
+		if (right == nullptr) {
+			return left;
+		}
+
+		universityNode* result = nullptr;
+
+		if (stringToInt(getColumn(left, column)) <= stringToInt(getColumn(right, column))) {
+			result = left;
+			result->next = mergeInt(left->next, right, column);
+		} else {
+			result = right;
+			result->next = mergeInt(left, right->next, column);
+		}
+
+		return result;
+	}
+
+	universityNode* getMiddleNode(universityNode* head) {
+		if (head == nullptr) {
+			return nullptr;
+		}
+
+		universityNode* slow = head;
+		universityNode* fast = head->next;
+
+		while (fast != nullptr && fast->next != nullptr) {
+			slow = slow->next;
+			fast = fast->next->next;
+		}
+
+		return slow;
+	}
+
+	int stringToInt(const string& str) {
+		int result = 0;
+		int sign = 1;
+		int i = 0;
+
+		if (str[i] == '-') {
+			sign = -1;
+			i++;
+		}
+
+		while (i < str.length()) {
+			result = result * 10 + (str[i] - '0');
+			i++;
+		}
+
+		return result * sign;
+	}
+};
+
+class newQuickSort {
+	public:
+    universityNode* quicksortString(universityNode* head, universityNode* tail, string column) {
+        if (head == nullptr || head == tail || tail == nullptr) {
+            return head;
+        }
+
+        universityNode* pivot = getMedianOfThree(head, tail, column);
+
+        if (pivot != head) {
+            universityNode* prev = nullptr;
+            universityNode* curr = head;
+
+            while (curr != pivot) {
+                prev = curr;
+                curr = curr->next;
+            }
+
+            if (prev != nullptr) {
+                prev->next = nullptr;
+                head = quicksortString(head, prev, column);
+                prev = getTail(head);
+                prev->next = pivot;
+            } else {
+                head = quicksortString(head, pivot, column);
+            }
+        }
+
+        pivot->next = quicksortStringHelper(pivot->next, tail, column);
+
+        return head;
+    }
+
+    universityNode* quicksortStringHelper(universityNode* head, universityNode* tail, string column) {
+        if (head == nullptr || head == tail) {
+            return head;
+        }
+
+        universityNode* pivot = getMedianOfThree(head, tail, column);
+        if (pivot != head) {
+            universityNode* prev = head;
+            universityNode* curr = head->next;
+
+            while (curr != pivot) {
+                prev = curr;
+                curr = curr->next;
+            }
+
+            prev->next = nullptr;
+            head = quicksortStringHelper(head, prev, column);
+            prev = getTail(head);
+            prev->next = pivot;
+        }
+
+        pivot->next = quicksortStringHelper(pivot->next, tail, column);
+
+        return head;
+    }
+
+    universityNode* quicksortInt(universityNode* head, universityNode* tail, string column) {
+        if (head == nullptr || head == tail || tail == nullptr) {
+            return head;
+        }
+
+        universityNode* pivot = getMedianOfThree(head, tail, column);
+
+        if (pivot != head) {
+            universityNode* prev = nullptr;
+            universityNode* curr = head;
+
+            while (curr != pivot) {
+                prev = curr;
+                curr = curr->next;
+            }
+
+            if (prev != nullptr) {
+                prev->next = nullptr;
+                head = quicksortInt(head, prev, column);
+                prev = getTail(head);
+                prev->next = pivot;
+            } else {
+                head = quicksortInt(head, pivot, column);
+            }
+        }
+
+        pivot->next = quicksortIntHelper(pivot->next, tail, column);
+
+        return head;
+    }
+
+    universityNode* quicksortIntHelper(universityNode* head, universityNode* tail, string column) {
+        if (head == nullptr || head == tail) {
+            return head;
+        }
+
+        universityNode* pivot = getMedianOfThree(head, tail, column);
+        if (pivot != head) {
+            universityNode* prev = head;
+            universityNode* curr = head->next;
+
+            while (curr != pivot) {
+                prev = curr;
+                curr = curr->next;
+            }
+
+            prev->next = nullptr;
+            head = quicksortIntHelper(head, prev, column);
+            prev = getTail(head);
+            prev->next = pivot;
+        }
+
+        pivot->next = quicksortIntHelper(pivot->next, tail, column);
+
+        return head;
+    }
+    universityNode* getMedianOfThree(universityNode* head, universityNode* tail, string column) {
+        // Get the values at the first, middle, and last nodes
+        string value1 = getColumn(head, column);
+        universityNode* middle = getMiddleNode(head, tail);
+        string value2 = getColumn(middle, column);
+        string value3 = getColumn(tail, column);
+
+        // Find the median value among the three
+        if ((value1 <= value2 && value2 <= value3) || (value3 <= value2 && value2 <= value1)) {
+            return middle;
+        } else if ((value2 <= value1 && value1 <= value3) || (value3 <= value1 && value1 <= value2)) {
+            return head;
+        } else {
+            return tail;
+        }
+    }
+
+    universityNode* getMiddleNode(universityNode* head, universityNode* tail) {
+        universityNode* slow = head;
+        universityNode* fast = head;
+
+        while (fast != tail && fast->next != tail) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        return slow;
+    }
+    universityNode* getTail(universityNode* head) {
+        universityNode* tail = head;
+
+        while (tail->next != nullptr) {
+            tail = tail->next;
+        }
+
+        return tail;
+    }
+
 };

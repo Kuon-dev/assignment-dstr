@@ -40,8 +40,8 @@ class universityList {
 	universityNode* tail = nullptr;
 
 	public:
-	universityNode* getHead() { return this->head; }
-	universityNode* getTail() { return this->tail; }
+	universityNode* getHead() { return head; }
+	universityNode* getTail() { return tail; }
 	void setHead(universityNode* head) { this->head = head; }
 
 	// create a new node to the linekd list
