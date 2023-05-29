@@ -50,7 +50,7 @@ class UserMenu {
 			case 1:
 				cout << "You have selected 'View the Top Score University'" << endl;
 				// quick sort algorithm so sort
-				sorter.quicksortInt(uniData->getHead(), uniData->getTail(), "ScoreScaled");
+				sorter.quicksortInt(*uniData, "ScoreScaled", "dsc");
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
 					page = handleIntInput("Enter page number to skip or enter 0 to return");
@@ -360,7 +360,7 @@ class UserMenu {
 			case 2:
 				// call quick sort algorithm to sort integer data
 				uniController->displayPaginated(*uniData, 1);
-				uniData->setHead(sorter.quicksortInt(uniData->getHead(), uniData->getTail(), input));
+				sorter.quicksortInt(*uniData, input, "dsc");
 				while (exitPaginate) {
 					page = handleIntInput("Enter page number to skip or enter 0 to return");
 					if (page == 0) exitPaginate = false;
@@ -410,7 +410,7 @@ class UserMenu {
 				return;
 			case 2:
 				// call quick sort algorithm to sort string data
-				uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), input));
+				sorter.quicksortString(*uniData, input);
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
 					page = handleIntInput("Enter page number to skip or enter 0 to return");
@@ -964,8 +964,6 @@ void displayMenu() {
 			}
 			break;
 		case 2:
-			//uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
-			// uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
 			mergeSorter.mergeSortString(*uniData, "Name");
 			break;
 		case 3:

@@ -150,7 +150,7 @@ class UniversityContoller {
 		auto startTime = high_resolution_clock::now();
 
 		cout << "\033[94mUsing Quick sort...\033[0m" << endl;
-		sorter.quicksortString(currentList->getHead(), currentList->getTail(), "Name");
+		sorter.quicksortString(*currentList, "Name");
 
 		auto endTime = high_resolution_clock::now();
 		auto duration = duration_cast<milliseconds>(endTime - startTime);
@@ -199,7 +199,7 @@ class UniversityContoller {
 		auto sortStartTime = high_resolution_clock::now();
 		universityNode* head = currentList->getHead();
 		universityNode* tail = currentList->getTail();
-		(quickSort.quicksortString(head, tail, column));
+		(quickSort.quicksortString(*currentList, column));
 		auto sortEndTime = high_resolution_clock::now();
 		auto sortDuration = duration_cast<milliseconds>(sortEndTime - sortStartTime);
 		cout << "\033[94mTime taken to sort: " << sortDuration.count() << " milliseconds\033[0m" << endl;
