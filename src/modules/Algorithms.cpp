@@ -272,7 +272,7 @@ class newQuickSort {
 public:
 
     // The function to find the partition position
-    universityNode* partition(universityNode* low, universityNode* high, string column, string order) {
+    universityNode* partitionString(universityNode* low, universityNode* high, string column, string order) {
         // set rightmost element as pivot
         string pivot = getColumn(high, column);
 
@@ -295,22 +295,53 @@ public:
         return i;
     }
 
-    void quickSort(universityNode* low, universityNode* high, string column, string order) {
+    void quickSortString(universityNode* low, universityNode* high, string column, string order) {
         if (high != nullptr && low != high && low != high->next) {
-            universityNode* p = partition(low, high, column, order);
-            quickSort(low, p->prev, column, order);
-            quickSort(p->next, high, column, order);
+            universityNode* p = partitionString(low, high, column, order);
+            quickSortString(low, p->prev, column, order);
+            quickSortString(p->next, high, column, order);
+        }
+    }
+
+    void quicksortString(universityList& uList, string column) {
+        quickSortString(uList.getHead(), uList.getTail(), column, "asc");
+    }
+
+    universityNode* partitionInt(universityNode* low, universityNode* high, string column, string order) {
+        // set rightmost element as pivot
+        int pivot = stoi(getColumn(high, column));
+
+        // pointer for the greater element
+        universityNode* i = low->prev;
+
+        // traverse each node of the list
+        for (universityNode* j = low; j != high; j = j->next) {
+            if ((order == "asc" && stoi(getColumn(j, column)) <= pivot) || (order == "dsc" && stoi(getColumn(j, column)) >= pivot)) {
+                // swapNodes nodes at i and j
+                i = (i == nullptr) ? low : i->next;
+                swapNodes(i, j);
+            }
+        }
+        // swap the pivot node with the greater node specified by i
+        i = (i == nullptr) ? low : i->next;
+        swapNodes(i, high);
+
+        // return the node i
+        return i;
+    }
+
+    void quickSortInt(universityNode* low, universityNode* high, string column, string order) {
+        if (high != nullptr && low != high && low != high->next) {
+            universityNode* p = partitionInt(low, high, column, order);
+            quickSortInt(low, p->prev, column, order);
+            quickSortInt(p->next, high, column, order);
         }
     }
 
     // Function to call quickSort for strings
-    void quicksortString(universityList& uList, string column) {
-        quickSort(uList.getHead(), uList.getTail(), column, "asc");
-    }
-
     // Function to call quickSort for integers
     void quicksortInt(universityList& uList, string column, string order) {
-        quickSort(uList.getHead(), uList.getTail(), column, order);
+        quickSortInt(uList.getHead(), uList.getTail(), column, order);
     }
 
     // Function to swap nodes a and b in the linked list
@@ -384,31 +415,74 @@ public:
 
 class universitySearcher {
 	public:
-	universityNode* binarySearch(universityNode* head, string column, int name) {
-		int low = 1, high = 0;
-		for (universityNode* p = head; p != nullptr; p = p->next) {
-			high++;
-		}
-		while (low <= high) {
-			int mid = (low + high) / 2;
-			universityNode* p = head;
-			for (int i = 1; i < mid; i++) {
-				p = p->next;
-			}
-			if (stoi(getColumn(p, column)) == name) {
-				return p;
-			} else if (stoi(getColumn(p, column)) < name) {
-				low = mid + 1;
-			} else {
-				high = mid - 1;
-			}
-		}
+    static universityList* binarySearch(universityList* list, const std::string& field, const std::string& query) {
+        universityList* results = new universityList();
+        universityNode* current = list->getHead();
 
-		return nullptr;
-	};
+        while(current != nullptr) {
+            if(field == "Name" && current->Name == query ||
+               field == "LocationCode" && current->LocationCode == query ||
+               field == "Location" && current->Location == query ||
+               field == "ArScore" && current->ArScore == query ||
+               field == "ArRank" && current->ArRank == query ||
+               field == "ErScore" && current->ErScore == query ||
+               field == "ErRank" && current->ErRank == query ||
+               field == "FsrScore" && current->FsrScore == query ||
+               field == "FsrRank" && current->FsrRank == query ||
+               field == "CpfScore" && current->CpfScore == query ||
+               field == "CpfRank" && current->CpfRank == query ||
+               field == "IfrScore" && current->IfrScore == query ||
+               field == "IfrRank" && current->IfrRank == query ||
+               field == "IsrScore" && current->IsrScore == query ||
+               field == "IsrRank" && current->IsrRank == query ||
+               field == "IrnScore" && current->IrnScore == query ||
+               field == "IrnRank" && current->IrnRank == query ||
+               field == "GerScore" && current->GerScore == query ||
+               field == "GerRank" && current->GerRank == query ||
+               field == "ScoreScaled" && current->ScoreScaled == query) {
+                // Create a new node, copy the data from the current node, and append it to the results list.
+                universityNode* newNode = new universityNode(*current);
+                newNode->next = nullptr;
+                newNode->prev = results->getTail();
+                if(results->getHead() == nullptr) {
+                    results->setHead(newNode);
+                }
+                if(results->getTail() != nullptr) {
+                    results->setTail(newNode);
+                }
+                results->setTail(newNode);
+            }
+            current = current->next;
+        }
 
-	universityList linearSearch(universityNode* head, string column, string query) {
-		universityList newList;
+        return results;
+    }
+
+    static universityList* binarySearch(universityList* list, int rank) {
+        universityList* results = new universityList();
+        universityNode* current = list->getHead();
+
+        while(current != nullptr) {
+            if(current->Rank == rank) {
+                // Create a new node, copy the data from the current node, and append it to the results list.
+                universityNode* newNode = new universityNode(*current);
+                newNode->next = nullptr;
+                newNode->prev = results->getTail();
+                if(results->getHead() == nullptr) {
+                    results->setHead(newNode);
+                }
+                if(results->getTail() != nullptr) {
+                    results->setTail(newNode);
+                }
+				results->setTail(newNode);
+            }
+            current = current->next;
+        }
+
+        return results;
+    }
+	universityList* linearSearch(universityNode* head, string column, string query) {
+		universityList* newList = new universityList;
 		universityNode* current = head;
 		universityNode* currentNext = nullptr;
 		universityNode* matched = nullptr;
@@ -417,7 +491,7 @@ class universitySearcher {
 			currentNext = current->next; // Assign next node before moving current
 
 			if (fuzzyMatch(getColumn(current, column), query)) {
-				newList.addUniversityNode(current);
+				newList->addUniversityNode(current);
 
 				if (matched == nullptr) {
 					matched = current;
