@@ -5,7 +5,7 @@
 #include <string>
 
 UniversityContoller* uniController = new UniversityContoller();
-newUniMerge mergeSorter;
+newMergeSort mergeSorter;
 newQuickSort sorter;
 universityList* uniData = uniController->readUniversityDatabase();
 
@@ -408,7 +408,7 @@ class UserMenu {
 				return;
 			case 2:
 				// call quick sort algorithm to sort string data
-				(sorter.quicksortString(uniData->getHead(), uniData->getTail(), input));
+				uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), input));
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
 					page = handleIntInput("Enter page number to skip or enter 0 to return");
@@ -963,7 +963,7 @@ void displayMenu() {
 			break;
 		case 2:
 			//uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
-			(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
+			uniData->setHead(sorter.quicksortString(uniData->getHead(), uniData->getTail(), "Name"));
 			break;
 		case 3:
 			displaySearchUniversityMenu();

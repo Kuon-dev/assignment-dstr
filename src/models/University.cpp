@@ -42,7 +42,20 @@ class universityList {
 	public:
 	universityNode* getHead() { return head; }
 	universityNode* getTail() { return tail; }
-	void setHead(universityNode* head) { this->head = head; }
+    void setHead(universityNode* newHead) {
+        head = newHead;
+        if (head != nullptr) {
+            head->prev = nullptr;
+        }
+    }
+
+    void setTail(universityNode* newTail) {
+        tail = newTail;
+        if (tail != nullptr) {
+            tail->next = nullptr;
+        }
+    }
+
 
 	// create a new node to the linekd list
 	void createUniversity(
@@ -154,7 +167,7 @@ class universityList {
 	}
 
 	void displaySpecific(universityNode* node) {
-		universityNode* current = node;		
+		universityNode* current = node;
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 		cout << "| Rank: " << current->Rank << endl;
@@ -210,7 +223,7 @@ class universityList {
 			cout << "| IrnRank: " << current->IrnRank << endl;
 			cout << "| GerScore: " << current->GerScore << endl;
 			cout << "| GerRank: " << current->GerRank << endl;
-			cout << "| ScoreScaled: " << current->ScoreScaled << endl;		
+			cout << "| ScoreScaled: " << current->ScoreScaled << endl;
 			cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
 			current = current->next;

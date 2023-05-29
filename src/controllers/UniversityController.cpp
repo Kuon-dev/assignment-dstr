@@ -163,8 +163,7 @@ class UniversityContoller {
 	}
 
 	void searchUniMerge(string column, string input, universityList* currentList) {
-		universityMergeSort mergeSorter;
-		newUniMerge newMerge;
+		newMergeSort newMerge;
 		universitySearcher searcher;
 
 		cout << "\033[94mFetching database...\033[0m" << endl;
@@ -187,7 +186,7 @@ class UniversityContoller {
 	}
 
 	void searchUniQuick(string column, string input, universityList* currentList) {
-		universityQuickSort sorter;
+		newMergeSort sorter;
 		newQuickSort quickSort;
 		universitySearcher searcher;
 
