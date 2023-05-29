@@ -485,23 +485,22 @@ class universitySearcher {
 		universityList* newList = new universityList;
 		universityNode* current = head;
 		universityNode* currentNext = nullptr;
-		universityNode* matched = nullptr;
 
 		while (current != nullptr) {
 			currentNext = current->next; // Assign next node before moving current
 
 			if (fuzzyMatch(getColumn(current, column), query)) {
-				newList->addUniversityNode(current);
-
-				if (matched == nullptr) {
-					matched = current;
-					matched->prev = nullptr;
-					matched->next = nullptr;
-				} else {
-					matched->next = current;
-					current->prev = matched;
-					matched = current;
+				// Deep copy the node.
+				universityNode* newNode = new universityNode(*current);
+				newNode->next = nullptr;
+				newNode->prev = newList->getTail();
+				if (newList->getHead() == nullptr) {
+					newList->setHead(newNode);
 				}
+				if (newList->getTail() != nullptr) {
+					newList->getTail()->next = newNode;
+				}
+				newList->setTail(newNode);
 			}
 			current = currentNext;
 		}
