@@ -14,11 +14,17 @@ class FavouritesController {
 	private:
 	favUniList favouriteList;
 	favUniNode* getHead() { return favouriteList.getHead(); }
+	int createFeedbackId(favUniList* data) {
+		favUniNode * lastNode = data->getTail();
+		if (lastNode == nullptr) return 1;
+		else if (lastNode->FavUniId== "") return 1;
+		else return (stoi(lastNode->FavUniId) + 1);
+	}
 
 	public:
 	favUniList* readFavUniDatabase() {
 		favUniList* list = new favUniList();
-		ifstream file("Database/FavUni.csv"); // get user database
+		ifstream file("Database/Favourites.csv"); // get user database
 		// validate file open
 		if (!file.is_open()) {
 			cout << "\033[31m"
@@ -47,27 +53,19 @@ class FavouritesController {
 			node->UniId = UniId;
 			node->UniName = UniName;
 
-			list->addFavUniNode(node);
+			list->addFavNode(node);
 		}
 
 		file.close();
 		return list;
 	}
 
-	void writeToDatabase(favUniNode* saveFavUni) {
-		favUniNode* current = saveFavUni;
+	void writeToDatabase(favUniList* favData) {
+		favUniNode* current = favData->getHead();
 		ofstream tempFile("temp.csv");
-		ifstream file("Database/FavUni.csv");
+		ifstream file("Database/Favourites.csv");
 		string line;
-		tempFile << "FavUniID"
-						 << ","
-						 << "UserID"
-						 << ","
-						 << "UserName"
-						 << ","
-						 << "UniID"
-						 << ","
-						 << "UniName" << endl;
+		tempFile << "FavUniID,UserID,UserName,UniID,UniName" << endl;
 		while (current != NULL) {
 			istringstream iss(line);
 
@@ -79,174 +77,66 @@ class FavouritesController {
 		file.close();
 		tempFile.close();
 
-		remove("Database/FavUni.csv");
-		rename("temp.csv", "Database/FavUni.csv");
+		remove("Database/Favourites.csv");
+		rename("temp.csv", "Database/Favourites.csv");
 		cout << "Favourite Univerity is updated." << endl;
 	}
 
-	favUniList* getUserFav(favUniList* data, userNode* user) {
+	favUniList* getFavouritesByUser(favUniList* data, userNode* user) {
 		favUniList* favUni = new favUniList;
 		favUniNode* current = data->getHead();
 		while (current != nullptr) {
-			if (current->UserId == user->UserId) favUni->addFavUniNode(current);
+			if (current->UserId == user->UserId) favUni->addFavNode(current);
 			current = current->NextAddress;
 		}
 		return favUni;
 	}
 
-	void displayFavUni(favUniNode* head) {
-		favUniNode* current = head;
-		while (current != NULL) {
-			cout << "Favourite University ID: " << current->FavUniId << endl;
-			cout << "Account ID: " << current->UserId << endl;
-			cout << "Account Username: " << current->UserName << endl;
-			cout << "University ID: " << current->UniId << endl;
-			cout << "University Name: " << current->UniName << endl;
-			cout << endl;
-			current = current->NextAddress;
-		}
-		cout << "list ended at here." << endl;
-		cout << endl;
-		cout << endl;
-	}
+    universityNode* searchUniversityByRank(universityList* uniData, int rank) {
+        universityNode* current = uniData->getHead();
 
-	void displayTopTenUniData() {
-		favouriteList.getTopTenUniData();
-		TopTenUniNode* current = favouriteList.getSortedTopTenUniHead();
-		cout << endl;
+        while (current != nullptr) {
+            if (current->Rank == rank) {
+                return current; // Found the university with the specified ID
+            }
+            current = current->next;
+        }
+        return nullptr; // University with the specified ID not found
+    }
 
-		// writeToDatabase();
-		cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
-		cout << "Top 10 university added as favourite university by members:" << endl;
-		cout << "----------------------------------------------------------------------------------------------------------"
-				 << endl;
+    bool addFavorite(universityList* uniData, favUniList* favData, userNode* currentUser, int rank) {
+        // Check if the university already exists in the uniData
+        universityNode* university = searchUniversityByRank(uniData, rank);
+        if (university == nullptr) {
+            cout << "University with Rank " << rank << " does not exist." << endl;
+            return false; // Return false to indicate that the addition was unsuccessful
+        }
+		favUniNode* newNode = new favUniNode;
+		newNode->FavUniId = to_string(createFeedbackId(favData));
+		newNode->UniId = to_string(university->Rank);
+		newNode->UniName = university->Name;
+		newNode->UserName = currentUser->userUserName;
+		newNode->UserId = currentUser->UserId;
+		favData->addFavNode(newNode);
+        // Your logic for adding the university as a favorite goes here
 
-		cout << endl;
-		while (current != NULL) {
-			cout << "University ID: " << current->UniId << endl;
-			cout << "University Name: " << current->UniName << endl;
-			cout << "Total: " << current->Count << endl;
-			cout << endl;
-			current = current->NextAddress;
-		}
-		cout << "Report ends at here." << endl;
-	}
+        cout << "University " << university->Name << " added as a favorite." << endl;
+        return true; // Return true to indicate that the addition was successful
+    }
 
-	void addNodeToEnd() {
-		newnodeFavUni->NextAddress = NULL;
-		newnodeFavUni->PrevAddress = NULL;
-		// situation 1: list empty
-		if (favUniHead == NULL) {
-			favUniHead = favUniTail = newnodeFavUni; // changes for doubly
-		}
-		// situation 2: list not empty
-		else {
-			newnodeFavUni->PrevAddress = favUniTail;
-			favUniTail->NextAddress = newnodeFavUni;
-			favUniTail = newnodeFavUni;
-		}
-	}
+    bool deleteFavoriteByID(favUniList* favData, string favoriteID) {
+        favUniNode* current = favData->getHead();
 
-	void count() // function to count number of nodes
-	{
-		struct favUniNode* current = favUniHead;
+        while (current != nullptr) {
+            if (current->FavUniId == favoriteID) {
+                favData->deleteFavNode(current); // Delete the favorite node
+                cout << "Favorite university with ID " << favoriteID << " deleted." << endl;
+                return true; // Return true to indicate the successful deletion
+            }
+            current = current->NextAddress;
+        }
 
-		// Iterating till end of list
-		for (int cnt = 1; current != NULL; cnt++) {
-			current = current->NextAddress;
-
-			if (current == NULL) {
-				cout << cnt << endl;
-			}
-		};
-	}
-
-	favUniNode* searchFavUniWithID(string favlistid, favUniNode* filteredhead) {
-		favUniNode* current = filteredhead;
-		while (current != NULL) {
-			if (favlistid == current->FavUniId) {
-				return current;
-			}
-
-			current = current->NextAddress;
-		}
-		cout << "No record found." << endl;
-		return NULL;
-	}
-
-	void deleteBasedOnFavUni(string favlistid) {
-		favUniNode* searchNode = searchFavUniWithID(favlistid, favouriteList.getFilteredHead());
-
-		favUniNode* unfilteredHead = favouriteList.getHead();
-		if (unfilteredHead == NULL) {
-			cout << endl;
-			cout << endl;
-			cout << "The List of Favorite University is empty." << endl;
-			cout << "No records will be deleted." << endl;
-			cout << endl;
-			return;
-		}
-
-		if (searchNode == NULL) {
-			return;
-		}
-
-		if (searchNode->FavUniId == unfilteredHead->FavUniId) // delete from the front list
-		{
-			favUniNode* currentFavUni = unfilteredHead;
-			favouriteList.setHead(unfilteredHead->NextAddress);
-			if (favouriteList.getHead() != NULL) {
-				favouriteList.getHead()->PrevAddress = NULL;
-			} else {
-				favouriteList.setTail(NULL);
-			}
-			cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
-			cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
-			delete currentFavUni;
-			writeToDatabase(getHead());
-
-		} else if (searchNode->FavUniId == favouriteList.getTail()->FavUniId) {
-			favUniNode* currentFavUni = favouriteList.getTail();
-			favouriteList.setTail(favouriteList.getTail()->PrevAddress);
-
-			if (favouriteList.getTail() != NULL) {
-				favouriteList.getTail()->NextAddress = NULL;
-
-			} else {
-				favouriteList.setHead(NULL);
-			}
-			cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
-			cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
-			delete currentFavUni;
-			writeToDatabase(getHead());
-		} else {
-			favUniNode* PrevAddress = unfilteredHead;
-			favUniNode* currentFavUni = unfilteredHead->NextAddress;
-
-			while (currentFavUni != NULL) {
-				if (currentFavUni->FavUniId == searchNode->FavUniId) {
-					PrevAddress->NextAddress = currentFavUni->NextAddress;
-					cout << "Deleted: University with ID of " << currentFavUni->UniId << endl;
-					cout << "Deleted: University with Name of " << currentFavUni->UniName << endl;
-					delete currentFavUni;
-					writeToDatabase(getHead());
-					return;
-				}
-				PrevAddress = currentFavUni;
-				currentFavUni = currentFavUni->NextAddress;
-			}
-			cout << "Record of Favorite University record in List with ID of " << searchNode->FavUniId << " is not found."
-					 << endl;
-		}
-	}
-
-	void createUserFavUni(universityList* uniData, favUniList* favData, int index, string memberId, string name) {
-		// universitySearcher* searcher;
-		//
-		// favData->InsertFavUni(
-		// 	to_string(stoi(favData->getTail()->FavUniId) + 1), memberId, name, to_string(searched->Rank), searched->Name);
-	}
-
-	favUniNode* getFilteredHead() { return favouriteList.getFilteredHead(); }
+        cout << "Favorite university with ID " << favoriteID << " not found." << endl;
+        return false; // Return false to indicate the favorite university was not found
+    }
 };

@@ -40,11 +40,13 @@ target_sources(controllers PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/controllers/Fa
 target_sources(controllers PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/controllers/FeedbackController.cpp")
 target_sources(controllers PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/controllers/MemberController.cpp")
 target_sources(controllers PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/controllers/UniversityController.cpp")
+target_sources(controllers PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/controllers/TopUniController.cpp")
 
 target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/Favourites.cpp")
 target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/University.cpp")
 target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/Feedback.cpp")
 target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/Member.cpp")
+target_sources(models PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/models/TopUni.cpp")
 
 # Add the ViewMainMenu.cpp file to the views library
 target_sources(views PRIVATE "${CMAKE_CURRENT_LIST_DIR}/src/views/ViewMainMenu.cpp")
@@ -57,8 +59,8 @@ add_custom_command(TARGET main POST_BUILD
 
 add_custom_command(TARGET main POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E copy
-	   ${CMAKE_SOURCE_DIR}/Database/FavUni.csv
-	   $<TARGET_FILE_DIR:main>/Database/FavUni.csv)
+	   ${CMAKE_SOURCE_DIR}/Database/Favourites.csv
+	   $<TARGET_FILE_DIR:main>/Database/Favourites.csv)
 
 add_custom_command(TARGET main POST_BUILD
    COMMAND ${CMAKE_COMMAND} -E copy

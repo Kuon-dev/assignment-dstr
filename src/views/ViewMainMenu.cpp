@@ -46,6 +46,7 @@ class UserMenu {
 				<< endl;
 			cout << "Enter your choice (1-5): ";
 			int choice = handleUserInput();
+			bool success;
 
 			switch (choice) {
 			case 1:
@@ -64,12 +65,15 @@ class UserMenu {
 				break;
 			case 2:
 				cout << "You have selected 'Save University as Favourite'" << endl;
-				uniID = handleIntInput("Enter University ID to save as favourite, (Press '0' to return): ");
+				uniID = handleIntInput("Enter University Rank to save as favourite, (Press '0' to return): ");
 				if (uniID == 0) {
 					cout << "Exitting..." << endl;
 					break;
 				};
-				favUniController->createUserFavUni(uniData, favUniData, uniID, currentUser->UserId, currentUser->userUserName);
+				success = favUniController-> addFavorite(uniData, favUniData, currentUser, uniID);
+				if (success) cout << "Successfully added new favourite" << endl;
+				else cout << "Successfully added new favourite" << endl;
+
 				break;
 			case 3:
 				displaySortUniversityMenu();
@@ -114,7 +118,7 @@ class UserMenu {
 				universityMenu();
 				break;
 			case 2:
-				getUserFavUni = favUniController->getUserFav(favUniData, currentUser);
+				getUserFavUni = favUniController->getFavouritesByUser(favUniData, currentUser);
 				cout << "You have selected 'View Favourite Universities'" << endl;
 				getUserFavUni->displayAll();
 				break;
@@ -660,7 +664,7 @@ class AdminMenu {
 				break;
 			case 3:
 				cout << "You have selected 'Generate top 10 university'" << endl;
-				favUniController->displayTopTenUniData();
+				// favUniController->displayTopTenUniData();
 				// TODO: Implement 'top 10 uni' functionality
 
 				break;
@@ -1008,6 +1012,7 @@ void displayMenu() {
 			cout << "Exiting the system. Goodbye!" << endl;
 			feedbackController->writeToDatabase(feedbackData);
 			userListController->writeToDatabase(userData);
+			favUniController->writeToDatabase(favUniData);
 			return;
 		default:
 			cout << "Invalid choice. Please enter a valid choice." << endl;
