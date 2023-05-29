@@ -56,10 +56,10 @@ class MemberController {
 			UserLastLogin = token;
 
 			getline(iss, token, ',');
-			UserAge = stoi(token);
+			UserContact = token;
 
 			getline(iss, token, ',');
-			UserContact = token;
+			UserAge = stoi(token);
 
 			node->UserId = UserId;
 			node->userUserName = userUserName;
