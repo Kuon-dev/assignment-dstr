@@ -60,34 +60,28 @@ class FeedbackController {
 		file.close();
 		return list;
 	}
-	int addFeedbackToDatabase() {
-		string userId, feedbackContent;
-		cout << "Enter user ID: ";
-		cin >> userId;
-		cin.ignore(); // consume the newline character left in the input stream
+	void writeToDatabase(feedbackList* list){
+        ofstream outputFile("Database/FeedbackDatabase.csv");
 
-		cout << "Enter feedback content: ";
-		getline(cin, feedbackContent);
+        if (outputFile.is_open()) {
+            outputFile << "FeedbackId,UserId,FeedbackContent,ReplyContent,Timestamp" << endl;
 
-		time_t now = time(nullptr);
-		feedbackList newFeedback;
-		// newFeedback.createFeedback(userId, feedbackContent);
+            feedbackNode* current = list->getHead();
+            while (current != nullptr) {
+                outputFile << current->FeedbackId << ",";
+                outputFile << current->UserId << ",";
+                outputFile << current->FeedbackContent << ",";
+                outputFile << current->ReplyContent << ",";
+                outputFile << to_string(current->Timestamp) << endl;
+                current = current->NextAddress;
+            }
 
-		feedbackNode* feedback = newFeedback.getHead();
-
-		// ofstream outfile("Database/FeedbackDatabase.csv", ios::app);
-		// if (outfile) {
-		// 	outfile << feedback->FeedbackId << "," << feedback->UserId << "," << feedback->FeedbackContent << ","
-		// 					<< feedback->Timestamp << endl;
-		// 	outfile.close();
-		// } else {
-		// 	cerr << "Error opening file." << endl;
-		// 	return 1;
-		// }
-		//
-		// cout << "Feedback created and stored in database." << endl;
-		return 0;
-	}
+            outputFile.close();
+            cout << "Feedback data successfully saved " << endl;
+        } else {
+            cout << "Error: Unable to open the file " << endl;
+        }
+	};
 
 	feedbackNode* getFeedbackById(feedbackList* list, string feedbackId) {
 		feedbackNode* current = list->getHead();
@@ -116,12 +110,12 @@ class FeedbackController {
 
 		feedbackNode* newFeedback = new feedbackNode();
 		string feedbackContent = handleStringInput("Enter your feedback: ");
-		newFeedback->FeedbackId = "11"; // should random generate i guess
+		newFeedback->FeedbackId = to_string(createFeedbackId(currentList));
 		newFeedback->UserId = currentUser->UserId;
 		newFeedback->ReplyContent = "";
 		newFeedback->FeedbackContent = feedbackContent;
-		auto now = std::chrono::system_clock::now();
-		newFeedback->Timestamp = std::chrono::system_clock::to_time_t(now);
+		auto now = chrono::system_clock::now();
+		newFeedback->Timestamp = chrono::system_clock::to_time_t(now);
 
 		newFeedback->PreviousAddress = nullptr;
 		newFeedback->NextAddress = nullptr;
@@ -132,8 +126,8 @@ class FeedbackController {
 	};
 
 	private:
-	int createFeedbackId(feedbackList data) {
-		feedbackNode* lastNode = data.getTail();
+	int createFeedbackId(feedbackList* data) {
+		feedbackNode* lastNode = data->getTail();
 		if (lastNode == nullptr) return 1;
 		else if (lastNode->FeedbackId == "") return 1;
 		else return (stoi(lastNode->FeedbackId) + 1);

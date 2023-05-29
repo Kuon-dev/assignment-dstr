@@ -1002,6 +1002,7 @@ void displayMenu() {
 			break;
 		case 5:
 			cout << "Exiting the system. Goodbye!" << endl;
+			feedbackController->writeToDatabase(feedbackData);
 			return;
 		default:
 			cout << "Invalid choice. Please enter a valid choice." << endl;
