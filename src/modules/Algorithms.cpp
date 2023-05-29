@@ -152,14 +152,18 @@ public:
 		if (getColumn(a, column) <= getColumn(b, column)) {
 			result = a;
 			result->next = SortedMerge(a->next, b, column);
-			result->next->prev = result;
+			if (result->next) {
+				result->next->prev = result;
+			}
 			result->prev = nullptr;
 		}
 		// If names are same then sort by rank in descending order.
 		else {
         result = b;
-			result->next = SortedMerge(a, b->next, column);
-			result->next->prev = result;
+		result->next = SortedMerge(a, b->next, column);
+			if (result->next) {
+				result->next->prev = result;
+			}
 			result->prev = nullptr;
 		}
 		return (result);

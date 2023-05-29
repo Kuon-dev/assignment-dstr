@@ -364,7 +364,7 @@ class UserMenu {
 				break;
 			case 2:
 			//acs or dsc
-				mergeSorter.mergeSortInt(*uniData, "Rank", "acs");
+				mergeSorter.mergeSortInt(*uniData, "Rank", "asc");
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
 					page = handleIntInput("Enter page number to skip or enter 0 to return");
@@ -894,7 +894,7 @@ void sortUniversityMenu() {
 		int choice = handleUserInput();
 		int page;
 		bool exitPaginate = true;
-		
+
 		switch (choice) {
 		case 1:
 			uniController->displayPaginated(*uniData, 1);
