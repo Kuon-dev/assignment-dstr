@@ -792,7 +792,11 @@ void displayLoginMenu() {
 		} else { // login for user
 			cout << endl << endl << "Logged in successfully!" << endl;
 			UserMenu menu;
+			// update last user login
+			auto now = chrono::system_clock::now();
+			authUser->UserLastLogin = to_string(chrono::system_clock::to_time_t(now));
 			menu.currentUser = authUser;
+
 			menu.userDashboard();
 			return;
 		};
@@ -1003,6 +1007,7 @@ void displayMenu() {
 		case 5:
 			cout << "Exiting the system. Goodbye!" << endl;
 			feedbackController->writeToDatabase(feedbackData);
+			userListController->writeToDatabase(userData);
 			return;
 		default:
 			cout << "Invalid choice. Please enter a valid choice." << endl;

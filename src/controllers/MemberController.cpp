@@ -121,6 +121,32 @@ class MemberController {
 	}
 
 	// create a new user node and append to csv
+	void writeToDatabase(userList* data) {
+		userNode* current = data->getHead();
+
+		ofstream outfile("Database/Users.csv");
+		if (outfile) {
+			outfile << "UserId,UserUserName,UserPassword,UserName,UserGender,UserEmail,UserLastLogin,UserContact,UserAge"
+							<< endl;
+			while (current != nullptr) {
+				outfile << current->UserId << ",";
+				outfile << current->userUserName << ",";
+				outfile << current->UserPassword << ",";
+				outfile << current->UserName << ",";
+				outfile << current->UserGender << ",";
+				outfile << current->UserEmail << ",";
+				outfile << current->UserLastLogin << ",";
+				outfile << current->UserContact << ",";
+				outfile << to_string(current->UserAge) << std::endl;
+				current = current->NextAddress;
+			}
+			outfile.close();
+			cout << "User data successfully saved " << endl;
+		} else {
+			cout << "Please try again later." << endl;
+		}
+	}
+
 	void createNewMember(
 		userList data,
 		string username,
@@ -131,7 +157,6 @@ class MemberController {
 		int age,
 		string contact) {
 		userNode* newUser = new userNode();
-		userList* list = new userList();
 		newUser->UserId = to_string(createUserId(data));
 		newUser->userUserName = username;
 		newUser->UserPassword = password;
@@ -142,17 +167,7 @@ class MemberController {
 		newUser->UserContact = contact;
 		newUser->UserLastLogin = "null";
 
-		ofstream outfile("Database/Users.csv", ios::app);
-		if (outfile) {
-			outfile << newUser->UserId << "," << newUser->userUserName << "," << newUser->UserPassword << ","
-							<< newUser->UserName << "," << newUser->UserGender << "," << newUser->UserEmail << ","
-							<< newUser->UserLastLogin << "," << to_string(newUser->UserAge) << "," << newUser->UserContact << endl;
-			outfile.close();
-			data.addUserNode(newUser);
-			cout << "User acccount created." << endl;
-		} else {
-			cout << "Please try again later." << endl;
-		}
+		data.addUserNode(newUser);
 	}
 
 	private:

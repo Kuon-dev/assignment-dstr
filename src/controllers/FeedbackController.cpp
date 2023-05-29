@@ -60,27 +60,27 @@ class FeedbackController {
 		file.close();
 		return list;
 	}
-	void writeToDatabase(feedbackList* list){
-        ofstream outputFile("Database/FeedbackDatabase.csv");
+	void writeToDatabase(feedbackList* list) {
+		ofstream outputFile("Database/FeedbackDatabase.csv");
 
-        if (outputFile.is_open()) {
-            outputFile << "FeedbackId,UserId,FeedbackContent,ReplyContent,Timestamp" << endl;
+		if (outputFile.is_open()) {
+			outputFile << "FeedbackId,UserId,FeedbackContent,ReplyContent,Timestamp" << endl;
 
-            feedbackNode* current = list->getHead();
-            while (current != nullptr) {
-                outputFile << current->FeedbackId << ",";
-                outputFile << current->UserId << ",";
-                outputFile << current->FeedbackContent << ",";
-                outputFile << current->ReplyContent << ",";
-                outputFile << to_string(current->Timestamp) << endl;
-                current = current->NextAddress;
-            }
+			feedbackNode* current = list->getHead();
+			while (current != nullptr) {
+				outputFile << current->FeedbackId << ",";
+				outputFile << current->UserId << ",";
+				outputFile << current->FeedbackContent << ",";
+				outputFile << current->ReplyContent << ",";
+				outputFile << to_string(current->Timestamp) << endl;
+				current = current->NextAddress;
+			}
 
-            outputFile.close();
-            cout << "Feedback data successfully saved " << endl;
-        } else {
-            cout << "Error: Unable to open the file " << endl;
-        }
+			outputFile.close();
+			cout << "Feedback data successfully saved " << endl;
+		} else {
+			cout << "Error: Unable to open the file " << endl;
+		}
 	};
 
 	feedbackNode* getFeedbackById(feedbackList* list, string feedbackId) {

@@ -259,39 +259,6 @@ class favUniList {
 		}
 	}
 
-	// void overwriteFavUniData(favUniNode* saveFavUni) {
-	// 	favUniNode* current = saveFavUni;
-	//
-	// 	ofstream tempFile("temp.csv");
-	// 	// ifstream file("C:/Users/Acer/source/repos/assignment-dstr/Database/FavUni.csv");
-	// 	ifstream file("Database/FavUni.csv");
-	// 	string line;
-	// 	// bool found = false;
-	// 	tempFile << "FavUniID"
-	// 					 << ","
-	// 					 << "UserID"
-	// 					 << ","
-	// 					 << "UserName"
-	// 					 << ","
-	// 					 << "UniID"
-	// 					 << ","
-	// 					 << "UniName" << endl;
-	// 	while (current != NULL) {
-	// 		istringstream iss(line);
-	//
-	// 		tempFile << current->FavUniId << "," << current->UserId << "," << current->UserName << "," << current->UniId
-	// 						 << "," << current->UniName << endl;
-	// 		current = current->NextAddress;
-	// 	}
-	//
-	// 	file.close();
-	// 	tempFile.close();
-	//
-	// 	remove("Database/FavUni.csv");
-	// 	rename("temp.csv", "Database/FavUni.csv");
-	// 	cout << "Favourite Univerity is updated." << endl;
-	// }
-
 	private:
 	void
 	printTableRow(const string& col1, const string& col2, const string& col3, const string& col4, const string& col5) {

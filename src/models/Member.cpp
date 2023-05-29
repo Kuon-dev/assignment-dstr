@@ -1,9 +1,9 @@
+#include <ctime>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
-
-#include <iomanip>
 #include <typeinfo>
 
 #include "../modules/InputHandler.cpp"
@@ -31,37 +31,6 @@ class userList {
 	public:
 	userNode* getHead() { return head; }
 	userNode* getTail() { return this->tail; }
-
-	void createUserNode(
-		string userId,
-		string userName,
-		string userPassword,
-		string name,
-		int age,
-		string gender,
-		string email,
-		string contact,
-		string lastLogin) {
-		userNode* newUserNode = new userNode;
-		newUserNode->UserId = userId;
-		newUserNode->userUserName = userName;
-		newUserNode->UserPassword = userPassword;
-		newUserNode->UserName = name;
-		newUserNode->UserAge = age;
-		newUserNode->UserGender = gender;
-		newUserNode->UserEmail = email;
-		newUserNode->UserContact = contact;
-		newUserNode->UserLastLogin = lastLogin;
-		newUserNode->PrevAddress = nullptr;
-		newUserNode->NextAddress = nullptr;
-		if (head == nullptr) {
-			head = tail = newUserNode;
-		} else {
-			tail->NextAddress = newUserNode;
-			newUserNode->PrevAddress = tail;
-			tail = newUserNode;
-		};
-	}
 
 	void addUserNode(userNode* newUserNode) {
 		if (head == nullptr) {
@@ -181,6 +150,7 @@ class userList {
 
 	void displayAllUser() {
 		userNode* current = head;
+
 		// if no data
 		if (head == nullptr) {
 			cout << "No user data available." << endl;
@@ -192,10 +162,27 @@ class userList {
 				 << "Email" << setw(12) << "Contact" << setw(6) << "Age" << setw(28) << "Last Login" << endl;
 		cout << "----------------------------------------------------------------------------------------------------------"
 				 << endl;
+
 		while (current != nullptr) {
+			stringstream ss;
+			string formattedTimestamp;
+			formattedTimestamp = "null";
+
+			if (current->UserLastLogin != "null") {
+				time_t timestamp = static_cast<time_t>(stoi(current->UserLastLogin));
+				tm timestamp_tm{};
+				if (localtime_s(&timestamp_tm, &timestamp) == 0) {
+					char buffer[64];
+					if (strftime(buffer, sizeof(buffer), "%c", &timestamp_tm) > 0) {
+						formattedTimestamp = buffer;
+					}
+				}
+			}
+
 			cout << setw(6) << current->UserId << setw(15) << current->userUserName << setw(15) << current->UserName
 					 << setw(10) << current->UserGender << setw(35) << current->UserEmail << setw(12) << current->UserContact
-					 << setw(6) << current->UserAge << setw(28) << current->UserLastLogin << endl;
+					 << setw(6) << current->UserAge << setw(28) << formattedTimestamp << endl;
+
 			current = current->NextAddress;
 		}
 	}
