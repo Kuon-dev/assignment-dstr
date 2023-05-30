@@ -851,6 +851,7 @@ void userRegister() {
 
 void displaySearchUniversityMenu() {
 	FavouritesController favouriteData;
+	universitySearcher searcher;
 	// favouriteData.getFULinkListFromDB();
 	while (true) {
 		string input;
@@ -868,6 +869,9 @@ void displaySearchUniversityMenu() {
 				 << endl;
 
 		int choice = handleUserInput();
+		universityList * filteredList = new universityList;
+		chrono::high_resolution_clock::time_point startLinear, startBinary, endLinear, endBinary;
+		chrono::microseconds durationLinear, durationBinary;
 
 		switch (choice) {
 		case 1:
@@ -887,10 +891,30 @@ void displaySearchUniversityMenu() {
 			break;
 
 		case 4:
-			// to do implement comparison for search name
-			//
+			cout << "\033[94m";
+			cout << "Starting merge search" << endl;
+			// calculate
+			startLinear = chrono::high_resolution_clock::now();
+			filteredList = searcher.linearSearch(uniData->getHead(),"Location", "Malaysia");
+			endLinear = chrono::high_resolution_clock::now();
 
-			uniController->searchUniQuick("Name", input, uniData);
+			durationLinear = chrono::duration_cast<chrono::microseconds>(endLinear - startLinear);
+			// resetting the search
+			cout << "Linear search done" << endl;
+			cout << "Resetting search" << endl;
+			endLinear = chrono::high_resolution_clock::now();
+			cout << "Starting binarys search" << endl;
+
+			// calculate
+			startBinary = chrono::high_resolution_clock::now();
+			filteredList = searcher.binarySearch(uniData,"Location", "Malaysia");
+			endBinary = chrono::high_resolution_clock::now();
+
+			durationBinary = chrono::duration_cast<chrono::microseconds>(endBinary - startBinary);
+			cout << "Linear search execution time: " << durationLinear.count() << " microseconds" << endl;
+			cout << "Binary search execution time: " << durationBinary.count() << " microseconds" << endl;
+			cout << "\033[0m";
+
 			break;
 
 		case 5:
