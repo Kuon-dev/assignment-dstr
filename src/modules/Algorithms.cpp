@@ -16,7 +16,7 @@ double stringToDouble(string s) {
 	try {
 		// convert string to double with decimal point
 		return stod(s);
-	} catch (const std::invalid_argument& e) {
+	} catch (const invalid_argument& e) {
 		// handle invalid input string
 		return 0.0;
 	}
@@ -24,11 +24,11 @@ double stringToDouble(string s) {
 
 string toLower(string s) {
 	for (int i = 0; i < s.length(); i++) {
-		s[i] = std::tolower(s[i]);
+		s[i] = tolower(s[i]);
 	}
 	size_t firstNonSpace = s.find_first_not_of(' ');
 
-	if (firstNonSpace != std::string::npos) {
+	if (firstNonSpace != string::npos) {
 		return s.erase(0, firstNonSpace);
 	}
 	return s;
@@ -105,7 +105,7 @@ string getColumnFromIndex(int index) {
 	case 20:
 		return "ScoreScaled";
 	default:
-		throw std::runtime_error("Invalid index for column.");
+		throw runtime_error("Invalid index for column.");
 	}
 }
 
@@ -350,7 +350,7 @@ class newQuickSort {
 
 	void swapNodes(universityNode* a, universityNode* b) {
 		if (a == nullptr || b == nullptr) {
-			throw std::runtime_error("Cannot swap null nodes");
+			throw runtime_error("Cannot swap null nodes");
 		}
 
 		// Create a temporary node to hold values of node a
@@ -423,63 +423,22 @@ class newQuickSort {
 
 class universitySearcher {
 	public:
-	static universityList* binarySearch(universityList* list, const std::string& field, const std::string& query) {
-		universityList* results = new universityList();
-		universityNode* current = list->getHead();
-
-		while (current != nullptr) {
-			if (
-				field == "Name" && current->Name == query || field == "LocationCode" && current->LocationCode == query
-				|| field == "Location" && current->Location == query || field == "ArScore" && current->ArScore == query
-				|| field == "ArRank" && current->ArRank == query || field == "ErScore" && current->ErScore == query
-				|| field == "ErRank" && current->ErRank == query || field == "FsrScore" && current->FsrScore == query
-				|| field == "FsrRank" && current->FsrRank == query || field == "CpfScore" && current->CpfScore == query
-				|| field == "CpfRank" && current->CpfRank == query || field == "IfrScore" && current->IfrScore == query
-				|| field == "IfrRank" && current->IfrRank == query || field == "IsrScore" && current->IsrScore == query
-				|| field == "IsrRank" && current->IsrRank == query || field == "IrnScore" && current->IrnScore == query
-				|| field == "IrnRank" && current->IrnRank == query || field == "GerScore" && current->GerScore == query
-				|| field == "GerRank" && current->GerRank == query || field == "ScoreScaled" && current->ScoreScaled == query) {
-				// Create a new node, copy the data from the current node, and append it to the results list.
-				universityNode* newNode = new universityNode(*current);
-				newNode->next = nullptr;
-				newNode->prev = results->getTail();
-				if (results->getHead() == nullptr) {
-					results->setHead(newNode);
-				}
-				if (results->getTail() != nullptr) {
-					results->setTail(newNode);
-				}
-				results->setTail(newNode);
-			}
-			current = current->next;
-		}
-
-		return results;
+	universityNode* binarySearch(universityList* list, string field, int query) {
+		int length;
+		universityNode** array = linkedListToArray(list, length);
+		universityNode* result = binarySearch(array, length, field, query);
+		delete[] array;
+		return result;
 	}
 
-	static universityList* binarySearch(universityList* list, int rank) {
-		universityList* results = new universityList();
-		universityNode* current = list->getHead();
-
-		while (current != nullptr) {
-			if (current->Rank == rank) {
-				// Create a new node, copy the data from the current node, and append it to the results list.
-				universityNode* newNode = new universityNode(*current);
-				newNode->next = nullptr;
-				newNode->prev = results->getTail();
-				if (results->getHead() == nullptr) {
-					results->setHead(newNode);
-				}
-				if (results->getTail() != nullptr) {
-					results->setTail(newNode);
-				}
-				results->setTail(newNode);
-			}
-			current = current->next;
-		}
-
-		return results;
+	universityNode* binarySearch(universityList* list, string field, string query) {
+		int length;
+		universityNode** array = linkedListToArray(list, length);
+		universityNode* result = binarySearch(array, length, field, query);
+		delete[] array;
+		return result;
 	}
+
 	universityList* linearSearch(universityNode* head, string column, string query) {
 		universityList* newList = new universityList;
 		universityNode* current = head;
@@ -525,4 +484,54 @@ class universitySearcher {
 
 		return (j == queryLen);
 	}
+	universityNode** linkedListToArray(universityList* list, int& length) {
+		length = 0;
+		universityNode* current = list->getHead();
+		while (current != nullptr) {
+			length++;
+			current = current->next;
+		}
+
+		universityNode** array = new universityNode*[length];
+		current = list->getHead();
+		for (int i = 0; i < length; i++) {
+			array[i] = current;
+			current = current->next;
+		}
+		return array;
+	}
+	// int type
+	universityNode* binarySearch(universityNode** array, int length, string field, int query) {
+		int start = 0, end = length - 1;
+		while (start <= end) {
+			int mid = start + (end - start) / 2;
+			string midValue = getColumn(array[mid], field);  // Use '.' instead of '->*'
+			if (stoi(midValue) == query) {
+				return array[mid];
+			} else if (stoi(midValue) < query) {
+				start = mid + 1;
+			} else {
+				end = mid - 1;
+			}
+		}
+		return nullptr;
+	}
+	// string type
+	universityNode* binarySearch(universityNode** array, int length, string field, const string& query) {
+		int start = 0, end = length - 1;
+		while (start <= end) {
+			int mid = start + (end - start) / 2;
+			string midValue = getColumn(array[mid], field);
+			int comparison = midValue.compare(query);
+			if (comparison == 0) {
+				return array[mid];
+			} else if (comparison < 0) {
+				start = mid + 1;
+			} else {
+				end = mid - 1;
+			}
+		}
+		return nullptr;
+	}
+
 };

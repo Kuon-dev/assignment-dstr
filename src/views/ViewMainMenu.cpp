@@ -869,7 +869,7 @@ void displaySearchUniversityMenu() {
 				 << endl;
 
 		int choice = handleUserInput();
-		universityList * filteredList = new universityList;
+		universityNode * filteredNode = new universityNode;
 		chrono::high_resolution_clock::time_point startLinear, startBinary, endLinear, endBinary;
 		chrono::microseconds durationLinear, durationBinary;
 
@@ -895,7 +895,7 @@ void displaySearchUniversityMenu() {
 			cout << "Starting merge search" << endl;
 			// calculate
 			startLinear = chrono::high_resolution_clock::now();
-			filteredList = searcher.linearSearch(uniData->getHead(),"Location", "Malaysia");
+			searcher.linearSearch(uniData->getHead(),"Location", "Malaysia");
 			endLinear = chrono::high_resolution_clock::now();
 
 			durationLinear = chrono::duration_cast<chrono::microseconds>(endLinear - startLinear);
@@ -907,7 +907,7 @@ void displaySearchUniversityMenu() {
 
 			// calculate
 			startBinary = chrono::high_resolution_clock::now();
-			filteredList = searcher.binarySearch(uniData,"Location", "Malaysia");
+			searcher.binarySearch(uniData, "Location", "Malaysia");
 			endBinary = chrono::high_resolution_clock::now();
 
 			durationBinary = chrono::duration_cast<chrono::microseconds>(endBinary - startBinary);

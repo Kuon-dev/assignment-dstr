@@ -151,7 +151,7 @@ class UniversityContoller {
 		universitySearcher searcher;
 
 		mergeSorter.mergeSortString(*currentList, column);
-		queryList = searcher.binarySearch(currentList, (input));
+		queryList->addUniversityNode(searcher.binarySearch(currentList, "Rank", (input)));
 		queryList->displayPaginated(1);
 	}
 

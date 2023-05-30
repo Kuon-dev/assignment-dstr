@@ -92,13 +92,14 @@ class favUniList {
 
 	private:
 	void printTableRow(const string& col1, const string& col2, const string& col3) {
-    int col1Width = 15;
-    int col2Width = 30;
-    int col3Width = 30;
+		int col1Width = 15;
+		int col2Width = 30;
+		int col3Width = 30;
 
-    cout << left << setw(col1Width) << col1.substr(0, col1Width) << " | "
-         << setw(col2Width) << col2.substr(0, col2Width) << " | "
-         << setw(col3Width) << col3.substr(0, col3Width) << " | " << endl;
+		cout << left << setw(col1Width) << col1.substr(0, col1Width) << " | "
+			 << setw(col2Width) << col2.substr(0, col2Width) << " | "
+			 << setw(col3Width) << col3.substr(0, col3Width) << " | " << endl;
 
-    cout << setfill('-') << setw(col1Width + col2Width + col3Width + 15) << "" << setfill(' ')<< endl;
-}};
+		cout << setfill('-') << setw(col1Width + col2Width + col3Width + 15) << "" << setfill(' ')<< endl;
+	}
+};
