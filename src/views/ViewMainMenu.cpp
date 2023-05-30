@@ -365,6 +365,10 @@ class UserMenu {
 			int choice = handleUserInput();
 			int page;
 			bool exitPaginate = true;
+			chrono::high_resolution_clock::time_point startMerge, endMerge;
+			chrono::high_resolution_clock::time_point startQuick, endQuick;
+			chrono::microseconds durationMerge, durationQuick;
+
 
 			switch (choice) {
 			case 1:
@@ -442,6 +446,34 @@ class UserMenu {
 				break;
 			case 7:
 				// to do implementation on quick merge comparison
+				cout << "Resetting sort for a fair comparison" << endl;
+				mergeSorter.mergeSortInt(*uniData, "Rank", "asc");
+				cout << "Starting merge sort" << endl;
+				// calculate
+				startMerge = chrono::high_resolution_clock::now();
+				mergeSorter.mergeSortString(*uniData, "Name");
+				endMerge = chrono::high_resolution_clock::now();
+
+				durationMerge = chrono::duration_cast<chrono::microseconds>(endMerge - startMerge);
+				// resetting the sort
+				cout << "Merge sort done" << endl;
+				cout << "Resetting sort" << endl;
+				mergeSorter.mergeSortInt(*uniData, "Rank", "asc");
+				endMerge = chrono::high_resolution_clock::now();
+				cout << "Starting quick sort" << endl;
+
+				// calculate
+				startQuick = chrono::high_resolution_clock::now();
+				quickSorter.quicksortString(*uniData, "Name");
+				endQuick = chrono::high_resolution_clock::now();
+
+				durationQuick = chrono::duration_cast<chrono::microseconds>(endQuick - startQuick);
+
+				// Print the results in light blue
+				cout << "merge sort execution time: " << durationMerge.count() << " microseconds" << endl;
+				cout << "quick sort execution time: " << durationQuick.count() << " microseconds" << endl;
+				cout << "\033[0m";
+
 				break;
 			case 8:
 				return;
