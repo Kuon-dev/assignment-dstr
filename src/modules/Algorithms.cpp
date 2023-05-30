@@ -10,6 +10,28 @@ using namespace std;
 | This section contains list of helper functions
 |
 */
+
+bool isValidInteger(const string& value) {
+    if (value.empty()) {
+        return false;  // Empty value is not a valid integer
+    }
+
+    // Check for a leading "+" or "-"
+    size_t start = 0;
+    if (value[0] == '+' || value[0] == '-') {
+        start = 1;  // Skip the leading sign
+    }
+
+    // Check if the remaining characters are digits
+    for (size_t i = start; i < value.length(); ++i) {
+        if (!isdigit(value[i])) {
+            return false;  // Non-digit character found, not a valid integer
+        }
+    }
+
+    return true;  // All characters are digits, valid integer
+}
+
 double stringToDouble(string s) {
 	if (s.empty()) return 0.0;
 
@@ -37,25 +59,33 @@ string toLower(string s) {
 // for uni
 string getColumn(universityNode* node, string column) {
 	if (column == "Rank") return to_string(node->Rank);
-	else if (column == "Name") return node->Name;
+	else if (column == "Name") {
+		// delete leading white-spaces
+		string name = node->Name;
+		size_t startPos = name.find_first_not_of(" \t");  // Find the position of the first non-whitespace character
+		if (startPos != string::npos) {
+			return name.substr(startPos);  // Return the substring starting from the first non-whitespace character
+		}
+		return name;  // If the string contains only whitespaces, return the original value without modification
+	}
 	else if (column == "LocationCode") return node->LocationCode;
 	else if (column == "Location") return node->Location;
-	else if (column == "ArScore") return node->ArScore;
-	else if (column == "ArRank") return node->ArRank;
-	else if (column == "ErScore") return node->ErScore;
-	else if (column == "ErRank") return node->ErRank;
-	else if (column == "FsrScore") return node->FsrScore;
-	else if (column == "FsrRank") return node->FsrRank;
-	else if (column == "CpfScore") return node->CpfScore;
-	else if (column == "CpfRank") return node->CpfRank;
-	else if (column == "IfrScore") return node->IfrScore;
-	else if (column == "IfrRank") return node->IfrRank;
-	else if (column == "IsrScore") return node->IsrScore;
-	else if (column == "IsrRank") return node->IsrRank;
-	else if (column == "IrnScore") return node->IrnScore;
-	else if (column == "IrnRank") return node->IrnRank;
-	else if (column == "GerScore") return node->GerScore;
-	else if (column == "GerRank") return node->GerRank;
+	else if (column == "ArScore") return isValidInteger(node->ArScore) ? node->ArScore : "0";
+	else if (column == "ArRank") return isValidInteger(node->ArRank) ? node->ArRank : "0";
+	else if (column == "ErScore") return isValidInteger(node->ErScore) ? node->ErScore : "0";
+	else if (column == "ErRank") return isValidInteger(node->ErRank) ? node->ErRank : "0";
+	else if (column == "FsrScore") return isValidInteger(node->FsrScore) ? node->FsrScore : "0";
+	else if (column == "FsrRank") return isValidInteger(node->FsrRank) ? node->FsrRank : "0";
+	else if (column == "CpfScore") return isValidInteger(node->CpfScore) ? node->CpfScore : "0";
+	else if (column == "CpfRank") return isValidInteger(node->CpfRank) ? node->CpfRank : "0";
+	else if (column == "IfrScore") return isValidInteger(node->IfrScore) ? node->IfrScore : "0";
+	else if (column == "IfrRank") return isValidInteger(node->IfrRank) ? node->IfrRank : "0";
+	else if (column == "IsrScore") return isValidInteger(node->IsrScore) ? node->IsrScore : "0";
+	else if (column == "IsrRank") return isValidInteger(node->IsrRank) ? node->IsrRank : "0";
+	else if (column == "IrnScore") return isValidInteger(node->IrnScore) ? node->IrnScore : "0";
+	else if (column == "IrnRank") return isValidInteger(node->IrnRank) ? node->IrnRank : "0";
+	else if (column == "GerScore") return isValidInteger(node->GerScore) ? node->GerScore : "0";
+	else if (column == "GerRank") return isValidInteger(node->GerRank) ? node->GerRank : "0";
 	else if (column == "ScoreScaled") return node->ScoreScaled;
 	else return "";
 }
@@ -505,10 +535,10 @@ class universitySearcher {
 		int start = 0, end = length - 1;
 		while (start <= end) {
 			int mid = start + (end - start) / 2;
-			string midValue = getColumn(array[mid], field);  // Use '.' instead of '->*'
-			if (stoi(midValue) == query) {
+			int midValue = stoi(getColumn(array[mid], field));  // Use '.' instead of '->*'
+			if (midValue == query) {
 				return array[mid];
-			} else if (stoi(midValue) < query) {
+			} else if (midValue < query) {
 				start = mid + 1;
 			} else {
 				end = mid - 1;

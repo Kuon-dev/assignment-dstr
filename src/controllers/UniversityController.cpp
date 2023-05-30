@@ -149,10 +149,21 @@ class UniversityContoller {
 		universityList* queryList = new universityList();
 		newMergeSort mergeSorter;
 		universitySearcher searcher;
+		universityNode* headNode;
 
-		mergeSorter.mergeSortString(*currentList, column);
-		queryList->addUniversityNode(searcher.binarySearch(currentList, "Rank", (input)));
-		queryList->displayPaginated(1);
+		mergeSorter.mergeSortInt(*currentList, column, "asc");
+		headNode = (searcher.binarySearch(currentList, "Rank", input));
+		if(headNode != nullptr) {
+			cout << headNode->Name;
+			universityNode* copyNode = new universityNode;
+			*copyNode = *headNode;
+			copyNode->prev = nullptr;
+			copyNode->next = nullptr;
+			queryList->addUniversityNode(copyNode);
+			queryList->displayPaginated(1);
+		} else {
+			cout << "Item not found" << endl;
+		}
 	}
 
 	void searchUniMerge(string column, string input, universityList* currentList) {
