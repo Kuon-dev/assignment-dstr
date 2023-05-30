@@ -154,7 +154,6 @@ class UniversityContoller {
 		mergeSorter.mergeSortInt(*currentList, column, "asc");
 		headNode = (searcher.binarySearch(currentList, "Rank", input));
 		if(headNode != nullptr) {
-			cout << headNode->Name;
 			universityNode* copyNode = new universityNode;
 			*copyNode = *headNode;
 			copyNode->prev = nullptr;
