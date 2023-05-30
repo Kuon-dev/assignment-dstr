@@ -1,8 +1,31 @@
 FavUniID,UserID,UserName,UniID,UniName
-1,987,Loong,8,UCL
-2,987,Loong,16,EPFL
-3,785,Lee,8,UCL
-4,888,Andrew,8,UCL
-5,1,Lynn,16,EPFL
-6,1,Lynn,5,Harvard University
-7,1,Lynn,88,Georgia Institute of Technology
+1,1,Lynn,16,EPFL
+2,1,Lynn,5,Harvard University
+3,1,Lynn,88,Georgia Institute of Technology
+4,4,David,1,Massachusetts Institute of Technology (MIT) 
+5,4,David,3,Stanford University
+6,4,David,5,Harvard University
+7,5,Sarah,6,California Institute of Technology (Caltech)
+8,5,Sarah,1,Massachusetts Institute of Technology (MIT) 
+9,5,Sarah,2,University of Cambridge
+10,5,Sarah,3,Stanford University
+11,6,Michael,1,Massachusetts Institute of Technology (MIT) 
+12,6,Michael,4,University of Oxford
+13,6,Michael,2,University of Cambridge
+14,11,Ava,1,Massachusetts Institute of Technology (MIT) 
+15,11,Ava,12,Peking University
+16,11,Ava,11,National University of Singapore (NUS)
+17,20,Jacob,20,Cornell University
+18,20,Jacob,14,Tsinghua University
+19,20,Jacob,13,University of Pennsylvania
+20,18,Aiden,1,Massachusetts Institute of Technology (MIT) 
+21,18,Aiden,12,Peking University
+22,18,Aiden,22,Columbia University
+23,17,Grace,25,University of Michigan-Ann Arbor
+24,17,Grace,17,Princeton University
+25,17,Grace,9,ETH Zurich - Swiss Federal Institute of Technology
+26,9,Olivia,30,The Australian National University
+27,9,Olivia,31,McGill University
+28,9,Olivia,32,Northwestern University
+29,9,Olivia,1,Massachusetts Institute of Technology (MIT) 
+30,9,Olivia,13,University of Pennsylvania

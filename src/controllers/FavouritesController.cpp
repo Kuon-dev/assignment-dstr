@@ -217,7 +217,6 @@ class FavouritesController {
 		universityNode* current = uList.getHead();
 		while (current != nullptr) {
 			if (current->Rank == Rank) {
-				cout << current->Name;
 				return current;
 			}
 			current = current->next;
@@ -266,8 +265,6 @@ class FavouritesController {
             delete favCounts;
             favCounts = next;
         }
-
-		cout << "Done clean up" << endl;
 
         return topFavourites;
     }
