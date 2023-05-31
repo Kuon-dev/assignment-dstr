@@ -666,6 +666,8 @@ class AdminMenu {
 				break;
 			case 2:
 				cout << "You have selected 'View all feedback'" << endl;
+				feedbackController->sortFeedbackList(*feedbackData);
+				feedbackData->displayFeedbackPaginate(1);
 				displayFeedback();
 				break;
 			case 3:
@@ -688,7 +690,6 @@ class AdminMenu {
 	private:
 	void displayFeedback() {
 		while (true) {
-			feedbackData->displayFeedbackPaginate(1);
 			string choice = handleStringInput("Press 0 to return, Press 'a' to reply feedback, Enter number to go to page");
 			string feedback;
 			string replyContent;

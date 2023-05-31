@@ -220,6 +220,7 @@ class feedbackList {
 
 	feedbackNode* getHead() { return head; }
 	feedbackNode* getTail() { return tail; }
+	void setHead(feedbackNode* newHead) { head = newHead; }
 
 	private:
 	feedbackNode* head;
