@@ -181,8 +181,8 @@ class feedbackList {
 		}
 
 		int count = 0;
-		int startIdx = (pageNumber - 1) * 20;
-		int endIdx = startIdx + 20;
+		int startIdx = (pageNumber - 1) * 5;
+		int endIdx = startIdx + 5;
 
 		feedbackNode* current = head;
 		printTableRow("Feedback ID", "Feedback Content", "Reply Content", "Time created");
