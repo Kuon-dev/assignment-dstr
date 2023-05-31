@@ -54,8 +54,7 @@ class UserMenu {
 			switch (choice) {
 			case 1:
 				cout << "You have selected 'View the Top Score University'" << endl;
-				// quick sort algorithm so sort
-				quickSorter.quicksortInt(*uniData, "ScoreScaled", "dsc");
+				mergeSorter.mergeSortInt(*uniData, "ScoreScaled", "dsc");
 				uniController->displayPaginated(*uniData, 1);
 				while (exitPaginate) {
 					page = handleIntInput("Enter page number to skip or enter 0 to return");
