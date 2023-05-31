@@ -51,6 +51,8 @@ class feedbackList {
 		};
 	}
 
+
+
 	void updateFeedback(feedbackNode* newNode) {
 		if (head == nullptr) {
 			cout << "The feedback list is empty." << endl;
@@ -61,18 +63,23 @@ class feedbackList {
 
 		while (current != nullptr) {
 			if (current->FeedbackId == newNode->FeedbackId) {
-				newNode->PreviousAddress = current->PreviousAddress;
-				newNode->NextAddress = current->NextAddress;
 
-				if (current->PreviousAddress != nullptr) {
-					current->PreviousAddress->NextAddress = newNode;
+				// save pointers to nodes adjacent to current
+				feedbackNode* prevNode = current->PreviousAddress;
+				feedbackNode* nextNode = current->NextAddress;
+
+				newNode->PreviousAddress = prevNode;
+				newNode->NextAddress = nextNode;
+
+				if (prevNode != nullptr) {
+					prevNode->NextAddress = newNode;
 				} else {
 					// Updating head node
 					head = newNode;
 				}
 
-				if (current->NextAddress != nullptr) {
-					current->NextAddress->PreviousAddress = newNode;
+				if (nextNode != nullptr) {
+					nextNode->PreviousAddress = newNode;
 				} else {
 					// Updating tail node
 					tail = newNode;

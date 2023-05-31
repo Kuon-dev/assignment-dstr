@@ -85,9 +85,18 @@ class FeedbackController {
 
 	void sortFeedbackList(feedbackList& list) {
 		feedbackNode* head = list.getHead();
-		mergeSort(&head);
+		mergeSortDate(&head);
+		// You may also need to set the sorted list's head back to the list depending on your requirements
 		list.setHead(head);
 	}
+
+	void sortFeedbackListById(feedbackList& list) {
+		feedbackNode* head = list.getHead();
+		mergeSortID(&head);
+		// You may also need to set the sorted list's head back to the list depending on your requirements
+		list.setHead(head);
+	}
+
 
 	feedbackNode* getFeedbackById(feedbackList* list, string feedbackId) {
 		feedbackNode* current = list->getHead();
@@ -139,68 +148,107 @@ class FeedbackController {
 		else return (stoi(lastNode->FeedbackId) + 1);
 	}
 
+    void split(feedbackNode* head, feedbackNode** firstHalf, feedbackNode** secondHalf) {
+        feedbackNode* fast;
+        feedbackNode* slow;
+        slow = head;
+        fast = head->NextAddress;
 
-	void split(feedbackNode* head, feedbackNode** firstHalf, feedbackNode** secondHalf) {
-		feedbackNode* fast;
-		feedbackNode* slow;
-		slow = head;
-		fast = head->NextAddress;
+        /* Advance 'fast' two nodes, and advance 'slow' one node */
+        while (fast != nullptr) {
+            fast = fast->NextAddress;
+            if (fast != nullptr) {
+                slow = slow->NextAddress;
+                fast = fast->NextAddress;
+            }
+        }
 
-		// Advance 'fast' two nodes, and advance 'slow' one node
-		while (fast != nullptr) {
-			fast = fast->NextAddress;
-			if (fast != nullptr) {
-				slow = slow->NextAddress;
-				fast = fast->NextAddress;
-			}
+        /* 'slow' is before the midpoint in the list, so split it in two at that point. */
+        *firstHalf = head;
+        *secondHalf = slow->NextAddress;
+        slow->NextAddress = nullptr;
+    }
+
+    // Function to merge the sorted lists
+    feedbackNode* mergeDate(feedbackNode* firstHalf, feedbackNode* secondHalf) {
+        feedbackNode* result = nullptr;
+
+        /* Base cases */
+        if (firstHalf == nullptr)
+            return secondHalf;
+        else if (secondHalf == nullptr)
+            return firstHalf;
+
+        /* Pick either firstHalf or secondHalf, and recur */
+        if (firstHalf->Timestamp >= secondHalf->Timestamp) {
+            result = firstHalf;
+            result->NextAddress = mergeDate(firstHalf->NextAddress, secondHalf);
+        } else {
+            result = secondHalf;
+            result->NextAddress = mergeDate(firstHalf, secondHalf->NextAddress);
+        }
+        return result;
+    }
+
+    // Main function to sort linked list using merge sort
+    void mergeSortDate(feedbackNode** headRef) {
+        feedbackNode* head = *headRef;
+        feedbackNode* firstHalf;
+        feedbackNode* secondHalf;
+
+        /* Base case -- length 0 or 1 */
+        if ((head == nullptr) || (head->NextAddress == nullptr)) {
+            return;
+        }
+
+        /* Split head into 'firstHalf' and 'secondHalf' */
+        split(head, &firstHalf, &secondHalf);
+
+        /* Recursively sort the halves */
+        mergeSortDate(&firstHalf);
+        mergeSortDate(&secondHalf);
+
+        /* answer = merge the two sorted lists together */
+        *headRef = mergeDate(firstHalf, secondHalf);
+    }
+
+	feedbackNode* mergeID(feedbackNode* a, feedbackNode* b) {
+		feedbackNode* result = NULL;
+
+		// Base cases
+		if (a == NULL)
+			return b;
+		else if (b == NULL)
+			return a;
+
+		// Sort by FeedbackId
+		if (a->FeedbackId <= b->FeedbackId) {
+			result = a;
+			result->NextAddress = mergeID(a->NextAddress, b);
 		}
-
-		// 'slow' is before the midpoint in the list, so split it in two at that point. 
-		*firstHalf = head;
-		*secondHalf = slow->NextAddress;
-		slow->NextAddress = nullptr;
+		else {
+			result = b;
+			result->NextAddress = mergeID(a, b->NextAddress);
+		}
+		return result;
 	}
 
-	// Function to merge the sorted lists
-	feedbackNode* merge(feedbackNode* firstHalf, feedbackNode* secondHalf) {
-			feedbackNode* result = nullptr;
+	void mergeSortID(feedbackNode** headRef) {
+		feedbackNode* head = *headRef;
+		feedbackNode* a;
+		feedbackNode* b;
 
-			// Base cases
-			if (firstHalf == nullptr)
-					return secondHalf;
-			else if (secondHalf == nullptr)
-					return firstHalf;
+		// Base case
+		if ((head == NULL) || (head->NextAddress == NULL))
+			return;
 
-			// Pick either firstHalf or secondHalf, and recur
-			if (firstHalf->Timestamp >= secondHalf->Timestamp) {
-					result = firstHalf;
-					result->NextAddress = merge(firstHalf->NextAddress, secondHalf);
-			} else {
-					result = secondHalf;
-					result->NextAddress = merge(firstHalf, secondHalf->NextAddress);
-			}
-			return result;
-	}
+		split(head, &a, &b); // function to split the nodes
 
-	// to sort linked list using merge sort
-	void mergeSort(feedbackNode** headRef) {
-			feedbackNode* head = *headRef;
-			feedbackNode* firstHalf;
-			feedbackNode* secondHalf;
+		// Recursively sort sublists
+		mergeSortID(&a);
+		mergeSortID(&b);
 
-			// Base case -- length 0 or 1
-			if ((head == nullptr) || (head->NextAddress == nullptr)) {
-					return;
-			}
-
-			// Split head into 'firstHalf' and 'secondHalf'
-			split(head, &firstHalf, &secondHalf);
-
-			// Recursively sort the halves 
-			mergeSort(&firstHalf);
-			mergeSort(&secondHalf);
-
-			// answer = merge the two sorted lists together
-			*headRef = merge(firstHalf, secondHalf);
+		// Combine the sorted lists
+		*headRef = mergeID(a, b);
 	}
 };
