@@ -306,7 +306,6 @@ class UserMenu {
 	}
 
 	void profileMenu() {
-		// TODO: display profile
 		string uniid, favid;
 		while (true) {
 			cout
