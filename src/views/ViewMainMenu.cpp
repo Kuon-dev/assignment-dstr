@@ -443,7 +443,6 @@ class UserMenu {
 				}
 				break;
 			case 7:
-				// to do implementation on quick merge comparison
 				cout << "Resetting sort for a fair comparison" << endl;
 				mergeSorter.mergeSortInt(*uniData, "Rank", "asc");
 				cout << "Starting merge sort" << endl;
@@ -968,7 +967,6 @@ void sortUniversityMenu() {
 			}
 			break;
 		case 3:
-			// To do implement comparison for quick sort and merge sort
 			//  Measure execution time for mergeSortString
 			//
 			cout << "\033[94m";
