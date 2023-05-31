@@ -187,46 +187,17 @@ class userList {
 		}
 	}
 
-	// get user list length
-	int userListLength() {
-		int count = 0;
+	// Linear search algorithm to find a specific user node
+	userNode* getSpecificUserNode(string userId) {
 		userNode* current = head;
 		while (current != nullptr) {
-			count++;
-			current = current->NextAddress;
-		}
-		return count;
-	}
-
-	// get the user node with passing index
-	userNode* getUserNodeAt(int index) {
-		int count = 0;
-		userNode* current = head;
-		while (current != nullptr && count < index) {
-			count++;
-			current = current->NextAddress;
-		}
-		return current;
-	}
-
-	// Binary search algorithm to find a specific user node
-	userNode* getSpecificUserNode(string userId) {
-		int low = 0;
-		int high = userListLength() - 1;
-		while (low <= high) {
-			int mid = (low + high) / 2;
-			userNode* current = getUserNodeAt(mid);
-
 			if (current->UserId == userId) {
 				return current;
-			} else if (current->UserId < userId) {
-				low = mid + 1;
-			} else {
-				high = mid - 1;
 			}
+			current = current->NextAddress;
 		}
 		cout << "User details not found" << endl;
-		// Return null when not find
+		// Return null when not found
 		return nullptr;
 	}
 };

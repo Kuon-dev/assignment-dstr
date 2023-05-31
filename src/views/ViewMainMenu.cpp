@@ -501,14 +501,12 @@ class AdminMenu {
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
 			cout << "| Select the option to modify" << endl;
-			cout << "| 1. Username" << endl;
-			cout << "| 2. Name" << endl;
-			cout << "| 3. Age" << endl;
-			cout << "| 4. Gender" << endl;
-			cout << "| 5. Email" << endl;
-			cout << "| 6. Contact" << endl;
-			cout << "| 7. Password" << endl;
-			cout << "| 8. Return" << endl;
+			cout << "| 1. Name" << endl;
+			cout << "| 2. Age" << endl;
+			cout << "| 3. Gender" << endl;
+			cout << "| 4. Email" << endl;
+			cout << "| 5. Contact" << endl;
+			cout << "| 6. Return" << endl;
 			cout
 				<< "----------------------------------------------------------------------------------------------------------"
 				<< endl;
@@ -518,25 +516,6 @@ class AdminMenu {
 
 			switch (choice) {
 			case 1:
-				inputString = handleStringInput("Enter the new username (Enter 1 to return)");
-				if (inputString != "1") {
-					modify = userListController->validateUsername(inputString, *userData);
-					if (modify) {
-						// update user username only
-						userData->updateUserNode(
-							targetUser->UserId,
-							inputString,
-							targetUser->UserName,
-							targetUser->UserAge,
-							targetUser->UserPassword,
-							targetUser->UserGender,
-							targetUser->UserEmail,
-							targetUser->UserContact,
-							targetUser->UserLastLogin);
-					}
-				}
-				return;
-			case 2:
 				inputString = handleStringInput("Enter the new name (Enter 1 to return)");
 				if (inputString != "1") {
 					// update user name only
@@ -552,7 +531,7 @@ class AdminMenu {
 						targetUser->UserLastLogin);
 				}
 				return;
-			case 3:
+			case 2:
 				inputInt = handleIntInput("Enter the new age (Enter 1 to return)");
 				if (inputInt != 1) {
 					// update user age only
@@ -568,7 +547,7 @@ class AdminMenu {
 						targetUser->UserLastLogin);
 				}
 				return;
-			case 4:
+			case 3:
 				inputString = handleStringInput("Enter the new gender (Enter 1 to return)");
 				if (inputString != "1") {
 					// update user gender only
@@ -584,7 +563,7 @@ class AdminMenu {
 						targetUser->UserLastLogin);
 				}
 				return;
-			case 5:
+			case 4:
 				inputString = handleStringInput("Enter the new email (Enter 1 to return)");
 				if (inputString != "1") {
 					modify = userListController->validateEmail(inputString);
@@ -603,7 +582,7 @@ class AdminMenu {
 					}
 				}
 				return;
-			case 6:
+			case 5:
 				inputString = handleStringInput("Enter the new contact (Enter 1 to return)");
 				if (inputString != "1") {
 					// update user contact only
@@ -619,23 +598,7 @@ class AdminMenu {
 						targetUser->UserLastLogin);
 				}
 				return;
-			case 7:
-				inputString = handleStringInput("Enter the new password (Enter 1 to return)");
-				if (inputString != "1") {
-					// update user password only
-					userData->updateUserNode(
-						targetUser->UserId,
-						targetUser->userUserName,
-						targetUser->UserName,
-						targetUser->UserAge,
-						inputString,
-						targetUser->UserGender,
-						targetUser->UserEmail,
-						targetUser->UserContact,
-						targetUser->UserLastLogin);
-				}
-				return;
-			case 8:
+			case 6:
 				return;
 			default:
 				cout << "Invalid choice. Please enter a valid choice." << endl;
