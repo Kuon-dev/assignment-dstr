@@ -705,7 +705,9 @@ class AdminMenu {
 					feedbackData->displayFeedback(getFeedback);
 					replyContent = handleStringInput("Enter your reply, press 0 to return: ");
 					if (replyContent == "0") return;
+					feedbackController->sortFeedbackListById(*feedbackData);
 					feedbackData->updateFeedbackReply(getFeedback, replyContent);
+					feedbackController->sortFeedbackList(*feedbackData);
 				} else if (stoi(choice)) {
 					feedbackData->displayFeedbackPaginate(stoi(choice));
 				}
