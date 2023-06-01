@@ -135,6 +135,7 @@ class UserMenu {
 				break;
 			case 3:
 				cout << "You have selected 'Send Feedback'" << endl;
+				feedbackController->sortFeedbackListById(*feedbackData);
 				feedbackController->createFeedback(feedbackData, currentUser);
 				break;
 			case 4:
